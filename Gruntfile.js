@@ -3,24 +3,29 @@ module.exports = function(grunt) {
 	grunt.initConfig( {
       pkg: grunt.file.readJSON('package.json'),
 
+      clean: {
+        stylesheets: ['public/stylesheets/*.css'],
+        javascripts: ['public/javascripts/build.js']
+      },
+
       concat: {
       	options: {
       	  seperator: '\n'
       	},
-      	dist: {
-      	  src: ['public/javascripts/**.js']
-      	  dist: 'public/javascripts/build.js'
+      	bar: {
+      	  src: ['public/javascripts/**.js'],
+      	  dest: 'public/javascripts/build.js'
       	}
       },
 
-      less: {
+      sass: {
       	options: {
       	    paths: ['public/stylesheets']
         },
 
         complie: {
           files: {
-            'public/stylesheets/style.css': 'public/stylesheets/**.less'
+            'public/stylesheets/style.css': 'public/stylesheets/**.sass'
           }
         }
       },
@@ -52,12 +57,12 @@ module.exports = function(grunt) {
       	  spawn: false,
 
       	  stylesheets: {
-      	  	files: ['public/stylesheets/**/*.less']
-      	  	tasks: ['less']
+      	  	files: ['public/stylesheets/**/*.sass'],
+      	  	tasks: ['sass']
       	  },
 
       	  javascripts_client: {
-      	  	files: ['public/**/*.js']
+      	  	files: ['public/**/*.js'],
       	  	tasks: ['jshint:beforeconcat', 'concat', 'jshint:afterconcat', 'express']
       	  },
 
@@ -67,7 +72,7 @@ module.exports = function(grunt) {
       	  },
 
       	  jade: {
-      	  	files: ['views/**/*.jade']
+      	  	files: ['views/**/*.jade'],
       	  	tasks: ['express']
       	  }
       	}
@@ -80,7 +85,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-express-server');
 
 

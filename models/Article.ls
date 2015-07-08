@@ -2,20 +2,32 @@ require ['mongoose']
 
 Object-id = Schema.Types.Object-id
 
-Article-schema = new article.Schema {
-    title: String
+Article-schema = new mongoose.Schema {
+    title: {
+        type: 'String',
+        required: true
+    },
     create-at: Date,
+    author: {
+        type: 'String',
+        required: true
+    },
+    author-id: Object-id,
     last-edit-at: Date,
     content: String,
-    category: String,
+    category: [String],
     secret: Boolean,
+    secret-password: {
+       type: 'String',
+       require: true
+    },
     comments: [Object-id]
 }
 
 Article-model = mongoose.model 'Article', Article-model
 
 Article-model.updateContent = (id, content, callback)!->
-    Article.find-one {_id: id}, (err, article)!->
+    Article-model.find-one {_id: id}, (err, article)!->
         if article
             article.content = content
             article.save !->
@@ -24,10 +36,12 @@ Article-model.updateContent = (id, content, callback)!->
             callback 1, null
 
 Article-model.get-comments = (id, callback)!->
-    Article.find-one {_id, id}, (err, article)!->
-        if article
-            comments = article.comments
-            callback null, comments
+    Article-model.find-one {_id, id}, (err, article)!->
+        if err
+            callback(1, null)
         else
-            callback 1, null
-
+            if article
+                article.aggregate().unwind('')
+                callback null, comments
+            else
+                callback 1, null

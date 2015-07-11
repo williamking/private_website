@@ -1,9 +1,7 @@
 authorizor = exports
 
 authorizor.require-login = (req, res, next)!->
-    if req.is-authenticated! then next! else res.write('Go to login')
+    if req.session.user then next! else res.go '/login'
 
 authorizor.has-login = (req, res, next)!->
-    if req.is-authenticated! then res.write('Has logined')
-    else next!
-
+    if not req.session.user then next! else res.go '/'

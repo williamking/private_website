@@ -1,0 +1,30 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        header(id= "banner")
+            h1= title
+            nav(id= "navigator")
+                ul
+                    li
+                        a(href= "/") index
+                    li 
+                        a(href= "/dinary") diary
+                    li 
+                        a(href= "/photo") photo
+                    li  
+                        a(href= "/imaginezone") imagine zone
+        block content
+        footer(id= "footer")
+            p &copy; 2014 William.D.King.
+            nav
+                ul
+                    li
+                        a(href= "/") Home
+                    li
+                        a(href= "http://weibo.com/p/1005051899517750/home?from=page_100505&mod=TAB#place") My MicroBlog
+                    li
+                        a(href= "mailto:williamjwking@gmail.com") My email
+        

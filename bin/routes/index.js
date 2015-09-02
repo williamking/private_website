@@ -7,7 +7,6 @@
   hasLogin = require('./authorization/authorize').hasLogin;
   router = express.Router();
   router.get('/', function(req, res){
-    console.log('hehe');
     res.render('index');
   });
   router.post('/login', hasLogin, function(req, res){

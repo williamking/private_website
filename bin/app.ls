@@ -27,7 +27,7 @@ app.use logger 'dev'
 app.use bodyParser.json!
 app.use bodyParser.urlencoded!
 app.use cookieParser!
-app.use express.static path.join __dirname, 'views'
+app.use express.static path.join __dirname, 'public'
 app.use expressSession {
     secret: 'mySecretKey'
     resave: yes
@@ -49,7 +49,6 @@ if (app.get 'env') is 'development' then app.use (err, req, res, next) ->
     }
 
 app.listen 3000, ->
-    console.log routes.index
     console.log 'Express listening on port 3000'
 
 exports = module.exports = app

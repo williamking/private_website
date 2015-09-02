@@ -22,9 +22,9 @@ module.exports = (grunt)->
         dist:
             files: [
               expand: true,
-              cwd: 'src',
-              src: '**/*.sass',
-              dest: 'bin',
+              cwd: 'src/public/sass',
+              src: '*.sass',
+              dest: 'bin/public/stylesheets',
               ext: '.css'
             ]
 
@@ -48,6 +48,7 @@ module.exports = (grunt)->
               'src/**/*.ls'
               'src/**/*.sass'
               'src/app.ls'
+              'src/views/*.jade'
           ]
           tasks: ['livescript', 'sass', 'copy', 'express']
 

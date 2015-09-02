@@ -21,7 +21,7 @@
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded());
   app.use(cookieParser());
-  app.use(express['static'](path.join(__dirname, 'views')));
+  app.use(express['static'](path.join(__dirname, 'public')));
   app.use(expressSession({
     secret: 'mySecretKey',
     resave: true,
@@ -44,7 +44,6 @@
     });
   }
   app.listen(3000, function(){
-    console.log(routes.index);
     return console.log('Express listening on port 3000');
   });
   exports = module.exports = app;

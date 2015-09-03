@@ -11,7 +11,7 @@
   db = require('./db.js');
   logger = require('morgan');
   favicon = require('static-favicon');
-  routes = require('./routes');
+  routes = require('./routes/');
   mongoose.connect(db.url);
   app = express();
   app.set('views', path.join(__dirname, 'views'));
@@ -27,6 +27,9 @@
     resave: true,
     saveUninitialized: true
   }));
+  console.log(routes.index);
+  console.log(routes.factory);
+  app.use('/factory', routes.factory);
   app.use('/', routes.index);
   app.use(function(req, res, next){
     var err;

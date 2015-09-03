@@ -6,7 +6,7 @@ require! {express, http, path, 'cookie-parser', 'body-parser', mongoose, 'expres
 db = require './db.js'
 logger = require 'morgan'
 favicon = require 'static-favicon'
-routes = require './routes'
+routes = require './routes/'
 mongoose.connect db.url
 
 app = express!
@@ -34,6 +34,9 @@ app.use expressSession {
     saveUninitialized: yes
 }
 
+console.log(routes.index)
+console.log(routes.factory)
+app.use '/factory', routes.factory
 app.use '/', routes.index
 
 app.use (req, res, next) ->

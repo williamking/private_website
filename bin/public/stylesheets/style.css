@@ -1,0 +1,61 @@
+/* Created by William */
+header#drawing-header {
+  margin: 0 auto;
+  width: 60%; }
+  header#drawing-header h1 {
+    text-align: center; }
+
+div#drawing-canvas canvas#canvas {
+  margin: 10%;
+  padding: 2%;
+  background: white;
+  border: thin inset #aaaaaa;
+  width: 80%;
+  height: 80%; }
+
+body {
+  background-color: #d8d8d8 !important;
+  background-size: cover; }
+  body header#head #banner {
+    width: 100%;
+    height: 300px;
+    background-image: url("../images/layouts/header.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; }
+  body header#head nav#navigator {
+    width: 100%;
+    padding-left: 20%;
+    padding-right: 35%;
+    margin: 0 auto;
+    font-size: 20px; }
+    body header#head nav#navigator .container-header span.navbar-brand {
+      font-size: 20px; }
+    body header#head nav#navigator ul.nav.navbar-nav {
+      float: right; }
+      body header#head nav#navigator ul.nav.navbar-nav li {
+        margin-left: 30px; }
+  body #main-content {
+    background-color: white;
+    margin: 0 auto;
+    height: 800px;
+    width: 80%; }
+  body footer {
+    width: 80%;
+    margin: 0 auto;
+    overflow: hidden; }
+    body footer #copy-right {
+      display: inline-block;
+      float: left;
+      margin-left: 10%;
+      color: #0040ff; }
+    body footer #link {
+      float: right;
+      display: inline-block; }
+      body footer #link ul {
+        list-style: none; }
+        body footer #link ul li {
+          float: left;
+          width: 200px; }
+          body footer #link ul li a {
+            color: #0040ff; }

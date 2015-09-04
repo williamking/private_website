@@ -6,7 +6,6 @@ require! {express, http, path, 'cookie-parser', 'body-parser', mongoose, 'expres
 db = require './db.js'
 logger = require 'morgan'
 favicon = require 'static-favicon'
-routes = require './routes/'
 mongoose.connect db.url
 
 app = express!
@@ -17,6 +16,14 @@ app = express!
 
 app.set 'views', path.join __dirname, 'views'
 app.set 'view engine', 'jade'
+
+###
+#* set routes
+###
+
+index = require './routes/index'
+factory = require './routes/factory'
+
 
 ###
 #* use modules
@@ -34,10 +41,8 @@ app.use expressSession {
     saveUninitialized: yes
 }
 
-console.log(routes.index)
-console.log(routes.factory)
-app.use '/factory', routes.factory
-app.use '/', routes.index
+app.use '/factory', factory
+app.use '/', index
 
 app.use (req, res, next) ->
     err = new Error 'Not Found'

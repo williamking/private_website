@@ -8,10 +8,10 @@
   router2 = express.Router();
   router2.get('/', function(req, res){
     res.write('Constructing....');
+    res.end();
   });
   router2.get('/drawing', function(req, res){
     res.render('drawing');
   });
-  console.log('hehe');
-  module.exports.factory = router2;
+  module.exports = router2;
 }).call(this);

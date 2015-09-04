@@ -7,10 +7,9 @@ router2 = express.Router!
 
 router2.get '/', (req, res)!->
     res.write('Constructing....');
+    res.end();
 
 router2.get '/drawing', (req, res)!->
     res.render 'drawing'
 
-console.log('hehe')
-
-module.exports.factory = router2
+module.exports = router2

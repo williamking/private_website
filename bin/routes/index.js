@@ -46,5 +46,5 @@
       }
     });
   });
-  module.exports.index = router;
+  module.exports = router;
 }).call(this);

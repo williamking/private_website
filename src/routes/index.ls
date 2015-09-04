@@ -37,4 +37,4 @@ router.post '/reg', has-login, (req, res)->
            res.session.user = user._id
            res.go '/'
 
-module.exports.index = router
+module.exports = router

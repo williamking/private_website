@@ -6,7 +6,6 @@ header#drawing-header {
 
 div#drawing-canvas canvas#canvas {
   margin: 10%;
-  padding: 2%;
   background: white;
   border: thin inset #aaaaaa;
   width: 80%;

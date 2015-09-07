@@ -2,50 +2,60 @@
 #    > Email: williamjwking@gmail.com
 
 $ ->
+    # alert window.location.pathname
     if window.location.pathname is '/factory/drawing'
         # Get the canvas object
         canvas = $('#canvas')
         canvas[0].height = 600
         canvas[0].width = 800
 
+        # Transfer the position in window to that in canvas
+        window-to-canvas = (canvas, x, y)->
+
+            bbox = canvas.get-bounding-client-rect!
+            return {
+                x: (x - bbox.left) * (canvas.width  / bbox.width)
+                y: (y - bbox.top)  * (canvas.height / bbox.height)
+            }
 
         # Canvas event listener, the parameter is jquery object
         canvas-listener = (canvas)!->
+
             this.canvas = canvas
-            that = this
-            func = (obj)->
-                that = obj
-                return that.deal-events
-            this.canvas.click = func this
+            callback = (obj, type)->
+                listener = obj
+                return (e)->
+                    e.prevent-default!
+                    listener.deal-events e, type
+
+            this.canvas.click callback this, 'click'
+            this.canvas.mousemove callback this, 'mousemove'
+            this.canvas.mousedown callback this, 'mousedown'
+            this.canvas.mouseup callback this, 'mouseup'
             this.events = []
 
         # Add new event to listener
-        canvas-listener.prototype.add-event = (x, y, width, height, callback)!->
+        canvas-listener.prototype.add-event = (x, y, width, height, type, callback)!->
+
             new-event =
                 x       : x,
                 y       : y,
                 width   : width,
                 height  : height,
+                type    : type,
                 callback: callback
             this.events.push new-event
 
-        canvas-listener.prototype.deal-events = (e)!->
+        canvas-listener.prototype.deal-events = (e, type)!->
 
             # Get the position of event
-            if e.layer-x or e.layer-x ~= 0
-            then
-                event-x = e.layer-x
-                event-y = e.layer-y
-            else
-                if e.offset-x or e.layer-x ~= 0
-                then
-                    event-x = e.offset-x
-                    event-y = e.effset-y
+            loc = window-to-canvas this.canvas[0], e.client-x, e.client-y
 
-            for event in that.events
-                if event-x >= event.x and event-x < event.x + event.width
-                and event-y >= event.y and event-y < event.y + event.height
-                    event.callback!
+            for event in this.events
+                if event.type != type then continue
+                if loc.x >= event.x and loc.x < event.x + event.width
+                and loc.y >= event.y and loc.y < event.y + event.height
+                then event.callback e, loc
 
         # Create the drawing frame object
         drawingFrame = ->
@@ -55,25 +65,33 @@ $ ->
             # Set the real drawing area
             this.originX = 0
             this.originY = 40
-            this.height = canvas[0].height - this.originX
-            this.width =  canvas[0].width - this.originY
+            this.height = canvas[0].height - this.origin-y
+            this.width =  canvas[0].width - this.origin-X
             # Set button attributes
+            this.buttons = []
             this.numOfButtons = 0
-            this.BUTTON_MARGIN = 4
+            this.BUTTON_MARGIN = 8
             this.BUTTON_SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)'
             this.BUTTON_SHADOW_OFFSET = 1
             this.BUTTON_SHADOW_BLUR = 2
             this.BUTTON_HEIGHT = 20
             this.BUTTON_WIDTH = 50
-
+            # Set the mode
+            this.mode = "normal"
+            # Save the drawing data
+            this.drawing-surface-data = this.context.get-image-data this.originX, this.originY, this.width, this.height
+            # ....
+            this.mousedown = {}
+            #
+            this.rubberbandRect = {}
+            #
+            this.dragging = false
+            #
+            this.guidewires = true
 
         # Init the frame
         drawingFrame.prototype.init = ->
-            this.context.clearRect this.originX, this.originY, this.width, this.height
-
-        # Test drawing rectangle
-        drawingFrame.prototype.rectTest = !->
-
+            this.context.clearRect this.originX, this.originY, this.width, this.height # Test drawing rectangle drawingFrame.prototype.rectTest = !-> 
             that = this
             this.init!
             context = this.context
@@ -88,6 +106,61 @@ $ ->
             context.canvas.onmousedown = (e)->
                 that.init!
                 context.canvas.onmousedown = null
+
+        # Store the drawing surface
+        drawing-frame.prototype.save-drawing-surface = !->
+            this.drawing-surface-data = this.context.get-image-data this.originX, this.originY, this.width, this.height
+
+        # Restore the drawing surface
+        drawing-frame.prototype.restore-drawing-surface = !->
+            this.context.put-image-data this.drawing-surface-data, this.originX, this.originY
+
+        # Rubber bands
+        drawing-frame.prototype.update-rubberband-rectangle = (loc)!->
+            this.rubberband-rect.width = Math.abs(loc.x - this.mousedown.x)
+            this.rubberband-rect.height = Math.abs(loc.y - this.mousedown.y)
+
+            if loc.x > this.mousedown.x then
+                this.rubberband-rect.left = this.mousedown.x
+            else
+                this.rubberband-rect.left = loc.x
+
+            if loc.y > this.mousedown.y then
+                this.rubberband-rect.top = this.mousedown.y
+            else
+                this.rubberband-rect.top = loc.y
+
+        drawing-frame.prototype.draw-rubberband-shape = (loc)!->
+            this.context.begin-path!
+            this.context.move-to this.mousedown.x, this.mousedown.y
+            this.context.line-to loc.x, loc.y
+            this.context.stroke!
+
+        drawing-frame.prototype.update-rubberband = (loc)!->
+            this.update-rubberband-rectangle loc
+            this.context.stroke-style = 'black'
+            this.draw-rubberband-shape loc
+
+        #Guidewires
+        drawing-frame.prototype.draw-horizonal-line  = (y)!->
+            this.context.begin-path!
+            this.context.move-to this.originX, y + 0.5
+            this.context.line-to this.width + this.originX, y + 0.5
+            this.context.stroke!
+
+        drawing-frame.prototype.draw-vertical-line  = (x)!->
+            this.context.begin-path!
+            this.context.move-to x + 0.5, this.origin-y
+            this.context.line-to x + 0.5, this.height + this.origin-y
+            this.context.stroke!
+
+        drawing-frame.prototype.draw-guide-wires = (x, y)!->
+            this.context.save!
+            this.context.stroke-style = 'rgba(0, 0, 230, 0.4)'
+            this.context.line-width = 0.5
+            this.draw-vertical-line x
+            this.draw-horizonal-line y
+            this.context.restore!
 
         # Test the color
         drawingFrame.prototype.colorTest = !->
@@ -139,21 +212,61 @@ $ ->
 
         # Add the buttons
 
-        drawingFrame.prototype.addButton = (text, callback)!->
-
-            this.shadowColor = this.BUTTON_SHADOW_COLOR
-            this.shadowOffsetX = this.shadowOffsetY = this.BUTTON_SHADOW_OFFSET
-            this.shadowBlur = this.BUTTON_SHADOW_BLUR
+        drawingFrame.prototype.addButton = (text, is-on, callback)!->
 
             x = (this.BUTTON_WIDTH + this.BUTTON_MARGIN) * this.numOfButtons
-            this.context.strokeRect x, 0, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
 
+            this.context.shadowOffsetX = this.context.shadowOffsetY = 0
+            this.context.shadow-blur = 0
             this.context.font = '10px Helvetica'
-            this.context.fillText(text, x + 10, 10)
+            this.context.fillText text, x + 20, 20
+
             ++this.numOfButtons
 
-            if callback then
-                this.listener.add-event x, 0, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, callback
+            this.context.shadowColor = this.BUTTON_SHADOW_COLOR
+            this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET
+            this.context.shadowBlur = this.BUTTON_SHADOW_BLUR
+
+            this.context.strokeRect x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
+
+            new-button =
+                name: text
+                is-on: is-on
+                originX: x + 10
+                originY: 10
+                callback: callback
+
+            this.buttons.push new-button
+
+            button-func = (button, frame)->
+                return (e, loc)!->
+                    button.is-on = true
+                    for btn in frame.buttons
+                        if btn isnt button then btn.is-on = false
+                    frame.update-buttons!
+                    button.callback e, loc
+
+            this.listener.add-event x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', button-func new-button, this
+
+        drawingFrame.prototype.update-buttons = ->
+            for button in this.buttons
+                this.context.shadowColor = this.BUTTON_SHADOW_COLOR
+                if not button.is-on then
+                    this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET
+                    this.context.shadowBlur = this.BUTTON_SHADOW_BLUR
+                else
+                    this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET * 2
+                    this.context.shadowBlur = this.BUTTON_SHADOW_BLUR * 2
+
+                this.context.clear-rect button.originX - 2, button.origin-y - 2, this.BUTTON_WIDTH + 7, this.BUTTON_HEIGHT + 7
+                this.context.stroke-rect button.originX, button.origin-y, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
+
+                this.context.shadowOffsetX = this.context.shadowOffsetY = 0
+                this.context.shadow-blur = 0
+                this.context.font = '10px Helvetica'
+                this.context.fillText button.name, button.originX + 10, 20
+
+        # Draw the bound between buttons and painting area
 
         drawingFrame.prototype.drawBounding = !->
 
@@ -164,13 +277,66 @@ $ ->
             context.line-to this.originX + this.width, this.originY
             context.stroke!
 
+        # Draw the grid
+
+        drawing-frame.prototype.draw-grid = (color, stepx, stepy)!->
+
+            context = this.context
+            context.stroke-style = color
+            context.linewidth = 0.5
+
+            for i from this.originX + stepx + 0.5 to context.canvas.width - 0.1 by stepx
+                context.begin-path!
+                context.move-to i, this.originY
+                context.line-to i, context.canvas.height
+                context.stroke!
+
+            for i from this.originY + stepy + 0.5 to context.canvas.height - 0.1 by stepy
+                context.begin-path!
+                context.move-to this.originX, i
+                context.line-to context.canvas.width, i
+                context.stroke!
+
+            context.stroke-style = 'black'
 
         # Run the frame
         iFrame = new drawingFrame!
-        iFrame.drawBounding!
-        iFrame.addButton "eraser", ->
-            alert("hehe")
-        iFrame.addButton "line"
-        iFrame.addButton "curve"
-        iFrame.testRidialGradient!
+        iFrame.draw-bounding!
+        iFrame.addButton "eraser", false, !->
+            i-frame.mode = 'eraser'
+        iFrame.addButton "line", false, !->
+            iFrame.mode = 'line'
+        iFrame.addButton "curve", false, !->
+            i-frame.mode = 'curve'
+        iFrame.addButton "grid", false, !->
+            i-frame.mode = 'grid'
+            i-frame.draw-grid 'lightgray', 10, 10
+
+        iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
+        iFrame.height, 'mousedown', (e, loc)!->
+
+            if i-frame.mode isnt 'line' then return
+            i-frame.save-drawing-surface!
+            i-frame.mousedown.x = loc.x
+            i-frame.mousedown.y = loc.y
+            i-frame.dragging = true
+
+        iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
+        iFrame.height, 'mousemove', (e, loc)!->
+
+            if i-frame.dragging and i-frame.mode == 'line' then
+                i-frame.restore-drawing-surface!
+                i-frame.update-rubberband loc
+
+                if i-frame.guidewires then
+                    i-frame.draw-guide-wires loc.x, loc.y
+
+        iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
+        iFrame.height, 'mouseup', (e, loc)!->
+
+            if i-frame.mode isnt 'line' then return
+            if not i-frame.dragging then return
+            i-frame.restore-drawing-surface!
+            i-frame.update-rubberband loc
+            i-frame.dragging = false
 

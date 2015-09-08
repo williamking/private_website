@@ -73,9 +73,11 @@
         this.BUTTON_SHADOW_BLUR = 2;
         this.BUTTON_HEIGHT = 20;
         this.BUTTON_WIDTH = 50;
+        this.eraserWidth = 30;
         this.mode = "normal";
         this.drawingSurfaceData = this.context.getImageData(this.originX, this.originY, this.width, this.height);
         this.mousedown = {};
+        this.lastLoc = {};
         this.rubberbandRect = {};
         this.dragging = false;
         return this.guidewires = true;
@@ -274,10 +276,38 @@
         }
         context.strokeStyle = 'black';
       };
+      drawingFrame.prototype.drawEraser = function(loc){
+        var eraserWidth, context;
+        eraserWidth = this.eraserWidth;
+        if (loc.x - eraserWidth / 2 < this.originX || loc.y - eraserWidth / 2 < this.originY) {
+          return;
+        }
+        context = this.context;
+        context.save();
+        context.beginPath();
+        context.arc(loc.x, loc.y, eraserWidth / 2, 0, Math.PI * 2, false);
+        context.clip();
+        context.stroke();
+        context.restore();
+      };
+      drawingFrame.prototype.clearLastArea = function(loc){
+        var context;
+        if (loc.x - this.eraserWidth / 2 < this.originX || loc.y - this.eraserWidth / 2 < this.originY) {
+          return;
+        }
+        context = this.context;
+        context.save();
+        context.beginPath();
+        context.arc(loc.x, loc.y, this.eraserWidth / 2 + 0.5, 0, Math.PI * 2, false);
+        context.clip();
+        context.clearRect(this.originX, this.originY, this.width + 0.5, this.height);
+        context.restore();
+      };
       iFrame = new drawingFrame();
       iFrame.drawBounding();
       iFrame.addButton("eraser", false, function(){
         iFrame.mode = 'eraser';
+        iFrame.saveDrawingSurface();
       });
       iFrame.addButton("line", false, function(){
         iFrame.mode = 'line';
@@ -290,12 +320,12 @@
         iFrame.drawGrid('lightgray', 10, 10);
       });
       iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousedown', function(e, loc){
-        if (iFrame.mode !== 'line') {
-          return;
+        if (iFrame.mode === 'line') {
+          iFrame.saveDrawingSurface();
         }
-        iFrame.saveDrawingSurface();
         iFrame.mousedown.x = loc.x;
         iFrame.mousedown.y = loc.y;
+        iFrame.lastLoc = loc;
         iFrame.dragging = true;
       });
       iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousemove', function(e, loc){
@@ -306,16 +336,30 @@
             iFrame.drawGuideWires(loc.x, loc.y);
           }
         }
+        if (iFrame.mode === 'eraser') {
+          iFrame.restoreDrawingSurface();
+          if (iFrame.dragging) {
+            iFrame.clearLastArea(iFrame.lastLoc);
+            iFrame.saveDrawingSurface();
+          }
+          iFrame.drawEraser(loc);
+          iFrame.lastLoc = loc;
+        }
       });
       return iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mouseup', function(e, loc){
-        if (iFrame.mode !== 'line') {
-          return;
-        }
         if (!iFrame.dragging) {
           return;
         }
-        iFrame.restoreDrawingSurface();
-        iFrame.updateRubberband(loc);
+        if (iFrame.mode === 'line') {
+          iFrame.restoreDrawingSurface();
+          iFrame.updateRubberband(loc);
+        }
+        if (iFrame.mode === 'eraser') {
+          iFrame.restoreDrawingSurface();
+          iFrame.clearLastArea(iFrame.lastLoc);
+          iFrame.saveDrawingSurface();
+          iFrame.drawEraser(loc);
+        }
         iFrame.dragging = false;
       });
     }

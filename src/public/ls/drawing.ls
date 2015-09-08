@@ -76,12 +76,15 @@ $ ->
             this.BUTTON_SHADOW_BLUR = 2
             this.BUTTON_HEIGHT = 20
             this.BUTTON_WIDTH = 50
+            # Set eraser attributes
+            this.eraser-width = 30
             # Set the mode
             this.mode = "normal"
             # Save the drawing data
             this.drawing-surface-data = this.context.get-image-data this.originX, this.originY, this.width, this.height
-            # ....
+            # Mouse posistion
             this.mousedown = {}
+            this.last-loc = {}
             #
             this.rubberbandRect = {}
             #
@@ -299,11 +302,43 @@ $ ->
 
             context.stroke-style = 'black'
 
+        # Draw the path of earser
+
+        drawing-frame.prototype.draw-eraser = (loc)!->
+
+            eraser-width = this.eraser-width
+
+            if loc.x - eraser-width/2 < this.originX or loc.y - eraser-width/2 < this.originY then
+                return
+
+            context = this.context
+            context.save!
+            context.begin-path!
+
+            context.arc loc.x, loc.y, eraser-width / 2, 0, Math.PI * 2, false
+            context.clip!
+            context.stroke!
+            context.restore!
+
+        drawing-frame.prototype.clear-last-area = (loc)!->
+
+            if loc.x - this.eraser-width/2 < this.originX or loc.y - this.eraser-width/2 < this.originY then
+                return
+
+            context = this.context
+            context.save!
+            context.begin-path!
+            context.arc loc.x, loc.y, this.eraser-width / 2 + 0.5, 0, Math.PI * 2, false
+            context.clip!
+            context.clearRect(this.originX, this.originY, this.width + 0.5, this.height)
+            context.restore!
+
         # Run the frame
         iFrame = new drawingFrame!
         iFrame.draw-bounding!
         iFrame.addButton "eraser", false, !->
             i-frame.mode = 'eraser'
+            i-frame.save-drawing-surface!
         iFrame.addButton "line", false, !->
             iFrame.mode = 'line'
         iFrame.addButton "curve", false, !->
@@ -315,10 +350,11 @@ $ ->
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mousedown', (e, loc)!->
 
-            if i-frame.mode isnt 'line' then return
-            i-frame.save-drawing-surface!
+            if i-frame.mode is 'line' then
+                i-frame.save-drawing-surface!
             i-frame.mousedown.x = loc.x
             i-frame.mousedown.y = loc.y
+            i-frame.last-loc = loc
             i-frame.dragging = true
 
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
@@ -331,12 +367,25 @@ $ ->
                 if i-frame.guidewires then
                     i-frame.draw-guide-wires loc.x, loc.y
 
+            if i-frame.mode == 'eraser' then
+                i-frame.restore-drawing-surface!
+                if i-frame.dragging
+                    i-frame.clear-last-area i-frame.last-loc
+                    i-frame.save-drawing-surface!
+                i-frame.draw-eraser loc
+                i-frame.last-loc = loc
+
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mouseup', (e, loc)!->
 
-            if i-frame.mode isnt 'line' then return
             if not i-frame.dragging then return
-            i-frame.restore-drawing-surface!
-            i-frame.update-rubberband loc
+            if i-frame.mode is 'line' then
+                i-frame.restore-drawing-surface!
+                i-frame.update-rubberband loc
+            if i-frame.mode is 'eraser' then
+                i-frame.restore-drawing-surface!
+                i-frame.clear-last-area i-frame.last-loc
+                i-frame.save-drawing-surface!
+                i-frame.draw-eraser loc
             i-frame.dragging = false
 

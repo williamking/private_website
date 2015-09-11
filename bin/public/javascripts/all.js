@@ -16,45 +16,41 @@
         };
       };
       canvasListener = function(canvas){
-        var callback;
         this.canvas = canvas;
-        callback = function(obj, type){
-          var listener;
-          listener = obj;
-          return function(e){
-            e.preventDefault();
-            return listener.dealEvents(e, type);
-          };
-        };
-        this.canvas.click(callback(this, 'click'));
-        this.canvas.mousemove(callback(this, 'mousemove'));
-        this.canvas.mousedown(callback(this, 'mousedown'));
-        this.canvas.mouseup(callback(this, 'mouseup'));
         this.events = [];
       };
       canvasListener.prototype.addEvent = function(x, y, width, height, type, callback){
-        var newEvent;
+        var newEvent, eventFunc;
         newEvent = {
           x: x,
           y: y,
           width: width,
           height: height,
-          type: type,
-          callback: callback
+          type: type
         };
+        eventFunc = function(obj, canvas, callback){
+          return function(event){
+            var loc;
+            loc = windowToCanvas(canvas[0], event.clientX, event.clientY);
+            if (loc.x >= obj.x && loc.x < obj.x + obj.width && loc.y >= obj.y && loc.y < obj.y + obj.height) {
+              return callback(event, loc);
+            }
+          };
+        };
+        newEvent.callback = eventFunc(newEvent, this.canvas, callback);
         this.events.push(newEvent);
-      };
-      canvasListener.prototype.dealEvents = function(e, type){
-        var loc, i$, ref$, len$, event;
-        loc = windowToCanvas(this.canvas[0], e.clientX, e.clientY);
-        for (i$ = 0, len$ = (ref$ = this.events).length; i$ < len$; ++i$) {
-          event = ref$[i$];
-          if (event.type !== type) {
-            continue;
-          }
-          if (loc.x >= event.x && loc.x < event.x + event.width && loc.y >= event.y && loc.y < event.y + event.height) {
-            event.callback(e, loc);
-          }
+        switch (type) {
+        case 'click':
+          this.canvas.click(newEvent.callback);
+          break;
+        case 'mousemove':
+          this.canvas.mousemove(newEvent.callback);
+          break;
+        case 'mousedown':
+          this.canvas.mousedown(newEvent.callback);
+          break;
+        case 'mouseup':
+          this.canvas.mouseup(newEvent.callback);
         }
       };
       drawingFrame = function(){
@@ -72,7 +68,12 @@
         this.BUTTON_SHADOW_OFFSET = 1;
         this.BUTTON_SHADOW_BLUR = 2;
         this.BUTTON_HEIGHT = 20;
-        this.BUTTON_WIDTH = 50;
+        this.BUTTON_WIDTH = 80;
+        this.SELECT_BUTTON_SHADOW_OFFSET = 4;
+        this.SELECT_BUTTON_SHADOW_BLUR = 5;
+        this.BUTTON_BACKGROUND_STYLE = '#eeeeee';
+        this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)';
+        this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)';
         this.eraserWidth = 30;
         this.mode = "normal";
         this.drawingSurfaceData = this.context.getImageData(this.originX, this.originY, this.width, this.height);
@@ -83,20 +84,10 @@
         return this.guidewires = true;
       };
       drawingFrame.prototype.init = function(){
-        var that, context;
-        this.context.clearRect(this.originX, this.originY, this.width, this.height);
-        that = this;
-        this.init();
-        context = this.context;
-        context.lineWidth = 20;
-        context.font = '24px Helvetica';
-        context.fillText('Click anywhere to erase', 175, 40);
-        context.strokeRect(75, 100, 200, 200);
-        context.fillRect(325, 100, 200, 200);
-        return context.canvas.onmousedown = function(e){
-          that.init();
-          return context.canvas.onmousedown = null;
-        };
+        this.context.strokeStyle = 'black';
+        this.context.shadowOffsetX = 0;
+        this.context.shadowOffsetY = 0;
+        return this.context.shadowBlur = 5;
       };
       drawingFrame.prototype.saveDrawingSurface = function(){
         this.drawingSurfaceData = this.context.getImageData(this.originX, this.originY, this.width, this.height);
@@ -197,10 +188,6 @@
         this.context.font = '10px Helvetica';
         this.context.fillText(text, x + 20, 20);
         ++this.numOfButtons;
-        this.context.shadowColor = this.BUTTON_SHADOW_COLOR;
-        this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET;
-        this.context.shadowBlur = this.BUTTON_SHADOW_BLUR;
-        this.context.strokeRect(x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
         newButton = {
           name: text,
           isOn: isOn,
@@ -220,29 +207,34 @@
               }
             }
             frame.updateButtons();
-            button.callback(e, loc);
+            button.callback();
           };
         };
+        newButton.func = buttonFunc;
         this.listener.addEvent(x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', buttonFunc(newButton, this));
       };
       drawingFrame.prototype.updateButtons = function(){
         var i$, ref$, len$, button, results$ = [];
+        this.context.clearRect(0, 0, this.width, this.originY);
         for (i$ = 0, len$ = (ref$ = this.buttons).length; i$ < len$; ++i$) {
           button = ref$[i$];
+          this.context.save();
           this.context.shadowColor = this.BUTTON_SHADOW_COLOR;
+          this.context.strokeStyle = this.BUTTON_BORDER_STROKE_STYLE;
+          this.context.fillStyle = this.BUTTON_BACKGROUND_STYLE;
           if (!button.isOn) {
             this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET;
             this.context.shadowBlur = this.BUTTON_SHADOW_BLUR;
           } else {
-            this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET * 2;
-            this.context.shadowBlur = this.BUTTON_SHADOW_BLUR * 2;
+            this.context.shadowOffsetX = this.context.shadowOffsetY = this.SELECT_BUTTON_SHADOW_OFFSET;
+            this.context.shadowBlur = this.SELECT_BUTTON_SHADOW_BLUR;
           }
-          this.context.clearRect(button.originX - 2, button.originY - 2, this.BUTTON_WIDTH + 7, this.BUTTON_HEIGHT + 7);
+          this.context.fillRect(button.originX, button.originY, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
           this.context.strokeRect(button.originX, button.originY, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
-          this.context.shadowOffsetX = this.context.shadowOffsetY = 0;
-          this.context.shadowBlur = 0;
-          this.context.font = '10px Helvetica';
-          results$.push(this.context.fillText(button.name, button.originX + 10, 20));
+          this.context.strokeStyle = '#ff0000';
+          this.context.font = '15pt Arial';
+          this.context.strokeText(button.name, button.originX + 10, button.originY + 15);
+          results$.push(this.context.restore());
         }
         return results$;
       };
@@ -303,6 +295,29 @@
         context.clearRect(this.originX, this.originY, this.width + 0.5, this.height);
         context.restore();
       };
+      drawingFrame.prototype.drawPencil = function(loc, width){
+        var context;
+        if (loc.x - width / 2 < this.originX || loc.y - width / 2 < this.originY) {
+          return;
+        }
+        context = this.context;
+        context.fillStyle = 'black';
+        context.save();
+        context.beginPath();
+        context.arc(loc.x, loc.y, width / 2, 0, Math.PI * 2, false);
+        context.clip();
+        context.fill();
+        context.restore();
+      };
+      drawingFrame.prototype.drawPath = function(loc, width){
+        var context;
+        context = this.context;
+        context.save();
+        context.lineTo(loc.x, loc.y);
+        context.lineWidth = width;
+        context.stroke();
+        context.restore();
+      };
       iFrame = new drawingFrame();
       iFrame.drawBounding();
       iFrame.addButton("eraser", false, function(){
@@ -312,13 +327,14 @@
       iFrame.addButton("line", false, function(){
         iFrame.mode = 'line';
       });
-      iFrame.addButton("curve", false, function(){
-        iFrame.mode = 'curve';
+      iFrame.addButton("pencil", false, function(){
+        iFrame.mode = 'pencil';
       });
       iFrame.addButton("grid", false, function(){
         iFrame.mode = 'grid';
         iFrame.drawGrid('lightgray', 10, 10);
       });
+      iFrame.updateButtons();
       iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousedown', function(e, loc){
         if (iFrame.mode === 'line') {
           iFrame.saveDrawingSurface();
@@ -327,6 +343,9 @@
         iFrame.mousedown.y = loc.y;
         iFrame.lastLoc = loc;
         iFrame.dragging = true;
+        if (iFrame.mode === 'pencil') {
+          iFrame.context.beginPath();
+        }
       });
       iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousemove', function(e, loc){
         if (iFrame.dragging && iFrame.mode === 'line') {
@@ -344,6 +363,12 @@
           }
           iFrame.drawEraser(loc);
           iFrame.lastLoc = loc;
+        }
+        if (iFrame.mode === 'pencil') {
+          if (iFrame.dragging) {
+            iFrame.drawPath(loc, 1);
+            iFrame.saveDrawingSurface();
+          }
         }
       });
       return iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mouseup', function(e, loc){

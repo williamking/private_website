@@ -22,16 +22,6 @@ $ ->
         canvas-listener = (canvas)!->
 
             this.canvas = canvas
-            callback = (obj, type)->
-                listener = obj
-                return (e)->
-                    e.prevent-default!
-                    listener.deal-events e, type
-
-            this.canvas.click callback this, 'click'
-            this.canvas.mousemove callback this, 'mousemove'
-            this.canvas.mousedown callback this, 'mousedown'
-            this.canvas.mouseup callback this, 'mouseup'
             this.events = []
 
         # Add new event to listener
@@ -43,19 +33,27 @@ $ ->
                 width   : width,
                 height  : height,
                 type    : type,
-                callback: callback
+
+            event-func = (obj, canvas, callback)!->
+                return (event)->
+                    loc = window-to-canvas canvas[0], event.client-x, event.client-y
+                    if loc.x >= obj.x and loc.x < obj.x + obj.width
+                    and loc.y >= obj.y and loc.y < obj.y + obj.height
+                    then callback event, loc
+
+            new-event.callback = event-func new-event, this.canvas, callback
+
             this.events.push new-event
 
-        canvas-listener.prototype.deal-events = (e, type)!->
-
-            # Get the position of event
-            loc = window-to-canvas this.canvas[0], e.client-x, e.client-y
-
-            for event in this.events
-                if event.type != type then continue
-                if loc.x >= event.x and loc.x < event.x + event.width
-                and loc.y >= event.y and loc.y < event.y + event.height
-                then event.callback e, loc
+            switch type
+                case 'click'
+                    this.canvas.click new-event.callback
+                case 'mousemove'
+                    this.canvas.mousemove new-event.callback
+                case 'mousedown'
+                    this.canvas.mousedown new-event.callback
+                case 'mouseup'
+                    this.canvas.mouseup new-event.callback
 
         # Create the drawing frame object
         drawingFrame = ->
@@ -75,14 +73,19 @@ $ ->
             this.BUTTON_SHADOW_OFFSET = 1
             this.BUTTON_SHADOW_BLUR = 2
             this.BUTTON_HEIGHT = 20
-            this.BUTTON_WIDTH = 50
+            this.BUTTON_WIDTH = 80
+            this.SELECT_BUTTON_SHADOW_OFFSET = 4
+            this.SELECT_BUTTON_SHADOW_BLUR = 5
+            this.BUTTON_BACKGROUND_STYLE = '#eeeeee'
+            this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)'
+            this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)'
             # Set eraser attributes
             this.eraser-width = 30
             # Set the mode
             this.mode = "normal"
             # Save the drawing data
             this.drawing-surface-data = this.context.get-image-data this.originX, this.originY, this.width, this.height
-            # Mouse posistion
+            # Mouse position
             this.mousedown = {}
             this.last-loc = {}
             #
@@ -94,21 +97,11 @@ $ ->
 
         # Init the frame
         drawingFrame.prototype.init = ->
-            this.context.clearRect this.originX, this.originY, this.width, this.height # Test drawing rectangle drawingFrame.prototype.rectTest = !-> 
-            that = this
-            this.init!
-            context = this.context
-            context.lineWidth = 20
 
-            context.font = '24px Helvetica'
-            context.fillText 'Click anywhere to erase', 175, 40
-
-            context.strokeRect 75, 100, 200, 200
-            context.fillRect 325, 100, 200, 200
-
-            context.canvas.onmousedown = (e)->
-                that.init!
-                context.canvas.onmousedown = null
+            this.context.strokeStyle = 'black'
+            this.context.shadow-offset-x = 0
+            this.context.shadow-offset-y = 0
+            this.context.shadow-blur = 5
 
         # Store the drawing surface
         drawing-frame.prototype.save-drawing-surface = !->
@@ -226,12 +219,6 @@ $ ->
 
             ++this.numOfButtons
 
-            this.context.shadowColor = this.BUTTON_SHADOW_COLOR
-            this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET
-            this.context.shadowBlur = this.BUTTON_SHADOW_BLUR
-
-            this.context.strokeRect x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
-
             new-button =
                 name: text
                 is-on: is-on
@@ -247,27 +234,35 @@ $ ->
                     for btn in frame.buttons
                         if btn isnt button then btn.is-on = false
                     frame.update-buttons!
-                    button.callback e, loc
+                    button.callback!
+
+            new-button.func = button-func
 
             this.listener.add-event x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', button-func new-button, this
 
         drawingFrame.prototype.update-buttons = ->
+            this.context.clearRect 0, 0, this.width, this.originY
+
             for button in this.buttons
+                this.context.save!
                 this.context.shadowColor = this.BUTTON_SHADOW_COLOR
+                this.context.stroke-style = this.BUTTON_BORDER_STROKE_STYLE
+                this.context.fill-style = this.BUTTON_BACKGROUND_STYLE
                 if not button.is-on then
                     this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET
                     this.context.shadowBlur = this.BUTTON_SHADOW_BLUR
                 else
-                    this.context.shadowOffsetX = this.context.shadowOffsetY = this.BUTTON_SHADOW_OFFSET * 2
-                    this.context.shadowBlur = this.BUTTON_SHADOW_BLUR * 2
+                    this.context.shadowOffsetX = this.context.shadowOffsetY = this.SELECT_BUTTON_SHADOW_OFFSET
+                    this.context.shadowBlur = this.SELECT_BUTTON_SHADOW_BLUR
 
-                this.context.clear-rect button.originX - 2, button.origin-y - 2, this.BUTTON_WIDTH + 7, this.BUTTON_HEIGHT + 7
+                this.context.fill-rect button.originX, button.origin-y, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
                 this.context.stroke-rect button.originX, button.origin-y, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
 
-                this.context.shadowOffsetX = this.context.shadowOffsetY = 0
-                this.context.shadow-blur = 0
-                this.context.font = '10px Helvetica'
-                this.context.fillText button.name, button.originX + 10, 20
+                this.context.stroke-style = '#ff0000'
+
+                this.context.font = '15pt Arial'
+                this.context.stroke-text button.name, button.originX + 10, button.originY + 15
+                this.context.restore!
 
         # Draw the bound between buttons and painting area
 
@@ -333,6 +328,32 @@ $ ->
             context.clearRect(this.originX, this.originY, this.width + 0.5, this.height)
             context.restore!
 
+        # The pencil part
+
+        drawing-frame.prototype.draw-pencil = (loc, width)!->
+
+            if loc.x - width/2 < this.originX or loc.y - width/2 < this.originY then
+                return
+
+            context = this.context
+            context.fill-style = 'black'
+            context.save!
+            context.begin-path!
+
+            context.arc loc.x, loc.y, width / 2, 0, Math.PI * 2, false
+            context.clip!
+            context.fill!
+            context.restore!
+
+        drawing-frame.prototype.draw-path = (loc, width)!->
+
+            context = this.context
+            context.save!
+            context.line-to loc.x, loc.y
+            context.line-width = width
+            context.stroke!
+            context.restore!
+
         # Run the frame
         iFrame = new drawingFrame!
         iFrame.draw-bounding!
@@ -341,11 +362,13 @@ $ ->
             i-frame.save-drawing-surface!
         iFrame.addButton "line", false, !->
             iFrame.mode = 'line'
-        iFrame.addButton "curve", false, !->
-            i-frame.mode = 'curve'
+        iFrame.addButton "pencil", false, !->
+            i-frame.mode = 'pencil'
         iFrame.addButton "grid", false, !->
             i-frame.mode = 'grid'
             i-frame.draw-grid 'lightgray', 10, 10
+
+        i-frame.update-buttons!
 
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mousedown', (e, loc)!->
@@ -356,6 +379,9 @@ $ ->
             i-frame.mousedown.y = loc.y
             i-frame.last-loc = loc
             i-frame.dragging = true
+
+            if i-frame.mode is 'pencil' then
+                i-frame.context.begin-path!
 
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mousemove', (e, loc)!->
@@ -375,6 +401,11 @@ $ ->
                 i-frame.draw-eraser loc
                 i-frame.last-loc = loc
 
+            if i-frame.mode == 'pencil' then
+                if i-frame.dragging
+                    i-frame.draw-path loc, 1
+                    i-frame.save-drawing-surface!
+
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mouseup', (e, loc)!->
 
@@ -382,10 +413,13 @@ $ ->
             if i-frame.mode is 'line' then
                 i-frame.restore-drawing-surface!
                 i-frame.update-rubberband loc
+
             if i-frame.mode is 'eraser' then
                 i-frame.restore-drawing-surface!
                 i-frame.clear-last-area i-frame.last-loc
                 i-frame.save-drawing-surface!
                 i-frame.draw-eraser loc
+
+
             i-frame.dragging = false
 

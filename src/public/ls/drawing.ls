@@ -3,7 +3,7 @@
 
 $ ->
     # alert window.location.pathname
-    if window.location.pathname is '/factory/drawing'
+    if window.location.pathname is '/lab/drawing'
         # Get the canvas object
         canvas = $('#canvas')
         canvas[0].height = 600

@@ -1,0 +1,72 @@
+//variables
+
+$hz-color: #38a7db
+$title-width: 250px
+$title-height: 40px
+
+.hz-line
+    width: 90%
+    margin: 0 auto
+    height: 1px
+    background-color: $hz-color
+    z-index: -1
+
+#index-main
+    height: 800px
+
+    .sec-header
+        position: relative
+
+    .index-section-title
+        width: $title-width
+        height: $title-height
+        margin: 0 auto
+        position: absolute
+        left: 50%
+        top: -32px
+        margin-left: $title-width / -2
+        background-color: white
+        div
+            text-align: center
+            font-size: 35px
+        z-index: 1
+
+    .hz-section
+        height: 40%
+        padding: 2%
+        padding-top: 4%
+        #index-info
+            display: inline-block
+            width: 49%
+            height: 100%
+            .info-content
+                padding: 7%
+                .info-avatar
+                    height: 100px
+                    width: 100px
+                    float: right
+                .info-list
+                    width: 80%
+                    margin: 0 auto
+
+        #today-feeling
+            display: inline-block
+            width: 49%
+            height: 100%
+            float: right
+            .feeling-content
+                margin-top: 4%
+                .time
+                    text-align: center
+                div
+                    margin-left: 20%
+                    margin-right: 20%
+                    .feeling-saying
+                        display: inline-block
+                    .clock
+                        height: 100px
+                        width: 100px
+                        float: right
+
+    .article-section
+        height: 30%

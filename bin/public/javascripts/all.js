@@ -3,7 +3,7 @@
 (function(){
   $(function(){
     var that, canvas, windowToCanvas, canvasListener, drawingFrame, iFrame;
-    if (that = window.location.pathname === '/factory/drawing') {
+    if (that = window.location.pathname === '/lab/drawing') {
       canvas = $('#canvas');
       canvas[0].height = 600;
       canvas[0].width = 800;

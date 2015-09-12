@@ -22,8 +22,8 @@ app.set 'view engine', 'jade'
 ###
 
 index = require './routes/index'
-factory = require './routes/factory'
-
+labtory = require './routes/factory'
+articles = require './routes/articles'
 
 ###
 #* use modules
@@ -41,8 +41,13 @@ app.use expressSession {
     saveUninitialized: yes
 }
 
-app.use '/factory', factory
+###
+#* use routes
+###
+
 app.use '/', index
+app.use '/lab', labtory
+app.use '/articles', articles
 
 app.use (req, res, next) ->
     err = new Error 'Not Found'

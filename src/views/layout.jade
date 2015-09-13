@@ -24,6 +24,37 @@ html(lang="zh-CN")
                                 a(href= "/photo") photo
                             li  
                                 a(href= "/lab") labtory
+                    div.authorize
+                        if user
+                            p Welcome, ${user.name}
+                            button#profile Profile
+                            button#logout Logout
+                        else
+                            button#login Login
+                    div#register
+                        div.input-group
+                            span.input-group-addon#addon-1 username
+                            input(type="text", name="name", aria-describedby="addon-1")
+                        div.input-group
+                            span.input-group-addon#addon-2 password
+                            input(type="text", name="password", aria-describedby="addon-2")
+                        div.input-group
+                            span.input-group-addon#addon-3 confirm password
+                            input(type="text", name="confirm-password", aria-describedby="addon-3")
+                        div.input-group
+                            span.input-group-addon#addon-4 email 
+                            input(type="text", aria-describedby="addon-4")
+                        div.input-group
+                            span.input-group-addon#addon-5 signature
+                            input(type="text", aria-describedby="addon-5")
+                        div.input-group
+                            span.input-group-addon#addon-6 qq
+                            input(type="text", aria-describedby="addon-6")
+                        div.input-group
+                            span.input-group-addon#addon-7 birthday
+                            input(type="text", aria-describedby="addon-7")
+                        button#register-submit Register
+
         div#main-content
             block content
         footer(id= "footer")

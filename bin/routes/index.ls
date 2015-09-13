@@ -6,7 +6,7 @@ has-login = require('./authorization/authorize').has-login;
 router = express.Router!
 
 router.get '/', (req, res)!->
-    res.render 'index'
+    res.render 'index', user: req.session.user
 
 router.post '/login', has-login, (req, res)!->
     username = req.body.username
@@ -22,7 +22,7 @@ router.post '/login', has-login, (req, res)!->
                     res.send 'Error password!'
                 else
                     res.session.user = user._id
-                    res.go '/'
+                    res.send 'success'
 
 
 router.get '/logout', require-login, (req, res)!->

@@ -19,7 +19,7 @@ User = mongoose.model 'User', User-schema
 
 User.register = (name, password, email, signature, qq, birthday, callback)!->
     salt = bcrypt.gen-salt-sync(10)
-    hash = bcrypt.has-sync(password, salt) 
+    hash = bcrypt.has-sync(password, salt)
     newUser = {
         name: name,
         password: hash,

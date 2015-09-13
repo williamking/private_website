@@ -7,7 +7,9 @@
   hasLogin = require('./authorization/authorize').hasLogin;
   router = express.Router();
   router.get('/', function(req, res){
-    res.render('index');
+    res.render('index', {
+      user: req.session.user
+    });
   });
   router.post('/login', hasLogin, function(req, res){
     var username, password;
@@ -26,7 +28,7 @@
             res.send('Error password!');
           } else {
             res.session.user = user._id;
-            res.go('/');
+            res.send('success');
           }
         }
       }

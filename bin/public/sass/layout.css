@@ -20,6 +20,12 @@ body {
       float: right; }
       body header#head nav#navigator ul.nav.navbar-nav li {
         margin-left: 30px; }
+    body header#head nav#navigator #register {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 2;
+      background-color: #eeeeee; }
   body #main-content {
     background-color: white;
     margin: 0 auto;

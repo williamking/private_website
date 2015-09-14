@@ -31,7 +31,12 @@ html(lang="zh-CN")
                             button#logout Logout
                         else
                             button#login Login
-                    div#register
+                    div#register.extent-animate
+                        header#register-header
+                            h4 Register
+                            button.close
+                                span(aria-hideen="true") x
+                            div.hz-line
                         div.input-group
                             span.input-group-addon#addon-1 username
                             input(type="text", name="name", aria-describedby="addon-1")
@@ -53,7 +58,10 @@ html(lang="zh-CN")
                         div.input-group
                             span.input-group-addon#addon-7 birthday
                             input(type="text", aria-describedby="addon-7")
-                        button#register-submit Register
+                        div.hz-line
+                        div.submit-buttons
+                            button#register-submit.btn.btn-success Register
+                            button.submit-cancel.btn.btn-default Cancel 
 
         div#main-content
             block content

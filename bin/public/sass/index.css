@@ -1,9 +1,10 @@
 .hz-line {
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   height: 1px;
   background-color: #38a7db;
-  z-index: -1; }
+  z-index: -1;
+  margin-bottom: 10px; }
 
 #index-main {
   height: 800px; }

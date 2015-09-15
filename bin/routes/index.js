@@ -32,11 +32,13 @@
           }
         }
       }
+      res.end();
     });
   });
   router.get('/logout', requireLogin, function(req, res){
     res.session.user = null;
-    res.go('/');
+    res.send('success');
+    res.end();
   });
   router.post('/reg', hasLogin, function(req, res){
     return User.register(req.body.username, req.body.password, req.body.email, req.body.signature, req.body.qq, req.body.birthday, function(err, user){

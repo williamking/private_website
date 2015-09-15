@@ -23,11 +23,13 @@ router.post '/login', has-login, (req, res)!->
                 else
                     res.session.user = user._id
                     res.send 'success'
+        res.end!
 
 
 router.get '/logout', require-login, (req, res)!->
     res.session.user = null
-    res.go '/'
+    res.send 'success'
+    res.end!
 
 router.post '/reg', has-login, (req, res)->
    User.register req.body.username, req.body.password, req.body.email, req.body.signature, req.body.qq, req.body.birthday, (err, user)!->

@@ -106,12 +106,51 @@ div#drawing-canvas canvas#canvas {
   to {
     opacity: default; } }
 
-.extent-animate {
+.extent-in-animate {
   animation: extent-in 0.5s forwards;
   -webkit-animation: extent-in 0.5s forwards; }
-  .extent-animate * {
+  .extent-in-animate * {
     animation: fade-in 0.5s forwards;
     -webkit-animation: fade-in 0.5s forwards; }
+
+@-webkit-keyframes extent-out {
+  from {
+    width: 500px;
+    height: default; }
+
+  to {
+    width: 0px;
+    height: 0px; } }
+
+@keyframes extent-out {
+  from {
+    width: 500px;
+    height: default; }
+
+  to {
+    width: 0px;
+    height: 0px; } }
+
+@keyframes fade-out {
+  from {
+    opacity: default; }
+
+  to {
+    opacity: 0; } }
+
+@-webkit-keyframes fade-out {
+  from {
+    opacity: default; }
+
+  to {
+    opacity: 0; } }
+
+.extent-out-animate {
+  animation: extent-out 0.5s forwards;
+  -webkit-animation: extent-out 0.5s forwards; }
+  .extent-out-animate * {
+    animation: fade-out 0.5s forwards;
+    -webkit-animation: fade-out 0.5s forwards; }
 
 body {
   background-color: #d8d8d8 !important;
@@ -135,6 +174,77 @@ body {
       float: right; }
       body header#head nav#navigator ul.nav.navbar-nav li {
         margin-left: 30px; }
+    body header#head nav#navigator .authorize {
+      display: inline-block;
+      float: right;
+      position: relative;
+      left: 40%;
+      padding-top: 5px; }
+      body header#head nav#navigator .authorize button {
+        margin-left: 5px;
+        width: 80px; }
+    body header#head nav#navigator #authorize-message {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      border-width: 1px;
+      margin-left: -12.5%;
+      margin-top: -12.5%;
+      width: 500px;
+      padding: 10px;
+      z-index: 2;
+      background-color: white;
+      transition: 1s; }
+      body header#head nav#navigator #authorize-message header {
+        margin: 0 auto;
+        width: 90%; }
+        body header#head nav#navigator #authorize-message header h4 {
+          display: inline-block;
+          color: #3388ff; }
+        body header#head nav#navigator #authorize-message header button {
+          float: right; }
+      body header#head nav#navigator #authorize-message #message-content {
+        width: 60%;
+        margin: 0 auto; }
+        body header#head nav#navigator #authorize-message #message-content * {
+          margin: 5px auto; }
+        body header#head nav#navigator #authorize-message #message-content p {
+          text-align: center; }
+        body header#head nav#navigator #authorize-message #message-content button {
+          margin-left: 42%; }
+    body header#head nav#navigator .submit-buttons button {
+      float: right;
+      margin-right: 10px; }
+    body header#head nav#navigator .input-group {
+      margin-left: 10%;
+      margin-bottom: 10px;
+      width: 60%; }
+    body header#head nav#navigator #login {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      border-width: 1px;
+      margin-left: -12.5%;
+      margin-top: -12.5%;
+      width: 500px;
+      padding: 10px;
+      z-index: 2;
+      background-color: white;
+      transition: 1s; }
+      body header#head nav#navigator #login #login-header {
+        margin: 0 auto;
+        width: 90%; }
+        body header#head nav#navigator #login #login-header h4 {
+          display: inline-block;
+          color: #3388ff; }
+        body header#head nav#navigator #login #login-header button {
+          float: right; }
     body header#head nav#navigator #register {
       position: fixed;
       left: 50%;
@@ -146,7 +256,6 @@ body {
       margin-left: -12.5%;
       margin-top: -12.5%;
       width: 500px;
-      height: 50%;
       padding: 10px;
       z-index: 2;
       background-color: white;
@@ -159,13 +268,6 @@ body {
           color: #3388ff; }
         body header#head nav#navigator #register #register-header button {
           float: right; }
-      body header#head nav#navigator #register .input-group {
-        margin-left: 10%;
-        margin-bottom: 10px;
-        width: 60%; }
-      body header#head nav#navigator #register .submit-buttons button {
-        float: right;
-        margin-right: 10px; }
   body #main-content {
     background-color: white;
     margin: 0 auto;

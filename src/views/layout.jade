@@ -15,6 +15,14 @@ html(lang="zh-CN")
                         span.navbar-brand
                             |Navigator
                     div.collapse.navbar-collapse
+                        div.authorize
+                            if user
+                                p Welcome, ${user.name}
+                                button#profile-button.btn.btn-info Profile
+                                button#logout-button.btn.btn-warning Logout
+                            else
+                                button#login-button.btn.btn-primary Login
+                                button#register-button.btn.btn-success Register
                         ul.nav.navbar-nav
                             li  
                                 a(href= "/") index
@@ -24,22 +32,43 @@ html(lang="zh-CN")
                                 a(href= "/photo") photo
                             li  
                                 a(href= "/lab") labtory
-                    div.authorize
-                        if user
-                            p Welcome, ${user.name}
-                            button#profile Profile
-                            button#logout Logout
-                        else
-                            button#login Login
-                    div#register.extent-animate
+
+                    div#authorize-message.animate.invisible
+                        header
+                            h4 Message
+                            button.close
+                                span(aria-hidden="true") x
+                        div.hz-line
+                        div#message-content
+                            p XXX
+                            button.btn.btn-promary OK
+
+                    div#login.invisible
+                        header#login-header
+                            h4 Login
+                            button.close
+                                span(aria-hidden="true") x
+                        div.hz-line
+                        div.input-group
+                            span.input-group-addon#addon-login-1 username
+                            input(type="text", name="username", aria-describedby="addon-login-1")
+                        div.input-group
+                            span.input-group-addon#addon-login-2 password
+                            input(type="text", name="password", aria-describedby="addon-login-2")
+                        div.hz-line
+                        div.submit-buttons
+                            button#login-submit.btn.btn-success Login
+                            button#login-cancel.btn.btn-default Cancel
+                                   
+                    div#register.invisible
                         header#register-header
                             h4 Register
                             button.close
                                 span(aria-hideen="true") x
-                            div.hz-line
+                        div.hz-line
                         div.input-group
                             span.input-group-addon#addon-1 username
-                            input(type="text", name="name", aria-describedby="addon-1")
+                            input(type="text", name="username", aria-describedby="addon-1")
                         div.input-group
                             span.input-group-addon#addon-2 password
                             input(type="text", name="password", aria-describedby="addon-2")
@@ -48,20 +77,20 @@ html(lang="zh-CN")
                             input(type="text", name="confirm-password", aria-describedby="addon-3")
                         div.input-group
                             span.input-group-addon#addon-4 email 
-                            input(type="text", aria-describedby="addon-4")
+                            input(type="text", name="email", aria-describedby="addon-4")
                         div.input-group
                             span.input-group-addon#addon-5 signature
-                            input(type="text", aria-describedby="addon-5")
+                            input(type="text", name="input-group", aria-describedby="addon-5")
                         div.input-group
                             span.input-group-addon#addon-6 qq
-                            input(type="text", aria-describedby="addon-6")
+                            input(type="text", name="qq", aria-describedby="addon-6")
                         div.input-group
                             span.input-group-addon#addon-7 birthday
-                            input(type="text", aria-describedby="addon-7")
+                            input(type="text", name="birthday", aria-describedby="addon-7")
                         div.hz-line
                         div.submit-buttons
                             button#register-submit.btn.btn-success Register
-                            button.submit-cancel.btn.btn-default Cancel 
+                            button#submit-cancel.btn.btn-default Cancel 
 
         div#main-content
             block content

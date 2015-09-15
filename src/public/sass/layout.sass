@@ -1,3 +1,4 @@
+//mixins
 @mixin modal
     position: fixed
     left: 50%
@@ -9,11 +10,21 @@
     margin-left: -12.5%
     margin-top: -12.5%
     width: 500px
-    height: 50%
     padding: 10px
     z-index: 2
     background-color: white
     transition: 1s
+
+@mixin modal-header
+    margin: 0 auto
+    width: 90%
+    h4
+        display: inline-block
+        color: #38f
+    button
+        float: right
+
+//animate
 
 @-webkit-keyframes extent-in
     from
@@ -42,13 +53,48 @@
     to
         opacity: default
 
-.extent-animate
+//global classes
+
+.extent-in-animate
     animation: extent-in 0.5s forwards
     -webkit-animation: extent-in 0.5s forwards
     *
         animation: fade-in 0.5s forwards
         -webkit-animation: fade-in 0.5s forwards
-        
+
+@-webkit-keyframes extent-out
+    from
+        width: 500px
+        height: default
+    to
+        width: 0px
+        height: 0px
+@keyframes extent-out
+    from
+        width: 500px
+        height: default
+    to
+        width: 0px
+        height: 0px
+
+@keyframes fade-out
+    from
+        opacity: default
+    to
+        opacity: 0
+
+@-webkit-keyframes fade-out
+    from
+        opacity: default
+    to
+        opacity: 0
+
+.extent-out-animate
+    animation: extent-out 0.5s forwards
+    -webkit-animation: extent-out 0.5s forwards
+    *
+        animation: fade-out 0.5s forwards
+        -webkit-animation: fade-out 0.5s forwards
 
 body
     //background: url("../images/layouts/body-background.jpg")
@@ -76,24 +122,49 @@ body
                 float: right
                 li
                     margin-left: 30px
+            .authorize
+                display: inline-block
+                float: right
+                position: relative
+                left: 40%
+                padding-top: 5px
+                button
+                    margin-left: 5px
+                    width: 80px
+
+            #authorize-message
+                @include modal
+                header
+                    @include modal-header
+                #message-content
+                    width: 60%
+                    margin: 0 auto
+                    *
+                        margin: 5px auto
+                    p
+                        text-align: center
+                    button
+                        margin-left: 42%
+
+            .submit-buttons
+                button
+                    float: right
+                    margin-right: 10px
+                        
+            .input-group
+                margin-left: 10%
+                margin-bottom: 10px
+                width: 60%
+
+            #login
+                @include modal
+                #login-header
+                    @include modal-header
+
             #register
                 @include modal
                 #register-header
-                    margin: 0 auto
-                    width: 90%
-                    h4
-                        display: inline-block
-                        color: #38f
-                    button
-                        float: right
-                .input-group
-                    margin-left: 10%
-                    margin-bottom: 10px
-                    width: 60%
-                .submit-buttons
-                    button
-                        float: right
-                        margin-right: 10px
+                    @include modal-header
 
     #main-content
         background-color: #FFF

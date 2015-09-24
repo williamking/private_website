@@ -1,0 +1,14 @@
+header#drawing-header {
+  margin: 0 auto;
+  width: 60%; }
+  header#drawing-header h1 {
+    text-align: center; }
+
+div#drawing-canvas canvas#canvas {
+  margin: 10%;
+  background: #ffffff;
+  border: thin inset #aaaaaa;
+  width: 80%;
+  height: 50%; }
+
+/*# sourceMappingURL=drawing.css.map */

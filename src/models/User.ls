@@ -1,4 +1,4 @@
-require ['mongoose', 'bcrypt']
+require! ['mongoose', 'bcrypt']
 
 User-schema = new mongoose.Schema {
     name: String,
@@ -8,13 +8,14 @@ User-schema = new mongoose.Schema {
     qq: String,
     birthday: Date,
     hobbies: [String]
+    type: {type: String, default: 'visitor'}
 }
 
 User = mongoose.model 'User', User-schema
 
 ###
-* Update the information of user
-* Type is the part of info you want to update
+#* Update the information of user
+#* Type is the part of info you want to update
 ###
 
 User.register = (name, password, email, signature, qq, birthday, callback)!->

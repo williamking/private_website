@@ -6,14 +6,20 @@
     if (req.session.user) {
       next();
     } else {
-      res.go('/login');
+      res.json({
+        result: 'failed',
+        msg: 'Login required'
+      });
     }
   };
   authorizor.hasLogin = function(req, res, next){
     if (!req.session.user) {
       next();
     } else {
-      res.go('/');
+      res.json({
+        result: 'failed',
+        msg: 'You haved logined!'
+      });
     }
   };
 }).call(this);

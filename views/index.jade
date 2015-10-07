@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    div#main
+        div#block-left
+            div#articles
+                header My recent articles
+                ul
+                    -for article in list {
+                        li #{article.title} created at #{article.time} 
+                    }
+            div#lab
+        div#block-right

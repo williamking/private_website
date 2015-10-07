@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        div(id= "banner")
+            h1= title
+        div(id= "guidence")
+            a(href= "/") index
+            a(href= "/dinary") dinary
+            a(href= "/photo") photo
+        block content
+    footer
+        p (c)Written by William.D.King

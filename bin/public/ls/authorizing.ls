@@ -90,5 +90,3 @@ $ !->
             error: (req)!->
                 alert-message req.status + ' ' + req.responseText
         }
-
-

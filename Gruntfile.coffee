@@ -14,7 +14,7 @@ module.exports = (grunt)->
           files: [
             expand: true,
             cwd: 'src',
-            src: ['**/*.*', '!**/**.{sass, ls}', '!*.{sass, ls}'],
+            src: ['**/*.*', '!**/*.{sass, ls}', '!*.{sass, ls}'],
             dest: 'bin/'
           ]
 
@@ -55,14 +55,25 @@ module.exports = (grunt)->
       	  options:
       	    spawn: false
           files: [
-              'src/*.sass'
-              'src/*.ls'
-              'src/**/*.ls'
-              'src/**/*.sass'
+              'src/routes/*.ls'
               'src/app.ls'
-              'src/views/*.jade'
           ]
-          tasks: ['livescript', 'sass', 'copy', 'concat', 'express']
+          tasks: ['livescript', 'copy', 'concat', 'express']
+        compile2:
+            options:
+                spwan: false
+            files: [
+                'src/public/ls/*.ls'
+                'src/public/sass/*.sass'
+            ]
+            tasks: ['livescript', 'sass', 'concat']
+        compile3:
+            options:
+                spwan: false
+            files: [
+                'src/views/*.jade'
+            ]
+            tasks: ['copy', 'concat']    
 
       express:
         dev:

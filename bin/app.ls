@@ -2,7 +2,7 @@
 #* import the pakages needed
 ###
 
-require! {express, http, path, 'cookie-parser', 'body-parser', mongoose, 'express-session'}
+require! {express, http, path, 'cookie-parser', 'body-parser', mongoose, 'express-session', moment}
 db = require './db.js'
 logger = require 'morgan'
 favicon = require 'static-favicon'
@@ -29,6 +29,7 @@ articles = require './routes/articles'
 #* use modules
 ###
 
+app.locals.moment = moment
 app.use favicon!
 app.use logger 'dev'
 app.use bodyParser.json!

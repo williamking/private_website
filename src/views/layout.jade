@@ -17,7 +17,7 @@ html(lang="zh-CN")
                     div.collapse.navbar-collapse
                         div.authorize
                             if user
-                                p Welcome, ${user.name}
+                                p Welcome, #{username}
                                 button#profile-button.btn.btn-info Profile
                                 button#logout-button.btn.btn-warning Logout
                             else
@@ -27,7 +27,7 @@ html(lang="zh-CN")
                             li  
                                 a(href= "/") index
                             li 
-                                a(href= "/article") article
+                                a(href= "/articles") article
                             li 
                                 a(href= "/photo") photo
                             li  
@@ -54,7 +54,7 @@ html(lang="zh-CN")
                             input#login-username(type="text", name="username", aria-describedby="addon-login-1")
                         div.input-group
                             span.input-group-addon#addon-login-2 password
-                            input(type="text", name="password", aria-describedby="addon-login-2")
+                            input(type="password", name="password", aria-describedby="addon-login-2")
                         div.hz-line
                         div.submit-buttons
                             button#login-submit.btn.btn-success Login
@@ -71,22 +71,22 @@ html(lang="zh-CN")
                             input(type="text", name="username", aria-describedby="addon-1")
                         div.input-group
                             span.input-group-addon#addon-2 password
-                            input(type="text", name="password", aria-describedby="addon-2")
+                            input(type="password", name="password", aria-describedby="addon-2")
                         div.input-group
                             span.input-group-addon#addon-3 confirm password
-                            input(type="text", name="confirm-password", aria-describedby="addon-3")
+                            input(type="password", name="confirm-password", aria-describedby="addon-3")
                         div.input-group
                             span.input-group-addon#addon-4 email 
                             input(type="text", name="email", aria-describedby="addon-4")
                         div.input-group
                             span.input-group-addon#addon-5 signature
-                            input(type="text", name="input-group", aria-describedby="addon-5")
+                            input(type="text", name="signature", aria-describedby="addon-5")
                         div.input-group
                             span.input-group-addon#addon-6 qq
                             input(type="text", name="qq", aria-describedby="addon-6")
                         div.input-group
                             span.input-group-addon#addon-7 birthday
-                            input(type="text", name="birthday", aria-describedby="addon-7")
+                            input(type="date", name="birthday", aria-describedby="addon-7")
                         div.hz-line
                         div.submit-buttons
                             button#register-submit.btn.btn-success Register

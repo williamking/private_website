@@ -1,15 +1,21 @@
-require ['mongoose']
+require! ['mongoose']
 
-Object-id = Schema.Types.Object-id
+Object-id = mongoose.Schema.Types.Object-id
 
 Article-schema = new mongoose.Schema {
     title: {
         type: 'String',
         required: true
     },
-    create-at: Date,
-    author: Object-id,
-    last-edit-at: Date,
+    create-at: { type: Date, default: Date.now }
+    author: {
+        _id: {
+            type: Object-id,
+            ref: 'User'
+        },
+        name: String
+    }
+    last-edit-at: { type: Date, default: Date.now }
     content: String,
     category: [String],
     secret: Boolean,
@@ -19,20 +25,18 @@ Article-schema = new mongoose.Schema {
     },
     comments: [{
         content: String,
-        commentor: {type: Object-id, ref= 'User'},
-        reply-to: {type: Object-id, ref= 'User'},
+        commentor: {type: Object-id, ref: 'User'},
+        reply-to: {type: Object-id, ref: 'User'},
         comment-at: Date
     }]
 }
 
-Article-model = mongoose.model 'Article', Article-model
+Article-model = mongoose.model 'Article', Article-schema
 
 Article-model.create-article = (title, content, author, category, secret, secret-password, callback)!->
     article = new Article-model {
         title: title,
-        create-at: new Date(),
         author: author,
-        last-edit-at: new Date(),
         content: content,
         secret: secret,
         secret-password: secret-password,
@@ -40,8 +44,11 @@ Article-model.create-article = (title, content, author, category, secret, secret
     }
     article.save callback
 
-Article-model.find-All = (author, callback)!->
-    Article-model.find {author} .sort {'create-at': 1} .exec callback
+Article-model.find-index = (callback)!->
+    Article-model.find {} .sort {'create-at': 1} .select('title author createAt').exec callback
+
+Article-model.find-by-id (id, callback)!->
+    Article-model.find-one {_id: id} .exec callback
 
 Article-model.find-by-category = (author, category, callback)!->
     Article-model.find {'category': category, 'author': author} .sort {'create-at': 1} .exec callback

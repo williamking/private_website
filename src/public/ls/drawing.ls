@@ -127,10 +127,14 @@ $ ->
                 this.rubberband-rect.top = loc.y
 
         drawing-frame.prototype.draw-rubberband-shape = (loc)!->
+            this.context.save!
             this.context.begin-path!
             this.context.move-to this.mousedown.x, this.mousedown.y
+            if (this.mode is 'dashedline')
+                this.context.set-line-dash [2, 2]
             this.context.line-to loc.x, loc.y
             this.context.stroke!
+            this.context.restore!
 
         drawing-frame.prototype.update-rubberband = (loc)!->
             this.update-rubberband-rectangle loc
@@ -152,7 +156,7 @@ $ ->
 
         drawing-frame.prototype.draw-guide-wires = (x, y)!->
             this.context.save!
-            this.context.stroke-style = 'rgba(0, 0, 230, 0.4)'
+            this.context.stroke-style = 'rgba(255, 0, 0, 1)'
             this.context.line-width = 0.5
             this.draw-vertical-line x
             this.draw-horizonal-line y
@@ -367,13 +371,15 @@ $ ->
         iFrame.addButton "grid", false, !->
             i-frame.mode = 'grid'
             i-frame.draw-grid 'lightgray', 10, 10
+        iFrame.addButton "dashedline", false, !->
+            i-frame.mode = 'dashedline'
 
         i-frame.update-buttons!
 
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mousedown', (e, loc)!->
 
-            if i-frame.mode is 'line' then
+            if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
                 i-frame.save-drawing-surface!
             i-frame.mousedown.x = loc.x
             i-frame.mousedown.y = loc.y
@@ -386,7 +392,7 @@ $ ->
         iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
         iFrame.height, 'mousemove', (e, loc)!->
 
-            if i-frame.dragging and i-frame.mode == 'line' then
+            if i-frame.dragging and (i-frame.mode == 'line' or i-frame.mode == 'dashedline') then
                 i-frame.restore-drawing-surface!
                 i-frame.update-rubberband loc
 
@@ -410,7 +416,7 @@ $ ->
         iFrame.height, 'mouseup', (e, loc)!->
 
             if not i-frame.dragging then return
-            if i-frame.mode is 'line' then
+            if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
                 i-frame.restore-drawing-surface!
                 i-frame.update-rubberband loc
 

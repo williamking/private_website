@@ -9,17 +9,21 @@
   router = express.Router();
   router.get('/', function(req, res){
     res.render('index', {
-      user: req.session.user
+      user: req.session.user,
+      username: req.session.username
     });
   });
   router.post('/login', hasLogin, function(req, res){
-    var username, password;
+    var username, password, salt, hash;
     username = req.body.username;
     password = req.body.password;
+    console.log(password);
+    salt = bcrypt.genSaltSync(10);
+    hash = bcrypt.hashSync(password, salt);
+    console.log(salt);
     User.findOne({
       'name': username
     }, function(err, user){
-      console.log(err);
       if (err) {
         res.status(500).send('Server error');
         res.end();
@@ -32,17 +36,20 @@
           });
           return;
         } else {
-          if (!bcrypt(password, user.password)) {
+          console.log(user.password);
+          if (!bcrypt.compareSync(password, user.password)) {
             res.json({
               result: 'Error',
-              'Error password!': 'Error password!'
+              msg: 'Wrong password!'
             });
             return;
           } else {
-            res.session.user = user._id;
-            res.session.type = user.type;
+            req.session.user = user._id;
+            req.session.username = user.name;
+            req.session.type = user.type;
             res.json({
-              result: 'Success'
+              result: 'Success',
+              msg: ''
             });
             return;
           }
@@ -51,20 +58,26 @@
     });
   });
   router.get('/logout', requireLogin, function(req, res){
-    res.session.user = null;
-    res.seesion.type = null;
+    req.session.user = null;
+    req.session.type = null;
     res.json({
-      result: 'sucess'
+      result: 'Success',
+      msg: ""
     });
-    res.end();
   });
   router.post('/reg', hasLogin, function(req, res){
-    return User.register(req.body.username, req.body.password, req.body.email, req.body.signature, req.body.qq, req.body.birthday, function(err, user){
+    return User.register(req.body.username, req.body.password, req.body.type, req.body.email, req.body.signature, req.body.qq, req.body.birthday, function(err, user){
       if (err) {
-        res.send('Reg error!');
+        res.status(500).send(err.message);
+        console.log(err);
+        res.end();
       } else {
-        res.session.user = user._id;
-        res.go('/');
+        req.session.user = user._id;
+        req.session.username = user.name;
+        req.session.type = user.type;
+        res.json({
+          result: 'success'
+        });
       }
     });
   });

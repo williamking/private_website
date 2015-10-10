@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    div#main
+        h1 #{article.title}
+        div#article-main
+            !{article.content}
+        footer
+            p #{article.author.name} on #{moment(article.createAt).format('YY-MM-D')}

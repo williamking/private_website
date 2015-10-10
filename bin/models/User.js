@@ -4,9 +4,25 @@
   mongoose = require('mongoose');
   bcrypt = require('bcrypt');
   UserSchema = new mongoose.Schema({
-    name: String,
+    name: {
+      type: String,
+      validate: {
+        validator: function(name){
+          return /^[a-zA-Z0-9]{4,}$/.test(name);
+        },
+        message: 'The length of username should be at least 4!'
+      }
+    },
     password: String,
-    email: String,
+    email: {
+      type: String,
+      validate: {
+        validator: function(email){
+          return /^([a-zA-Z0-9\u4e00-\u9fa5]+[_|\_|\.-]?)*[a-zA-Z0-9\u4e00-\u9fa5]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(email);
+        },
+        message: 'Invalid form of email.'
+      }
+    },
     signature: String,
     qq: String,
     birthday: Date,
@@ -17,19 +33,32 @@
     }
   });
   User = mongoose.model('User', UserSchema);
-  User.register = function(name, password, email, signature, qq, birthday, callback){
-    var salt, hash, newUser;
-    salt = bcrypt.genSaltSync(10);
-    hash = bcrypt.hasSync(password, salt);
-    newUser = {
-      name: name,
-      password: hash,
-      email: email,
-      signature: signature,
-      qq: qq,
-      birthday: birthday
-    };
-    User.create(newUser, callback);
+  User.register = function(name, password, type, email, signature, qq, birthday, callback){
+    User.findOne({
+      name: name
+    }, function(err, user){
+      var salt, hash, newUser;
+      if (user) {
+        return callback({
+          message: 'Dulplicated username'
+        });
+      }
+      salt = bcrypt.genSaltSync(10);
+      hash = bcrypt.hashSync(password, salt);
+      console.log('2');
+      newUser = {
+        name: name,
+        password: hash,
+        type: type,
+        email: email,
+        signature: signature,
+        qq: qq,
+        birthday: birthday,
+        hobbies: []
+      };
+      console.log(newUser);
+      return User.create(newUser, callback);
+    });
   };
   User.changeInfo = function(userId, value, type, callback){
     User.findOne({

@@ -3,6 +3,7 @@
   var authorizor;
   authorizor = exports;
   authorizor.requireLogin = function(req, res, next){
+    console.log(req.session.user);
     if (req.session.user) {
       next();
     } else {

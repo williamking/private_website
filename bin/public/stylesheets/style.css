@@ -184,7 +184,7 @@ body {
         margin-left: 5px;
         width: 80px; }
     body header#head nav#navigator #authorize-message {
-      z-index: 3 !important;
+      z-index: 1000 !important;
       position: fixed;
       left: 50%;
       top: 50%;

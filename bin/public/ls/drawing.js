@@ -109,10 +109,15 @@
         }
       };
       drawingFrame.prototype.drawRubberbandShape = function(loc){
+        this.context.save();
         this.context.beginPath();
         this.context.moveTo(this.mousedown.x, this.mousedown.y);
+        if (this.mode === 'dashedline') {
+          this.context.setLineDash([2, 2]);
+        }
         this.context.lineTo(loc.x, loc.y);
         this.context.stroke();
+        this.context.restore();
       };
       drawingFrame.prototype.updateRubberband = function(loc){
         this.updateRubberbandRectangle(loc);
@@ -133,7 +138,7 @@
       };
       drawingFrame.prototype.drawGuideWires = function(x, y){
         this.context.save();
-        this.context.strokeStyle = 'rgba(0, 0, 230, 0.4)';
+        this.context.strokeStyle = 'rgba(255, 0, 0, 1)';
         this.context.lineWidth = 0.5;
         this.drawVerticalLine(x);
         this.drawHorizonalLine(y);
@@ -333,9 +338,12 @@
         iFrame.mode = 'grid';
         iFrame.drawGrid('lightgray', 10, 10);
       });
+      iFrame.addButton("dashedline", false, function(){
+        iFrame.mode = 'dashedline';
+      });
       iFrame.updateButtons();
       iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousedown', function(e, loc){
-        if (iFrame.mode === 'line') {
+        if (iFrame.mode === 'line' || iFrame.mode === 'dashedline') {
           iFrame.saveDrawingSurface();
         }
         iFrame.mousedown.x = loc.x;
@@ -347,7 +355,7 @@
         }
       });
       iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousemove', function(e, loc){
-        if (iFrame.dragging && iFrame.mode === 'line') {
+        if (iFrame.dragging && (iFrame.mode === 'line' || iFrame.mode === 'dashedline')) {
           iFrame.restoreDrawingSurface();
           iFrame.updateRubberband(loc);
           if (iFrame.guidewires) {
@@ -374,7 +382,7 @@
         if (!iFrame.dragging) {
           return;
         }
-        if (iFrame.mode === 'line') {
+        if (iFrame.mode === 'line' || iFrame.mode === 'dashedline') {
           iFrame.restoreDrawingSurface();
           iFrame.updateRubberband(loc);
         }

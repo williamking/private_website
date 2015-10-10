@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    div#main
+        header
+            h1 文章列表
+            button.btn.btn-default
+                a(href="/articles/create") 创建新文章
+            div.hz-hize
+        div#article-list
+            if index
+                each article in index
+                    div.article
+                        h2
+                            a(href="/articles/#{article._id}") #{article.title}
+                        - var time = moment(article.createAt).format('MMM-D-YY')
+                        p Created at #{time}
+            else
+                p 还没有任何文章哦

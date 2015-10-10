@@ -57,7 +57,7 @@
         this.context = canvas[0].getContext('2d');
         this.listener = new canvasListener(canvas);
         this.originX = 0;
-        this.originY = 40;
+        this.originY = 50;
         this.height = canvas[0].height - this.originY;
         this.width = canvas[0].width - this.originX;
         this.buttons = [];
@@ -66,8 +66,8 @@
         this.BUTTON_SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)';
         this.BUTTON_SHADOW_OFFSET = 1;
         this.BUTTON_SHADOW_BLUR = 2;
-        this.BUTTON_HEIGHT = 20;
-        this.BUTTON_WIDTH = 80;
+        this.BUTTON_HEIGHT = 30;
+        this.BUTTON_WIDTH = 30;
         this.SELECT_BUTTON_SHADOW_OFFSET = 4;
         this.SELECT_BUTTON_SHADOW_BLUR = 5;
         this.BUTTON_BACKGROUND_STYLE = '#eeeeee';
@@ -184,7 +184,7 @@
         this.context.rect(this.originX, this.originY, this.width, this.height);
         this.context.fill();
       };
-      drawingFrame.prototype.addButton = function(text, isOn, callback){
+      drawingFrame.prototype.addButton = function(text, isOn, banner, callback){
         var x, newButton, buttonFunc;
         x = (this.BUTTON_WIDTH + this.BUTTON_MARGIN) * this.numOfButtons;
         this.context.shadowOffsetX = this.context.shadowOffsetY = 0;
@@ -197,6 +197,7 @@
           isOn: isOn,
           originX: x + 10,
           originY: 10,
+          banner: banner,
           callback: callback
         };
         this.buttons.push(newButton);
@@ -214,8 +215,8 @@
             button.callback();
           };
         };
-        newButton.func = buttonFunc;
-        this.listener.addEvent(x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', buttonFunc(newButton, this));
+        newButton.func = buttonFunc(newButton, this);
+        this.listener.addEvent(x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', newButton.func, this);
       };
       drawingFrame.prototype.updateButtons = function(){
         var i$, ref$, len$, button, results$ = [];
@@ -235,9 +236,9 @@
           }
           this.context.fillRect(button.originX, button.originY, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
           this.context.strokeRect(button.originX, button.originY, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
-          this.context.strokeStyle = '#ff0000';
+          this.context.strokeStyle = 'black';
           this.context.font = '15pt Arial';
-          this.context.strokeText(button.name, button.originX + 10, button.originY + 15);
+          button.banner(this);
           results$.push(this.context.restore());
         }
         return results$;
@@ -324,21 +325,61 @@
       };
       iFrame = new drawingFrame();
       iFrame.drawBounding();
-      iFrame.addButton("eraser", false, function(){
+      iFrame.addButton("eraser", false, function(frame){
+        var width, originX, originY;
+        width = frame.BUTTON_WIDTH;
+        originX = this.originX + width / 2;
+        originY = this.originY + width / 2;
+        frame.context.beginPath();
+        frame.context.arc(originX, originY, (width - 10) / 2, 0, Math.PI * 2, false);
+        frame.context.stroke();
+      }, function(){
         iFrame.mode = 'eraser';
         iFrame.saveDrawingSurface();
       });
-      iFrame.addButton("line", false, function(){
+      iFrame.addButton("line", false, function(frame){
+        frame.context.beginPath();
+        frame.context.moveTo(this.originX + 5, this.originY + 5);
+        frame.context.lineTo(this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH - 5);
+        frame.context.stroke();
+      }, function(){
         iFrame.mode = 'line';
       });
-      iFrame.addButton("pencil", false, function(){
+      iFrame.addButton("pencil", false, function(frame){
+        var width;
+        width = frame.BUTTON_WIDTH;
+        frame.context.beginPath();
+        frame.context.moveTo(this.originX + 5, this.originY + 5);
+        frame.context.quadraticCurveTo(this.originX + 10, this.originY + 40, this.originX + width - 10, this.originY + 10);
+        frame.context.quadraticCurveTo(this.originX + width - 10, this.originY + 10, this.originX + width - 5, this.originY + width - 5);
+        frame.context.stroke();
+      }, function(){
         iFrame.mode = 'pencil';
       });
-      iFrame.addButton("grid", false, function(){
+      iFrame.addButton("grid", false, function(frame){
+        var width;
+        width = frame.BUTTON_WIDTH;
+        frame.context.beginPath();
+        frame.context.moveTo(this.originX + 5, this.originY + 10);
+        frame.context.lineTo(this.originX + width - 5, this.originY + 10);
+        frame.context.moveTo(this.originX + 5, this.originY + width - 10);
+        frame.context.lineTo(this.originX + width - 5, this.originY + width - 10);
+        frame.context.moveTo(this.originX + 10, this.originY + 5);
+        frame.context.lineTo(this.originX + 10, this.originY + width - 5);
+        frame.context.moveTo(this.originX + width - 10, this.originY + 5);
+        frame.context.lineTo(this.originX + width - 10, this.originY + width - 5);
+        frame.context.stroke();
+      }, function(){
         iFrame.mode = 'grid';
         iFrame.drawGrid('lightgray', 10, 10);
       });
-      iFrame.addButton("dashedline", false, function(){
+      iFrame.addButton("dashedline", false, function(frame){
+        frame.context.setLineDash([2, 2]);
+        frame.context.beginPath();
+        frame.context.moveTo(this.originX + 5, this.originY + 5);
+        frame.context.lineTo(this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH - 5);
+        frame.context.stroke();
+      }, function(){
         iFrame.mode = 'dashedline';
       });
       iFrame.updateButtons();

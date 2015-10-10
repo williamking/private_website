@@ -62,7 +62,7 @@ $ ->
             this.listener = new canvas-listener canvas
             # Set the real drawing area
             this.originX = 0
-            this.originY = 40
+            this.originY = 50
             this.height = canvas[0].height - this.origin-y
             this.width =  canvas[0].width - this.origin-X
             # Set button attributes
@@ -72,8 +72,8 @@ $ ->
             this.BUTTON_SHADOW_COLOR = 'rgba(0, 0, 0, 0.7)'
             this.BUTTON_SHADOW_OFFSET = 1
             this.BUTTON_SHADOW_BLUR = 2
-            this.BUTTON_HEIGHT = 20
-            this.BUTTON_WIDTH = 80
+            this.BUTTON_HEIGHT = 30
+            this.BUTTON_WIDTH = 30
             this.SELECT_BUTTON_SHADOW_OFFSET = 4
             this.SELECT_BUTTON_SHADOW_BLUR = 5
             this.BUTTON_BACKGROUND_STYLE = '#eeeeee'
@@ -212,7 +212,7 @@ $ ->
 
         # Add the buttons
 
-        drawingFrame.prototype.addButton = (text, is-on, callback)!->
+        drawingFrame.prototype.addButton = (text, is-on, banner, callback)!->
 
             x = (this.BUTTON_WIDTH + this.BUTTON_MARGIN) * this.numOfButtons
 
@@ -228,6 +228,7 @@ $ ->
                 is-on: is-on
                 originX: x + 10
                 originY: 10
+                banner: banner
                 callback: callback
 
             this.buttons.push new-button
@@ -240,9 +241,9 @@ $ ->
                     frame.update-buttons!
                     button.callback!
 
-            new-button.func = button-func
+            new-button.func = button-func new-button, this
 
-            this.listener.add-event x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', button-func new-button, this
+            this.listener.add-event x + 10, 10, this.BUTTON_WIDTH, this.BUTTON_HEIGHT, 'click', new-button.func, this
 
         drawingFrame.prototype.update-buttons = ->
             this.context.clearRect 0, 0, this.width, this.originY
@@ -262,10 +263,11 @@ $ ->
                 this.context.fill-rect button.originX, button.origin-y, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
                 this.context.stroke-rect button.originX, button.origin-y, this.BUTTON_WIDTH, this.BUTTON_HEIGHT
 
-                this.context.stroke-style = '#ff0000'
+                this.context.stroke-style = 'black'
 
                 this.context.font = '15pt Arial'
-                this.context.stroke-text button.name, button.originX + 10, button.originY + 15
+                #this.context.stroke-text button.name, button.originX + 10, button.originY + 15
+                button.banner this
                 this.context.restore!
 
         # Draw the bound between buttons and painting area
@@ -361,17 +363,54 @@ $ ->
         # Run the frame
         iFrame = new drawingFrame!
         iFrame.draw-bounding!
-        iFrame.addButton "eraser", false, !->
+        iFrame.addButton "eraser", false, (frame)!->
+           width = frame.BUTTON_WIDTH
+           originX = this.originX + width / 2
+           originY = this.originY + width / 2
+           frame.context.begin-path!
+           frame.context.arc originX, originY, (width - 10) / 2, 0, Math.PI * 2, false
+           frame.context.stroke!
+        , !->
             i-frame.mode = 'eraser'
             i-frame.save-drawing-surface!
-        iFrame.addButton "line", false, !->
-            iFrame.mode = 'line'
-        iFrame.addButton "pencil", false, !->
+        iFrame.addButton "line", false, (frame)!->
+            frame.context.begin-path!
+            frame.context.move-to this.originX + 5, this.originY + 5
+            frame.context.line-to this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH- 5
+            frame.context.stroke!
+        , !->
+            i-frame.mode = 'line'
+        iFrame.addButton "pencil", false, (frame)!->
+            width = frame.BUTTON_WIDTH
+            frame.context.begin-path!
+            frame.context.move-to this.originX + 5, this.originY + 5
+            frame.context.quadratic-curve-to this.originX + 10, this.originY + 40, this.originX + width - 10, this.originY + 10
+            frame.context.quadratic-curve-to this.originX + width - 10, this.originY + 10, this.originX + width - 5, this.originY + width - 5
+            frame.context.stroke!
+        , !->
             i-frame.mode = 'pencil'
-        iFrame.addButton "grid", false, !->
+        iFrame.addButton "grid", false, (frame)!->
+            width = frame.BUTTON_WIDTH
+            frame.context.begin-path!
+            frame.context.move-to this.originX + 5, this.originY + 10
+            frame.context.line-to this.originX + width - 5, this.originY + 10
+            frame.context.move-to this.originX + 5, this.originY + width - 10
+            frame.context.line-to this.originX + width - 5, this.originY + width - 10
+            frame.context.move-to this.originX + 10, this.originY + 5
+            frame.context.line-to this.originX + 10, this.originY + width - 5
+            frame.context.move-to this.originX + width - 10, this.originY + 5
+            frame.context.line-to this.originX + width - 10, this.originY + width - 5
+            frame.context.stroke!
+        , !->
             i-frame.mode = 'grid'
             i-frame.draw-grid 'lightgray', 10, 10
-        iFrame.addButton "dashedline", false, !->
+        iFrame.addButton "dashedline", false, (frame)!->
+            frame.context.set-line-dash [2, 2]
+            frame.context.begin-path!
+            frame.context.move-to this.originX + 5, this.originY + 5
+            frame.context.line-to this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH- 5
+            frame.context.stroke!
+        , !->
             i-frame.mode = 'dashedline'
 
         i-frame.update-buttons!

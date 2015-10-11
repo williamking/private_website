@@ -34,14 +34,14 @@ $ ->
                 height  : height,
                 type    : type,
 
-            event-func = (obj, canvas, callback)!->
+            event-func = (obj, canvas, i-frame, callback)!->
                 return (event)->
                     loc = window-to-canvas canvas[0], event.client-x, event.client-y
                     if loc.x >= obj.x and loc.x < obj.x + obj.width
                     and loc.y >= obj.y and loc.y < obj.y + obj.height
                     then callback event, loc
 
-            new-event.callback = event-func new-event, this.canvas, callback
+            new-event.callback = event-func new-event, this.canvas, this, callback
 
             this.events.push new-event
 
@@ -79,6 +79,60 @@ $ ->
             this.BUTTON_BACKGROUND_STYLE = '#eeeeee'
             this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)'
             this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)'
+            # Polygon
+            this.Point = !->
+                this.x = x
+                this.y = y
+            this.polygon-list = []
+            this.Polygon = (list, center-x, center-y, radius, sides, start-angle, stroke-style, fill-style, filled, dashed)!->
+                this.x = center-x
+                this.y = center-y
+                this.radius = radius
+                this.sides = sides
+                this.start-angle = start-angle
+                this.stroke-style = stroke-style
+                this.fill-style = fill-style
+                this.filled = filled
+                this.dashed = dashed
+                list.push this
+            this.Polygon.prototype =
+                get-points: ->
+                    points = []
+                    angle = this.start-angle || 0
+                    for i from 0 to this.sides - 1 by 1
+                        points.push new Point this.x + this.radius * Math.cos angle, this.y + this.radius * Math sin angle
+                        angle += 2 * Math.PI / this.sides
+                    points
+                ,
+                create-path: (context)!->
+                    points = this.get-points
+                    context.save!
+                    context.begin-path!
+                    this.move-to points[0].x, points[0].y
+                    if dashed then context.set-line-dash!
+                    for i from 1 to this.sides - 1
+                        this.line-to points[i].x, points[i].y
+                    context.close-path!
+                    context.restore!
+                ,
+                stroke: (context)!->
+                    context.save!
+                    this.create-path context
+                    context.stroke-style = this.stroke-style
+                    context.stroke!
+                    context.restore!
+                ,
+                fill: (context)!->
+                    context.save!
+                    this.create-path context
+                    context.fill-style = this.stroke-style
+                    context.fill!
+                    context.restore!
+                ,
+                move: (x, y)!->
+                    this.x = x
+                    this.y = y
+
             # Set eraser attributes
             this.eraser-width = 30
             # Set the mode
@@ -102,6 +156,137 @@ $ ->
             this.context.shadow-offset-x = 0
             this.context.shadow-offset-y = 0
             this.context.shadow-blur = 5
+
+            this.init-buttons!
+
+        # Init the buttons
+        drawing-frame.prototype.init-buttons = ->
+            this.addButton "eraser", false, (frame)!->
+                frame.context.save!
+                width = frame.BUTTON_WIDTH
+                originX = this.originX + width / 2
+                originY = this.originY + width / 2
+                frame.context.begin-path!
+                frame.context.arc originX, originY, (width - 10) / 2, 0, Math.PI * 2, false
+                frame.context.fill-style = 'white'
+                frame.context.fill!
+                frame.context.restore!
+            , (frame)!->
+                frame.mode = 'eraser'
+                frame.save-drawing-surface!
+            this.addButton "line", false, (frame)!->
+                frame.context.begin-path!
+                frame.context.move-to this.originX + 5, this.originY + 5
+                frame.context.line-to this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH- 5
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'line'
+            this.addButton "pencil", false, (frame)!->
+                width = frame.BUTTON_WIDTH
+                frame.context.begin-path!
+                frame.context.move-to this.originX + 5, this.originY + 5
+                frame.context.quadratic-curve-to this.originX + 10, this.originY + 40, this.originX + width - 10, this.originY + 10
+                frame.context.quadratic-curve-to this.originX + width - 10, this.originY + 10, this.originX + width - 5, this.originY + width - 5
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'pencil'
+            this.addButton "grid", false, (frame)!->
+                width = frame.BUTTON_WIDTH
+                frame.context.begin-path!
+                frame.context.move-to this.originX + 5, this.originY + 10
+                frame.context.line-to this.originX + width - 5, this.originY + 10
+                frame.context.move-to this.originX + 5, this.originY + width - 10
+                frame.context.line-to this.originX + width - 5, this.originY + width - 10
+                frame.context.move-to this.originX + 10, this.originY + 5
+                frame.context.line-to this.originX + 10, this.originY + width - 5
+                frame.context.move-to this.originX + width - 10, this.originY + 5
+                frame.context.line-to this.originX + width - 10, this.originY + width - 5
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'grid'
+                frame.draw-grid 'lightgray', 10, 10
+            this.addButton "dashedline", false, (frame)!->
+                frame.context.set-line-dash [2, 2]
+                frame.context.begin-path!
+                frame.context.move-to this.originX + 5, this.originY + 5
+                frame.context.line-to this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH- 5
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'dashedline'
+            this.add-button "circle", false, (frame)!->
+                frame.context.begin-path!
+                width = frame.BUTTON_WIDTH
+                center-x = this.originX + width / 2
+                center-y = this.originY + width /2
+                frame.context.arc center-x, center-y, (width - 10) / 2, 0, Math.PI * 2, false
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'circle'
+            this.add-button "rectangle", false, (frame)!->
+                frame.context.begin-path!
+                width = frame.BUTTON_WIDTH - 6
+                frame.context.rect this.originX + 3, this.originY + 3, width, width
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'rectangle'
+
+            this.update-buttons!
+
+        # Init the event listener
+        drawing-frame.prototype.init-events = !->
+            this.listener.add-event this.originX, this.origin-y, this.width,
+            this.height, 'mousedown', (e, loc)!->
+
+                i-frame.mousedown.x = loc.x
+                i-frame.mousedown.y = loc.y
+                i-frame.last-loc = loc
+                i-frame.dragging = true
+
+                if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
+                    i-frame.save-drawing-surface!
+                if i-frame.mode is 'circle' or i-frame.mode is 'rectangle'
+                    i-frame.save-drawing-surface!
+                if i-frame.mode is 'pencil' then
+                    i-frame.context.begin-path!
+
+            iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
+            iFrame.height, 'mousemove', (e, loc)!->
+
+                if i-frame.dragging and (i-frame.mode is 'rectangle' or i-frame.mode is 'circle' or i-frame.mode == 'line' or i-frame.mode == 'dashedline') then
+                    i-frame.restore-drawing-surface!
+                    i-frame.update-rubberband loc
+                    if i-frame.guidewires then
+                        i-frame.draw-guide-wires loc.x, loc.y
+
+                if i-frame.mode == 'eraser' then
+                    i-frame.restore-drawing-surface!
+                    if i-frame.dragging
+                        i-frame.clear-last-area i-frame.last-loc
+                        i-frame.save-drawing-surface!
+                    i-frame.draw-eraser loc
+                    i-frame.last-loc = loc
+
+                if i-frame.mode == 'pencil' then
+                    if i-frame.dragging
+                        i-frame.draw-path loc, 1
+                        i-frame.save-drawing-surface!
+
+            iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
+            iFrame.height, 'mouseup', (e, loc)!->
+
+                if not i-frame.dragging then return
+                if i-frame.mode is 'line' or i-frame.mode is 'dashedline' or i-frame.mode is 'circle' or i-frame.mode is 'rectangle' then
+                    i-frame.restore-drawing-surface!
+                    i-frame.update-rubberband loc
+
+                if i-frame.mode is 'eraser' then
+                    i-frame.restore-drawing-surface!
+                    i-frame.clear-last-area i-frame.last-loc
+                    i-frame.save-drawing-surface!
+                    i-frame.draw-eraser loc
+
+
+                i-frame.dragging = false
 
         # Store the drawing surface
         drawing-frame.prototype.save-drawing-surface = !->
@@ -129,10 +314,28 @@ $ ->
         drawing-frame.prototype.draw-rubberband-shape = (loc)!->
             this.context.save!
             this.context.begin-path!
-            this.context.move-to this.mousedown.x, this.mousedown.y
             if (this.mode is 'dashedline')
                 this.context.set-line-dash [2, 2]
-            this.context.line-to loc.x, loc.y
+            if (this.mode is 'line' or this.mode is 'dashedline')
+                this.context.move-to this.mousedown.x, this.mousedown.y
+                this.context.line-to loc.x, loc.y
+            if (this.mode is 'circle')
+                x-dist = Math.abs loc.x - this.mousedown.x
+                y-dist = Math.abs loc.y - this.mousedown.y
+                radius = Math.sqrt x-dist * x-dist + y-dist * y-dist
+                if Math.abs this.mousedown.x - this.originX < radius
+                    radius = Math.abs this.mousedown.x - this.originX
+                if Math.abs this.mousedown.y - this.originY < radius
+                    radius = Math.abs this.mousedown.y - this.originY
+                this.context.arc this.mousedown.x, this.mousedown.y, radius, 0, Math.PI * 2, false
+            if (this.mode is 'rectangle')
+                x-dist = Math.abs loc.x - this.mousedown.x
+                y-dist = Math.abs loc.y - this.mousedown.y
+                originX = this.mousedown.x
+                originY = this.mousedown.y
+                if loc.x < originX then originX = loc.x
+                if loc.y < originY then originY = loc.y
+                this.context.rect originX, originY, x-dist, y-dist
             this.context.stroke!
             this.context.restore!
 
@@ -239,7 +442,7 @@ $ ->
                     for btn in frame.buttons
                         if btn isnt button then btn.is-on = false
                     frame.update-buttons!
-                    button.callback!
+                    button.callback frame
 
             new-button.func = button-func new-button, this
 
@@ -360,111 +563,18 @@ $ ->
             context.stroke!
             context.restore!
 
+#       Polygon
+        Point = (x, y)!->
+            this.x = x
+            this.y = y
+
+
         # Run the frame
         iFrame = new drawingFrame!
+
         iFrame.draw-bounding!
-        iFrame.addButton "eraser", false, (frame)!->
-           width = frame.BUTTON_WIDTH
-           originX = this.originX + width / 2
-           originY = this.originY + width / 2
-           frame.context.begin-path!
-           frame.context.arc originX, originY, (width - 10) / 2, 0, Math.PI * 2, false
-           frame.context.stroke!
-        , !->
-            i-frame.mode = 'eraser'
-            i-frame.save-drawing-surface!
-        iFrame.addButton "line", false, (frame)!->
-            frame.context.begin-path!
-            frame.context.move-to this.originX + 5, this.originY + 5
-            frame.context.line-to this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH- 5
-            frame.context.stroke!
-        , !->
-            i-frame.mode = 'line'
-        iFrame.addButton "pencil", false, (frame)!->
-            width = frame.BUTTON_WIDTH
-            frame.context.begin-path!
-            frame.context.move-to this.originX + 5, this.originY + 5
-            frame.context.quadratic-curve-to this.originX + 10, this.originY + 40, this.originX + width - 10, this.originY + 10
-            frame.context.quadratic-curve-to this.originX + width - 10, this.originY + 10, this.originX + width - 5, this.originY + width - 5
-            frame.context.stroke!
-        , !->
-            i-frame.mode = 'pencil'
-        iFrame.addButton "grid", false, (frame)!->
-            width = frame.BUTTON_WIDTH
-            frame.context.begin-path!
-            frame.context.move-to this.originX + 5, this.originY + 10
-            frame.context.line-to this.originX + width - 5, this.originY + 10
-            frame.context.move-to this.originX + 5, this.originY + width - 10
-            frame.context.line-to this.originX + width - 5, this.originY + width - 10
-            frame.context.move-to this.originX + 10, this.originY + 5
-            frame.context.line-to this.originX + 10, this.originY + width - 5
-            frame.context.move-to this.originX + width - 10, this.originY + 5
-            frame.context.line-to this.originX + width - 10, this.originY + width - 5
-            frame.context.stroke!
-        , !->
-            i-frame.mode = 'grid'
-            i-frame.draw-grid 'lightgray', 10, 10
-        iFrame.addButton "dashedline", false, (frame)!->
-            frame.context.set-line-dash [2, 2]
-            frame.context.begin-path!
-            frame.context.move-to this.originX + 5, this.originY + 5
-            frame.context.line-to this.originX + frame.BUTTON_WIDTH - 5, this.originY + frame.BUTTON_WIDTH- 5
-            frame.context.stroke!
-        , !->
-            i-frame.mode = 'dashedline'
 
-        i-frame.update-buttons!
+        i-frame.init-buttons!
 
-        iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
-        iFrame.height, 'mousedown', (e, loc)!->
-
-            if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
-                i-frame.save-drawing-surface!
-            i-frame.mousedown.x = loc.x
-            i-frame.mousedown.y = loc.y
-            i-frame.last-loc = loc
-            i-frame.dragging = true
-
-            if i-frame.mode is 'pencil' then
-                i-frame.context.begin-path!
-
-        iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
-        iFrame.height, 'mousemove', (e, loc)!->
-
-            if i-frame.dragging and (i-frame.mode == 'line' or i-frame.mode == 'dashedline') then
-                i-frame.restore-drawing-surface!
-                i-frame.update-rubberband loc
-
-                if i-frame.guidewires then
-                    i-frame.draw-guide-wires loc.x, loc.y
-
-            if i-frame.mode == 'eraser' then
-                i-frame.restore-drawing-surface!
-                if i-frame.dragging
-                    i-frame.clear-last-area i-frame.last-loc
-                    i-frame.save-drawing-surface!
-                i-frame.draw-eraser loc
-                i-frame.last-loc = loc
-
-            if i-frame.mode == 'pencil' then
-                if i-frame.dragging
-                    i-frame.draw-path loc, 1
-                    i-frame.save-drawing-surface!
-
-        iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
-        iFrame.height, 'mouseup', (e, loc)!->
-
-            if not i-frame.dragging then return
-            if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
-                i-frame.restore-drawing-surface!
-                i-frame.update-rubberband loc
-
-            if i-frame.mode is 'eraser' then
-                i-frame.restore-drawing-surface!
-                i-frame.clear-last-area i-frame.last-loc
-                i-frame.save-drawing-surface!
-                i-frame.draw-eraser loc
-
-
-            i-frame.dragging = false
+        i-frame.init-events!
 

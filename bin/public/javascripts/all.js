@@ -237,12 +237,12 @@
         this.BUTTON_BACKGROUND_STYLE = '#eeeeee';
         this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)';
         this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)';
-        this.Point = function(){
-          this.x = x;
-          this.y = y;
-        };
         this.polygonList = [];
-        this.Polygon = function(list, centerX, centerY, radius, sides, startAngle, strokeStyle, fillStyle, filled, dashed){
+        this.Polygon = function(centerX, centerY, radius, sides, startAngle, strokeStyle, fillStyle, filled, dashed){
+          this.Point = function(x, y){
+            this.x = x;
+            this.y = y;
+          };
           this.x = centerX;
           this.y = centerY;
           this.radius = radius;
@@ -252,34 +252,33 @@
           this.fillStyle = fillStyle;
           this.filled = filled;
           this.dashed = dashed;
-          list.push(this);
         };
         this.Polygon.prototype = {
           getPoints: function(){
             var points, angle, i$, to$, i;
             points = [];
             angle = this.startAngle || 0;
-            for (i$ = 0, to$ = this.sides - 1; i$ <= to$; ++i$) {
+            for (i$ = 0, to$ = this.sides; i$ <= to$; ++i$) {
               i = i$;
-              points.push(new Point(this.x + this.radius * Math.cos(angle, this.y + this.radius * Math(sin(angle)))));
+              points.push(new this.Point(this.x + this.radius * Math.sin(angle), this.y - this.radius * Math.cos(angle)));
               angle += 2 * Math.PI / this.sides;
             }
             return points;
           },
           createPath: function(context){
             var points, i$, to$, i;
-            points = this.getPoints;
+            points = this.getPoints();
             context.save();
             context.beginPath();
-            this.moveTo(points[0].x, points[0].y);
-            if (dashed) {
+            context.moveTo(points[0].x, points[0].y);
+            if (this.dashed) {
               context.setLineDash();
             }
-            for (i$ = 1, to$ = this.sides - 1; i$ <= to$; ++i$) {
+            for (i$ = 1, to$ = this.sides; i$ <= to$; ++i$) {
               i = i$;
-              this.lineTo(points[i].x, points[i].y);
+              context.lineTo(points[i].x, points[i].y);
             }
-            context.closePath();
+            context.stroke();
             context.restore();
           },
           stroke: function(context){
@@ -292,7 +291,7 @@
           fill: function(context){
             context.save();
             this.createPath(context);
-            context.fillStyle = this.strokeStyle;
+            context.fillStyle = this.fillStyle;
             context.fill();
             context.restore();
           },
@@ -398,9 +397,46 @@
         }, function(frame){
           frame.mode = 'rectangle';
         });
+        this.addButton("polygon", false, function(frame){
+          var width, centerX, centerY, polygon;
+          width = frame.BUTTON_WIDTH;
+          centerX = this.originX + width / 2;
+          centerY = this.originY + width / 2;
+          if (!frame.polygonList[0]) {
+            polygon = new frame.Polygon(centerX, centerY, (width - 8) / 2, 5, 0, 'black', 'yellow', true, false);
+          } else {
+            polygon = frame.polygonList[0];
+          }
+          polygon.stroke(frame.context);
+          polygon.fill(frame.context);
+          if (!frame.polygonList[0]) {
+            frame.polygonList.push(polygon);
+          }
+        }, function(frame){
+          frame.mode = 'polygon';
+          $('#polygon-controller').removeClass('invisible');
+        });
         return this.updateButtons();
       };
       drawingFrame.prototype.initEvents = function(){
+        var changeButton;
+        changeButton = function(frame){
+          var polygon;
+          polygon = frame.polygonList[0];
+          return function(e){
+            var attr;
+            attr = e.currentTarget.name;
+            polygon[attr] = $(e.currentTarget).val();
+            if (attr === 'sides') {
+              polygon[attr] = parseInt(polygon[attr]);
+            }
+            if (attr === 'dashed' || attr === 'filled') {
+              polygon[attr] = e.currentTarget.checked;
+            }
+            frame.updateButtons();
+          };
+        }(this);
+        $('#polygon-controller').find('input').change(changeButton);
         this.listener.addEvent(this.originX, this.originY, this.width, this.height, 'mousedown', function(e, loc){
           iFrame.mousedown.x = loc.x;
           iFrame.mousedown.y = loc.y;
@@ -634,7 +670,6 @@
           this.context.fillRect(button.originX, button.originY, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
           this.context.strokeRect(button.originX, button.originY, this.BUTTON_WIDTH, this.BUTTON_HEIGHT);
           this.context.strokeStyle = 'black';
-          this.context.font = '15pt Arial';
           button.banner(this);
           results$.push(this.context.restore());
         }
@@ -686,7 +721,7 @@
       };
       drawingFrame.prototype.clearLastArea = function(loc){
         var context;
-        if (loc.x - this.eraserWidth / 2 < this.originX || loc.y - this.eraserWidth / 2 < this.originY) {
+        if (loc.x - this.eraserWidth / 2 <= this.originX || loc.y - this.eraserWidth / 2 <= this.originY) {
           return;
         }
         context = this.context;

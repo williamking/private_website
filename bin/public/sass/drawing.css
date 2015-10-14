@@ -4,9 +4,17 @@ header#drawing-header {
   header#drawing-header h1 {
     text-align: center; }
 
-div#drawing-canvas canvas#canvas {
-  margin: 10%;
-  background: white;
-  border: thin inset #aaaaaa;
-  width: 80%;
-  height: 50%; }
+div#drawing-canvas {
+  position: relative;
+  text-align: center; }
+  div#drawing-canvas #polygon-controller {
+    top: 100px;
+    position: relative; }
+    div#drawing-canvas #polygon-controller input {
+      margin-right: 10px; }
+  div#drawing-canvas canvas#canvas {
+    margin: 10%;
+    background: white;
+    border: thin inset #aaaaaa;
+    width: 80%;
+    height: 50%; }

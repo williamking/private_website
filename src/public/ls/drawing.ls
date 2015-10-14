@@ -80,11 +80,11 @@ $ ->
             this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)'
             this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)'
             # Polygon
-            this.Point = !->
-                this.x = x
-                this.y = y
             this.polygon-list = []
-            this.Polygon = (list, center-x, center-y, radius, sides, start-angle, stroke-style, fill-style, filled, dashed)!->
+            this.Polygon = (center-x, center-y, radius, sides, start-angle, stroke-style, fill-style, filled, dashed)!->
+                this.Point = (x, y)!->
+                    this.x = x
+                    this.y = y
                 this.x = center-x
                 this.y = center-y
                 this.radius = radius
@@ -94,25 +94,25 @@ $ ->
                 this.fill-style = fill-style
                 this.filled = filled
                 this.dashed = dashed
-                list.push this
             this.Polygon.prototype =
                 get-points: ->
                     points = []
                     angle = this.start-angle || 0
-                    for i from 0 to this.sides - 1 by 1
-                        points.push new Point this.x + this.radius * Math.cos angle, this.y + this.radius * Math sin angle
+                    for i from 0 to this.sides by 1
+                        points.push new this.Point this.x + this.radius * Math.sin(angle), this.y - this.radius * Math.cos(angle)
                         angle += 2 * Math.PI / this.sides
                     points
                 ,
                 create-path: (context)!->
-                    points = this.get-points
+                    points = this.get-points!
                     context.save!
                     context.begin-path!
-                    this.move-to points[0].x, points[0].y
-                    if dashed then context.set-line-dash!
-                    for i from 1 to this.sides - 1
-                        this.line-to points[i].x, points[i].y
-                    context.close-path!
+                    context.move-to points[0].x, points[0].y
+                    if this.dashed then context.set-line-dash!
+                    for i from 1 to this.sides by 1
+                        context.line-to points[i].x, points[i].y
+                    # context.close-path!
+                    context.stroke!
                     context.restore!
                 ,
                 stroke: (context)!->
@@ -125,7 +125,7 @@ $ ->
                 fill: (context)!->
                     context.save!
                     this.create-path context
-                    context.fill-style = this.stroke-style
+                    context.fill-style = this.fill-style
                     context.fill!
                     context.restore!
                 ,
@@ -229,11 +229,39 @@ $ ->
                 frame.context.stroke!
             , (frame)!->
                 frame.mode = 'rectangle'
+            this.add-button "polygon", false, (frame)!->
+                width = frame.BUTTON_WIDTH
+                center-x = this.originX + width / 2
+                center-y = this.originY + width / 2
+                if not frame.polygon-list[0]
+                    polygon = new frame.Polygon center-x, center-y, (width - 8) / 2, 5, 0, 'black', 'yellow', true, false
+                else
+                    polygon = frame.polygon-list[0]
+                polygon.stroke frame.context
+                polygon.fill frame.context
+                if not frame.polygon-list[0]
+                    frame.polygon-list.push polygon
+            , (frame)!->
+                frame.mode = 'polygon'
+                $ '#polygon-controller' .remove-class 'invisible'
 
             this.update-buttons!
 
         # Init the event listener
         drawing-frame.prototype.init-events = !->
+
+            changeButton = ((frame)->
+                polygon = frame.polygon-list[0]
+                return (e)!->
+                    attr = e.current-target.name
+                    polygon[attr] = $(e.current-target).val!
+                    if (attr is 'sides') then polygon[attr] = parse-int polygon[attr]
+                    if (attr is 'dashed' or attr is 'filled') then polygon[attr] = e.current-target.checked
+                    frame.update-buttons!
+            )(this)
+
+            $ '#polygon-controller' .find 'input' .change changeButton
+
             this.listener.add-event this.originX, this.origin-y, this.width,
             this.height, 'mousedown', (e, loc)!->
 
@@ -468,7 +496,6 @@ $ ->
 
                 this.context.stroke-style = 'black'
 
-                this.context.font = '15pt Arial'
                 #this.context.stroke-text button.name, button.originX + 10, button.originY + 15
                 button.banner this
                 this.context.restore!
@@ -526,7 +553,7 @@ $ ->
 
         drawing-frame.prototype.clear-last-area = (loc)!->
 
-            if loc.x - this.eraser-width/2 < this.originX or loc.y - this.eraser-width/2 < this.originY then
+            if loc.x - this.eraser-width/2 <= this.originX or loc.y - this.eraser-width/2 <= this.originY then
                 return
 
             context = this.context

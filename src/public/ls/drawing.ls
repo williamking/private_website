@@ -108,7 +108,7 @@ $ ->
                     context.save!
                     context.begin-path!
                     context.move-to points[0].x, points[0].y
-                    if this.dashed then context.set-line-dash!
+                    if this.dashed then context.set-line-dash [2, 2]
                     for i from 1 to this.sides by 1
                         context.line-to points[i].x, points[i].y
                     # context.close-path!
@@ -238,7 +238,8 @@ $ ->
                 else
                     polygon = frame.polygon-list[0]
                 polygon.stroke frame.context
-                polygon.fill frame.context
+                if polygon.filled
+                    polygon.fill frame.context
                 if not frame.polygon-list[0]
                     frame.polygon-list.push polygon
             , (frame)!->
@@ -272,7 +273,7 @@ $ ->
 
                 if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
                     i-frame.save-drawing-surface!
-                if i-frame.mode is 'circle' or i-frame.mode is 'rectangle'
+                if i-frame.mode is 'circle' or i-frame.mode is 'rectangle' or i-frame.mode is 'polygon'
                     i-frame.save-drawing-surface!
                 if i-frame.mode is 'pencil' then
                     i-frame.context.begin-path!
@@ -280,7 +281,7 @@ $ ->
             iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
             iFrame.height, 'mousemove', (e, loc)!->
 
-                if i-frame.dragging and (i-frame.mode is 'rectangle' or i-frame.mode is 'circle' or i-frame.mode == 'line' or i-frame.mode == 'dashedline') then
+                if i-frame.dragging and (i-frame.mode is 'rectangle' or i-frame.mode is 'circle' or i-frame.mode == 'line' or i-frame.mode == 'dashedline' or i-frame.mode is 'polygon') then
                     i-frame.restore-drawing-surface!
                     i-frame.update-rubberband loc
                     if i-frame.guidewires then
@@ -364,6 +365,8 @@ $ ->
                 if loc.x < originX then originX = loc.x
                 if loc.y < originY then originY = loc.y
                 this.context.rect originX, originY, x-dist, y-dist
+            if (this.mode is 'polygon')
+                polygon
             this.context.stroke!
             this.context.restore!
 

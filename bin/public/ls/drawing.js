@@ -108,7 +108,7 @@
             context.beginPath();
             context.moveTo(points[0].x, points[0].y);
             if (this.dashed) {
-              context.setLineDash();
+              context.setLineDash([2, 2]);
             }
             for (i$ = 1, to$ = this.sides; i$ <= to$; ++i$) {
               i = i$;
@@ -244,7 +244,9 @@
             polygon = frame.polygonList[0];
           }
           polygon.stroke(frame.context);
-          polygon.fill(frame.context);
+          if (polygon.filled) {
+            polygon.fill(frame.context);
+          }
           if (!frame.polygonList[0]) {
             frame.polygonList.push(polygon);
           }
@@ -281,7 +283,7 @@
           if (iFrame.mode === 'line' || iFrame.mode === 'dashedline') {
             iFrame.saveDrawingSurface();
           }
-          if (iFrame.mode === 'circle' || iFrame.mode === 'rectangle') {
+          if (iFrame.mode === 'circle' || iFrame.mode === 'rectangle' || iFrame.mode === 'polygon') {
             iFrame.saveDrawingSurface();
           }
           if (iFrame.mode === 'pencil') {
@@ -289,7 +291,7 @@
           }
         });
         iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousemove', function(e, loc){
-          if (iFrame.dragging && (iFrame.mode === 'rectangle' || iFrame.mode === 'circle' || iFrame.mode === 'line' || iFrame.mode === 'dashedline')) {
+          if (iFrame.dragging && (iFrame.mode === 'rectangle' || iFrame.mode === 'circle' || iFrame.mode === 'line' || iFrame.mode === 'dashedline' || iFrame.mode === 'polygon')) {
             iFrame.restoreDrawingSurface();
             iFrame.updateRubberband(loc);
             if (iFrame.guidewires) {
@@ -384,6 +386,9 @@
             originY = loc.y;
           }
           this.context.rect(originX, originY, xDist, yDist);
+        }
+        if (this.mode === 'polygon') {
+          polygon;
         }
         this.context.stroke();
         this.context.restore();

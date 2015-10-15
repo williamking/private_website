@@ -238,7 +238,8 @@ $ ->
                 else
                     polygon = frame.polygon-list[0]
                 polygon.stroke frame.context
-                polygon.fill frame.context
+                if polygon.filled
+                    polygon.fill frame.context
                 if not frame.polygon-list[0]
                     frame.polygon-list.push polygon
             , (frame)!->
@@ -256,6 +257,7 @@ $ ->
                     attr = e.current-target.name
                     polygon[attr] = $(e.current-target).val!
                     if (attr is 'sides') then polygon[attr] = parse-int polygon[attr]
+                    if (attr is 'dashed' or attr is 'filled') then polygon[attr] = e.current-target.checked
                     frame.update-buttons!
             )(this)
 

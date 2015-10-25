@@ -1,0 +1,17 @@
+#articles-main {
+  padding: 2%; }
+  #articles-main header.articles-header {
+    margin-left: 10%;
+    margin-right: 10%; }
+    #articles-main header.articles-header h1 {
+      margin-top: 2%;
+      display: inline-block; }
+    #articles-main header.articles-header button {
+      margin-top: 2%;
+      float: right;
+      margin: 20px 0; }
+  #articles-main #article-list {
+    margin-left: 10%;
+    margin-right: 10%; }
+    #articles-main #article-list .article {
+      margin: 2% 10%; }

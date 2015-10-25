@@ -13,5 +13,8 @@
   router2.get('/drawing', function(req, res){
     res.render('drawing');
   });
+  router2.get('/threejs', function(req, res){
+    res.render('3dworld');
+  });
   module.exports = router2;
 }).call(this);

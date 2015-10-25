@@ -6,15 +6,19 @@ html(lang="zh-CN")
         link(rel='stylesheet', href='//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css')
         script(src="../../lib/jquery.js")
         script(src="../../javascripts/all.js")
+        script(src="/lib/clock.js")
     body
-        header(id= "head")
+        div(id= "head")
+            canvas#clock(width="300" height="300")
+            div#left
             div#banner
-            nav(id= "navigator").navbar.navbar-default
+            div#clock-image
+            nav(id= "navigator")
                 div.container-fluid
-                    div.container-header
+                    div
                         span.navbar-brand
                             |Navigator
-                    div.collapse.navbar-collapse
+                    div
                         div.authorize
                             if user
                                 p Welcome, #{username}
@@ -25,6 +29,7 @@ html(lang="zh-CN")
                                 button#register-button.btn.btn-success Register
                         ul.nav.navbar-nav.navigator
                             li  
+                                div.list-frame
                                 a(href= "/") index
                             li 
                                 a(href= "/articles") article

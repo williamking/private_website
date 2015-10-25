@@ -105,15 +105,13 @@ $ ->
                 ,
                 create-path: (context)!->
                     points = this.get-points!
-                    context.save!
                     context.begin-path!
                     context.move-to points[0].x, points[0].y
+                    context.line-width = 1
                     if this.dashed then context.set-line-dash [2, 2]
                     for i from 1 to this.sides by 1
                         context.line-to points[i].x, points[i].y
                     # context.close-path!
-                    context.stroke!
-                    context.restore!
                 ,
                 stroke: (context)!->
                     context.save!
@@ -235,6 +233,13 @@ $ ->
                 center-y = this.originY + width / 2
                 if not frame.polygon-list[0]
                     polygon = new frame.Polygon center-x, center-y, (width - 8) / 2, 5, 0, 'black', 'yellow', true, false
+                    $ '#polygon-stroke-style' .val 'black'
+                    $ '#polygon-fill-style' .val 'yellow'
+                    $ '#polygon-sides' .val 5
+                    $ '#polygon-filled' .attr "checked", true
+                    $ '#polygon-dashed' .attr "checked", false
+                    $ '#polygon-fill-style' .val 'yellow'
+
                 else
                     polygon = frame.polygon-list[0]
                 polygon.stroke frame.context
@@ -245,6 +250,16 @@ $ ->
             , (frame)!->
                 frame.mode = 'polygon'
                 $ '#polygon-controller' .remove-class 'invisible'
+            this.add-button 'bezier', false, (frame)!->
+                width = frame.BUTTON_WIDTH
+                frame.context.begin-path!
+                frame.context.move-to this.originX + 5, this.originY + 5
+                frame.context.bezier-curve-to this.originX + width - 5, this.originY + 5,
+                                        this.originX + 5, this.originY + width-5,
+                                        this.originX + width-5, this.originY + width-5
+                frame.context.stroke!
+            , (frame)!->
+                frame.mode = 'bezier'
 
             this.update-buttons!
 
@@ -271,7 +286,7 @@ $ ->
                 i-frame.last-loc = loc
                 i-frame.dragging = true
 
-                if i-frame.mode is 'line' or i-frame.mode is 'dashedline' then
+                if i-frame.mode is 'line' or i-frame.mode is 'dashedline' or i-frame.mode is 'bezier' then
                     i-frame.save-drawing-surface!
                 if i-frame.mode is 'circle' or i-frame.mode is 'rectangle' or i-frame.mode is 'polygon'
                     i-frame.save-drawing-surface!
@@ -281,7 +296,7 @@ $ ->
             iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
             iFrame.height, 'mousemove', (e, loc)!->
 
-                if i-frame.dragging and (i-frame.mode is 'rectangle' or i-frame.mode is 'circle' or i-frame.mode == 'line' or i-frame.mode == 'dashedline' or i-frame.mode is 'polygon') then
+                if i-frame.dragging and (i-frame.mode is 'rectangle' or i-frame.mode is 'circle' or i-frame.mode == 'line' or i-frame.mode == 'dashedline' or i-frame.mode is 'polygon' or i-frame.mode is 'bezier') then
                     i-frame.restore-drawing-surface!
                     i-frame.update-rubberband loc
                     if i-frame.guidewires then
@@ -304,7 +319,8 @@ $ ->
             iFrame.height, 'mouseup', (e, loc)!->
 
                 if not i-frame.dragging then return
-                if i-frame.mode is 'line' or i-frame.mode is 'dashedline' or i-frame.mode is 'circle' or i-frame.mode is 'rectangle' then
+                if i-frame.mode is 'line' or i-frame.mode is 'dashedline' or i-frame.mode is 'circle'
+                or i-frame.mode is 'rectangle' or i-frame.mode is 'polygon' or i-frame.mode is 'bezier' then
                     i-frame.restore-drawing-surface!
                     i-frame.update-rubberband loc
 
@@ -348,6 +364,7 @@ $ ->
             if (this.mode is 'line' or this.mode is 'dashedline')
                 this.context.move-to this.mousedown.x, this.mousedown.y
                 this.context.line-to loc.x, loc.y
+                this.context.stroke!
             if (this.mode is 'circle')
                 x-dist = Math.abs loc.x - this.mousedown.x
                 y-dist = Math.abs loc.y - this.mousedown.y
@@ -357,6 +374,7 @@ $ ->
                 if Math.abs this.mousedown.y - this.originY < radius
                     radius = Math.abs this.mousedown.y - this.originY
                 this.context.arc this.mousedown.x, this.mousedown.y, radius, 0, Math.PI * 2, false
+                this.context.stroke!
             if (this.mode is 'rectangle')
                 x-dist = Math.abs loc.x - this.mousedown.x
                 y-dist = Math.abs loc.y - this.mousedown.y
@@ -365,9 +383,41 @@ $ ->
                 if loc.x < originX then originX = loc.x
                 if loc.y < originY then originY = loc.y
                 this.context.rect originX, originY, x-dist, y-dist
+                this.context.stroke!
             if (this.mode is 'polygon')
-                polygon
-            this.context.stroke!
+                x-dist = Math.abs loc.x - this.mousedown.x
+                y-dist = Math.abs loc.y - this.mousedown.y
+                r = Math.sqrt x-dist * x-dist + y-dist + y-dist
+                if Math.abs this.mousedown.x - this.originX < r
+                    r = Math.abs this.mousedown.x - this.originX
+                if Math.abs this.mousedown.y - this.originY < r
+                    r = Math.abs this.mousedown.y - this.originY
+                sides = parse-int($ '#polygon-sides' .val!)
+                stroke-style = $ '#polygon-stroke-style' .val!
+                fill-style = $ '#polygon-fill-style' .val!
+                filled = $('#polygon-filled')[0].checked
+                dashed = $('#polygon-dashed')[0].checked
+                polygon = new this.Polygon this.mousedown.x, this.mousedown.y, r, sides, 0, stroke-style, fill-style, filled, dashed
+                polygon.stroke this.context
+                if polygon.filled then polygon.fill this.context
+            if (this.mode is 'bezier')
+                start-point = {}
+                end-point = {}
+                start-point.x = this.rubberband-rect.left
+                start-point.y = this.rubberband-rect.top
+                end-point.x = start-point.x + this.rubberband-rect.width
+                end-point.y = start-point.y + this.rubberband-rect.height
+                this.context.begin-path!
+                this.context.arc start-point.x, end-point.y, 4, 0, 2 * Math.PI, false
+                this.context.stroke!
+                this.context.begin-path!
+                this.context.arc end-point.x, start-point.y, 4, 0, 2 * Math.PI, false
+                this.context.stroke!
+                this.context.begin-path!
+                this.context.move-to start-point.x, start-point.y
+                this.context.bezier-curve-to start-point.x, end-point.y, end-point.x, start-point.y, end-point.x, end-point.y
+                this.context.stroke!
+                this.context.close-path!
             this.context.restore!
 
         drawing-frame.prototype.update-rubberband = (loc)!->
@@ -473,6 +523,7 @@ $ ->
                     for btn in frame.buttons
                         if btn isnt button then btn.is-on = false
                     frame.update-buttons!
+                    $ '#polygon-controller' .add-class 'invisible'
                     button.callback frame
 
             new-button.func = button-func new-button, this

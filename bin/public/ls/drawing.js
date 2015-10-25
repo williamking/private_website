@@ -104,9 +104,9 @@
           createPath: function(context){
             var points, i$, to$, i;
             points = this.getPoints();
-            context.save();
             context.beginPath();
             context.moveTo(points[0].x, points[0].y);
+            context.lineWidth = 1;
             if (this.dashed) {
               context.setLineDash([2, 2]);
             }
@@ -114,8 +114,6 @@
               i = i$;
               context.lineTo(points[i].x, points[i].y);
             }
-            context.stroke();
-            context.restore();
           },
           stroke: function(context){
             context.save();
@@ -240,6 +238,12 @@
           centerY = this.originY + width / 2;
           if (!frame.polygonList[0]) {
             polygon = new frame.Polygon(centerX, centerY, (width - 8) / 2, 5, 0, 'black', 'yellow', true, false);
+            $('#polygon-stroke-style').val('black');
+            $('#polygon-fill-style').val('yellow');
+            $('#polygon-sides').val(5);
+            $('#polygon-filled').attr("checked", true);
+            $('#polygon-dashed').attr("checked", false);
+            $('#polygon-fill-style').val('yellow');
           } else {
             polygon = frame.polygonList[0];
           }
@@ -253,6 +257,16 @@
         }, function(frame){
           frame.mode = 'polygon';
           $('#polygon-controller').removeClass('invisible');
+        });
+        this.addButton('bezier', false, function(frame){
+          var width;
+          width = frame.BUTTON_WIDTH;
+          frame.context.beginPath();
+          frame.context.moveTo(this.originX + 5, this.originY + 5);
+          frame.context.bezierCurveTo(this.originX + width - 5, this.originY + 5, this.originX + 5, this.originY + width - 5, this.originX + width - 5, this.originY + width - 5);
+          frame.context.stroke();
+        }, function(frame){
+          frame.mode = 'bezier';
         });
         return this.updateButtons();
       };
@@ -280,7 +294,7 @@
           iFrame.mousedown.y = loc.y;
           iFrame.lastLoc = loc;
           iFrame.dragging = true;
-          if (iFrame.mode === 'line' || iFrame.mode === 'dashedline') {
+          if (iFrame.mode === 'line' || iFrame.mode === 'dashedline' || iFrame.mode === 'bezier') {
             iFrame.saveDrawingSurface();
           }
           if (iFrame.mode === 'circle' || iFrame.mode === 'rectangle' || iFrame.mode === 'polygon') {
@@ -291,7 +305,7 @@
           }
         });
         iFrame.listener.addEvent(iFrame.originX, iFrame.originY, iFrame.width, iFrame.height, 'mousemove', function(e, loc){
-          if (iFrame.dragging && (iFrame.mode === 'rectangle' || iFrame.mode === 'circle' || iFrame.mode === 'line' || iFrame.mode === 'dashedline' || iFrame.mode === 'polygon')) {
+          if (iFrame.dragging && (iFrame.mode === 'rectangle' || iFrame.mode === 'circle' || iFrame.mode === 'line' || iFrame.mode === 'dashedline' || iFrame.mode === 'polygon' || iFrame.mode === 'bezier')) {
             iFrame.restoreDrawingSurface();
             iFrame.updateRubberband(loc);
             if (iFrame.guidewires) {
@@ -318,7 +332,7 @@
           if (!iFrame.dragging) {
             return;
           }
-          if (iFrame.mode === 'line' || iFrame.mode === 'dashedline' || iFrame.mode === 'circle' || iFrame.mode === 'rectangle') {
+          if (iFrame.mode === 'line' || iFrame.mode === 'dashedline' || iFrame.mode === 'circle' || iFrame.mode === 'rectangle' || iFrame.mode === 'polygon' || iFrame.mode === 'bezier') {
             iFrame.restoreDrawingSurface();
             iFrame.updateRubberband(loc);
           }
@@ -352,7 +366,7 @@
         }
       };
       drawingFrame.prototype.drawRubberbandShape = function(loc){
-        var xDist, yDist, radius, originX, originY;
+        var xDist, yDist, radius, originX, originY, r, sides, strokeStyle, fillStyle, filled, dashed, polygon, startPoint, endPoint;
         this.context.save();
         this.context.beginPath();
         if (this.mode === 'dashedline') {
@@ -361,6 +375,7 @@
         if (this.mode === 'line' || this.mode === 'dashedline') {
           this.context.moveTo(this.mousedown.x, this.mousedown.y);
           this.context.lineTo(loc.x, loc.y);
+          this.context.stroke();
         }
         if (this.mode === 'circle') {
           xDist = Math.abs(loc.x - this.mousedown.x);
@@ -373,6 +388,7 @@
             radius = Math.abs(this.mousedown.y - this.originY);
           }
           this.context.arc(this.mousedown.x, this.mousedown.y, radius, 0, Math.PI * 2, false);
+          this.context.stroke();
         }
         if (this.mode === 'rectangle') {
           xDist = Math.abs(loc.x - this.mousedown.x);
@@ -386,11 +402,48 @@
             originY = loc.y;
           }
           this.context.rect(originX, originY, xDist, yDist);
+          this.context.stroke();
         }
         if (this.mode === 'polygon') {
-          polygon;
+          xDist = Math.abs(loc.x - this.mousedown.x);
+          yDist = Math.abs(loc.y - this.mousedown.y);
+          r = Math.sqrt(xDist * xDist + yDist + yDist);
+          if (Math.abs(this.mousedown.x - this.originX < r)) {
+            r = Math.abs(this.mousedown.x - this.originX);
+          }
+          if (Math.abs(this.mousedown.y - this.originY < r)) {
+            r = Math.abs(this.mousedown.y - this.originY);
+          }
+          sides = parseInt($('#polygon-sides').val());
+          strokeStyle = $('#polygon-stroke-style').val();
+          fillStyle = $('#polygon-fill-style').val();
+          filled = $('#polygon-filled')[0].checked;
+          dashed = $('#polygon-dashed')[0].checked;
+          polygon = new this.Polygon(this.mousedown.x, this.mousedown.y, r, sides, 0, strokeStyle, fillStyle, filled, dashed);
+          polygon.stroke(this.context);
+          if (polygon.filled) {
+            polygon.fill(this.context);
+          }
         }
-        this.context.stroke();
+        if (this.mode === 'bezier') {
+          startPoint = {};
+          endPoint = {};
+          startPoint.x = this.rubberbandRect.left;
+          startPoint.y = this.rubberbandRect.top;
+          endPoint.x = startPoint.x + this.rubberbandRect.width;
+          endPoint.y = startPoint.y + this.rubberbandRect.height;
+          this.context.beginPath();
+          this.context.arc(startPoint.x, endPoint.y, 4, 0, 2 * Math.PI, false);
+          this.context.stroke();
+          this.context.beginPath();
+          this.context.arc(endPoint.x, startPoint.y, 4, 0, 2 * Math.PI, false);
+          this.context.stroke();
+          this.context.beginPath();
+          this.context.moveTo(startPoint.x, startPoint.y);
+          this.context.bezierCurveTo(startPoint.x, endPoint.y, endPoint.x, startPoint.y, endPoint.x, endPoint.y);
+          this.context.stroke();
+          this.context.closePath();
+        }
         this.context.restore();
       };
       drawingFrame.prototype.updateRubberband = function(loc){
@@ -486,6 +539,7 @@
               }
             }
             frame.updateButtons();
+            $('#polygon-controller').addClass('invisible');
             button.callback(frame);
           };
         };

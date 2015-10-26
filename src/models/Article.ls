@@ -1,4 +1,5 @@
 require! ['mongoose']
+Comment = require './Comment.js'
 
 Object-id = mongoose.Schema.Types.Object-id
 
@@ -23,12 +24,7 @@ Article-schema = new mongoose.Schema {
        type: 'String',
        require: true
     },
-    comments: [{
-        content: String,
-        commentor: {type: Object-id, ref: 'User'},
-        reply-to: {type: Object-id, ref: 'User'},
-        comment-at: Date
-    }]
+    comments: [Comment]
 }
 
 Article-model = mongoose.model 'Article', Article-schema
@@ -62,22 +58,17 @@ Article-model.updateContent = (id, content, callback)!->
         else
             callback 1, null
 
-Article-model.add-comment = (id, content, commentor, reply-to, callback)!->
+Article-model.add-comment = (content, commentor, callback)!->
     Article-model.find-one {_id: id}, (err, article)!->
         if err
-            callback(0, null)
+            callback(1, null)
         else
             if article
-                new-coment = {
-                    content: content,
-                    commentor: commentor,
-                    reply-to: reply-to,
-                    comment-at: new Date()
-                }
-                article.comments.push new-content
-                article.save callback
+                Comment.add-comment content, commentor, null, callback, (err, comment)!->
+                article.comments.push comment
+                callback 0, comment
             else
-                callback 0, null
+                callback 1, null
 
 Article-model.get-comments = (id, callback)!->
     Article-model.find-one {_id, id}, (err, article)!->

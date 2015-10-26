@@ -16,6 +16,8 @@
     margin-right: 10%; }
     #articles-main #article-list .article {
       margin: 2% 10%; }
+      #articles-main #article-list .article .created-time {
+        float: right; }
 
 header#drawing-header {
   margin: 0 auto;

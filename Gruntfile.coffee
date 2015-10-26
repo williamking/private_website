@@ -66,14 +66,14 @@ module.exports = (grunt)->
                 'src/public/ls/*.ls'
                 'src/public/sass/*.sass'
             ]
-            tasks: ['livescript', 'sass', 'concat']
+            tasks: ['livescript', 'sass', 'concat', 'express']
         compile3:
             options:
                 spwan: false
             files: [
                 'src/views/*.jade'
             ]
-            tasks: ['copy', 'concat']    
+            tasks: ['copy', 'concat', 'express']
 
       express:
         dev:

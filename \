@@ -31,7 +31,7 @@ Article-schema = new mongoose.Schema {
        type: 'String',
        require: true
     },
-    comments: [mongoose.Schema.Types.Mixed]
+    comments: [Schema.Types.Mixed]
 }
 
 Article-model = mongoose.model 'Article', Article-schema

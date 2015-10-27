@@ -174,7 +174,7 @@
     };
     if (window.location.pathname === '/articles/create') {
       ue = UE.getEditor('article-content', {
-        toolbars: [['fullscreen', 'undo', 'redo', 'anchor', 'cleardoc', 'time', 'date', 'link', 'emotion', 'spechars', 'insertcode', 'source'], ['fontfamily', 'fontsize', 'forecolor', 'indent', 'italic', 'underline', 'strikethrough', 'fontborder', 'justifyleft', 'justifycenter', 'justifyright']],
+        toolbars: [['fullscreen', 'undo', 'redo', 'anchor', 'cleardoc', 'time', 'date', 'link', 'emotion', 'spechars', 'insertcode', 'source', 'snapscreen', 'simpleupload', 'insertimage'], ['fontfamily', 'fontsize', 'forecolor', 'indent', 'italic', 'underline', 'strikethrough', 'fontborder', 'justifyleft', 'justifycenter', 'justifyright']],
         initialFrameHeight: 500,
         initialFrameWidth: 800
       });

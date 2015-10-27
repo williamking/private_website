@@ -24,6 +24,7 @@ app.set 'view engine', 'jade'
 index = require './routes/index'
 labtory = require './routes/factory'
 articles = require './routes/articles'
+ue = require './routes/ue'
 
 ###
 #* use modules

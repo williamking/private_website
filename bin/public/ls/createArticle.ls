@@ -11,7 +11,7 @@ $ !->
         # Init the editor
         ue = UE.getEditor 'article-content', {
             toolbars: [
-                ['fullscreen', 'undo', 'redo', 'anchor', 'cleardoc', 'time', 'date', 'link', 'emotion', 'spechars', 'insertcode', 'source'],
+                ['fullscreen', 'undo', 'redo', 'anchor', 'cleardoc', 'time', 'date', 'link', 'emotion', 'spechars', 'insertcode', 'source', 'snapscreen' 'simpleupload', 'insertimage'],
                 ['fontfamily', 'fontsize', 'forecolor','indent', 'italic', 'underline', 'strikethrough', 'fontborder', 'justifyleft', 'justifycenter', 'justifyright']
             ],
             initialFrameHeight: 500,

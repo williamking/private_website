@@ -262,27 +262,27 @@ body {
     width: 70%; }
     body #main-content #index-main {
       border: 1px solid #e7e7e7; }
-  body footer {
+  body #footer {
     width: 100%;
     height: 100px;
     border-color: #e7e7e7;
     margin: 0 auto;
     overflow: hidden;
-    background-color: #f8f8f8; }
-    body footer #copy-right {
+    background-color: #ccddd7; }
+    body #footer #copy-right {
       display: inline-block;
       float: left;
       margin-left: 10%;
       margin-top: 2.5%;
       color: #0040ff; }
-    body footer #link {
+    body #footer #link {
       float: right;
       display: inline-block;
       margin-top: 2.5%; }
-      body footer #link ul {
+      body #footer #link ul {
         list-style: none; }
-        body footer #link ul li {
+        body #footer #link ul li {
           float: left;
           width: 200px; }
-          body footer #link ul li a {
+          body #footer #link ul li a {
             color: #0040ff; }

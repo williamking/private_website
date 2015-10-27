@@ -73,7 +73,7 @@ module.exports = (grunt)->
             files: [
                 'src/views/*.jade'
             ]
-            tasks: ['copy', 'concat', 'express']
+            task: ['copy', 'express']
 
       express:
         dev:

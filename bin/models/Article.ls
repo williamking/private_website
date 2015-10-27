@@ -1,14 +1,7 @@
 require! ['mongoose']
+Comment = require './Comment.js'
 
 Object-id = mongoose.Schema.Types.Object-id
-
-Comment-schema = new mongoose.Schema {
-    content: String,
-    commentor: String,
-    comment-at: { type: Date, default: Date.now }
-}
-
-Comment-model = mongoose.model 'Comment', Comment-schema
 
 Article-schema = new mongoose.Schema {
     title: {
@@ -31,7 +24,7 @@ Article-schema = new mongoose.Schema {
        type: 'String',
        require: true
     },
-    comments: [mongoose.Schema.Types.Mixed]
+    comments: [Comment]
 }
 
 Article-model = mongoose.model 'Article', Article-schema
@@ -65,30 +58,17 @@ Article-model.updateContent = (id, content, callback)!->
         else
             callback 1, null
 
-Article-model.add-comment = (id, content, commentor, series, callback)!->
+Article-model.add-comment = (content, commentor, callback)!->
     Article-model.find-one {_id: id}, (err, article)!->
         if err
-            callback(0, null)
+            callback(1, null)
         else
             if article
-                new-coment = {
-                    content: content,
-                    commentor: commentor,
-                    comment-at: new Date()
-                    replies: []
-                }
-                if (series != '')
-                    index = parse-int series[0]
-                    reply = article.comments[index]
-                    for num from 1 to series.length - 1
-                        index = parse-int series[num]
-                        reply = reply.replies[index]
-                    reply.replies.push new-content
-                else
-                    article.comments.push new-content
-                article.save callback
+                Comment.add-comment content, commentor, null, callback, (err, comment)!->
+                article.comments.push comment
+                callback 0, comment
             else
-                callback 0, null
+                callback 1, null
 
 Article-model.get-comments = (id, callback)!->
     Article-model.find-one {_id, id}, (err, article)!->

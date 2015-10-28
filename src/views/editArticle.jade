@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    div#main
+    div#edit-article-main
         header
             h1 编辑当前文章
             div.hz-line
@@ -15,5 +15,5 @@ block content
             div#artice-editor
                 script#article-content(type='text/plain' name='content')
                 script(type='text/javascript' src='/lib/utf8-php/ueditor.config.js')
-                script(type='text/javascript' src='/lib/utf8-php/ueditor.all.min.js')
+                script(type='text/javascript' src='/lib/utf8-php/ueditor.all.js')
             button#article-submit 提交

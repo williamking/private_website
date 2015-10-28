@@ -6,6 +6,7 @@ require! {express, http, path, 'cookie-parser', 'body-parser', mongoose, 'expres
 db = require './db.js'
 logger = require 'morgan'
 favicon = require 'static-favicon'
+busboy = require 'connect-busboy'
 mongoose.connect db.url
 
 app = express!
@@ -37,11 +38,14 @@ app.use bodyParser.json!
 app.use bodyParser.urlencoded!
 app.use cookieParser!
 app.use express.static path.join __dirname, 'public'
+root = path.resolve __dirname, '..'
+app.use express.static path.join root, 'resources'
 app.use expressSession {
     secret: 'mySecretKey'
     resave: yes
     saveUninitialized: yes
 }
+app.use busboy!
 
 ###
 #* use routes
@@ -50,6 +54,7 @@ app.use expressSession {
 app.use '/', index
 app.use '/lab', labtory
 app.use '/articles', articles
+app.use '/ue/uploads', ue
 
 app.use (req, res, next) ->
     err = new Error 'Not Found'

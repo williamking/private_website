@@ -259,6 +259,7 @@ body {
   body #main-content {
     background-color: white;
     margin: 0 auto;
+    padding: 2% 1%;
     width: 70%; }
     body #main-content #index-main {
       border: 1px solid #e7e7e7; }

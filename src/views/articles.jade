@@ -14,7 +14,9 @@ block content
                         h2
                             a(href="/articles/#{article._id}") #{article.title}
                         - var time = moment(article.createAt).format('MMM-D-YY')
-                        p.created-time #{article.author} created at #{time}
+                        div.time
+                            span.glyphicon.glyphicon-time(aria-hidden="true")
+                            p.created-time Created at #{time}
                     div.hz-line
             else
                 p 还没有任何文章哦

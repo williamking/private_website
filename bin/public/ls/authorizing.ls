@@ -1,14 +1,12 @@
 #    >Author: William
 #    >Email: williamjwking@gmail.com
 
+alert-message = (msg, callback)->
+    $('#authorize-message').find 'p' .text(msg)
+    $('#authorize-message').remove-class 'invisible' .remove-class 'extent-out-animate' .add-class 'extent-in-animate'
+    if callback then $('#authorize-message').find '.message-confirm' .click callback
 $ !->
     # Set the authorizing button
-
-    alert-message = (msg, callback)->
-        $('#authorize-message').find 'p' .text(msg)
-        $('#authorize-message').remove-class 'invisible' .remove-class 'extent-out-animate' .add-class 'extent-in-animate'
-        if callback then $('#authorize-message').find '.message-confirm' .click callback
-
     $('#profile-button').click !->
         window.location.href="/profile"
 

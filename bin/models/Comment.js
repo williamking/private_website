@@ -10,17 +10,38 @@
       type: Date,
       'default': Date.now
     },
-    replyTo: ObjectId
+    replyTo: {
+      type: ObjectId,
+      'default': null
+    }
   });
   CommentModel = mongoose.model('Comment', CommentSchema);
   CommentModel.addComment = function(content, commentor, replyTo, callback){
-    var newComment;
-    newComment = new CommentModel({
-      content: content,
-      commentor: commentor,
-      replyTo: replyTo
-    });
-    newComment.save(callback);
+    var newComment, func, func2;
+    if (replyTo !== null) {
+      newComment = new CommentModel({
+        content: content,
+        commentor: commentor,
+        replyTo: replyTo
+      });
+    } else {
+      newComment = new CommentModel({
+        content: content,
+        commentor: commentor
+      });
+    }
+    console.log(callback);
+    func = function(callback, newComment){
+      return function(err){
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, newComment);
+        }
+      };
+    };
+    func2 = func(callback, newComment);
+    newComment.save(func2);
   };
   CommentModel.findById(function(id, callback){
     CommentModel.findOne({

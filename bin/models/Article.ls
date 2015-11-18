@@ -40,6 +40,14 @@ Article-model.create-article = (title, content, author, category, secret, secret
     }
     article.save callback
 
+Article-model.add-comment = (id, comment, callback)!->
+    Article-model.find {_id: id}, (err, article)!->
+        if article
+            article.comments.push comment
+            article.save callback
+        else
+            callback(1)
+
 Article-model.find-index = (callback)!->
     Article-model.find {} .sort {'create-at': 1} .select('title author createAt').exec callback
 

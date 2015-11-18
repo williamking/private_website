@@ -46,6 +46,18 @@
     });
     article.save(callback);
   };
+  ArticleModel.addComment = function(id, comment, callback){
+    ArticleModel.find({
+      _id: id
+    }, function(err, article){
+      if (article) {
+        article.comments.push(comment);
+        article.save(callback);
+      } else {
+        callback(1);
+      }
+    });
+  };
   ArticleModel.findIndex = function(callback){
     ArticleModel.find({}).sort({
       'create-at': 1

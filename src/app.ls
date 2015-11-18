@@ -26,6 +26,7 @@ index = require './routes/index'
 labtory = require './routes/factory'
 articles = require './routes/articles'
 ue = require './routes/ue'
+comment = require './routes/comment'
 
 ###
 #* use modules
@@ -55,6 +56,7 @@ app.use '/', index
 app.use '/lab', labtory
 app.use '/articles', articles
 app.use '/ue/uploads', ue
+app.use '/comment', comment
 
 app.use (req, res, next) ->
     err = new Error 'Not Found'

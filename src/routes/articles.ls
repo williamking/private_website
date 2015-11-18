@@ -49,6 +49,7 @@ router.get '/:id', (req, res)!->
 
 router.get '/edit/:id', (req, res)!->
     id = mongoose.Types.ObjectId req.params.id
+    console.log id
     Article.find-by-id id, (err, article)!->
         if err
             res.send 'Server error!'

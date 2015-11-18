@@ -16,9 +16,59 @@
     margin-right: 10%; }
     #articles-main #article-list .article {
       overflow: hidden;
-      margin: 2% 10%; }
-      #articles-main #article-list .article .created-time {
-        float: right; }
+      margin: 2% 10%;
+      position: relative; }
+      #articles-main #article-list .article h2 {
+        display: inline-block; }
+      #articles-main #article-list .article .time {
+        float: right;
+        position: absolute;
+        right: 1%;
+        bottom: 0;
+        color: #999999; }
+        #articles-main #article-list .article .time p {
+          display: inline;
+          margin-left: 5px; }
+
+#child-article-main h1 {
+  color: #337ab7;
+  text-align: center;
+  font-size: 40pt; }
+#child-article-main #article-main {
+  min-height: 600px; }
+  #child-article-main #article-main header {
+    text-align: right;
+    margin: 0 2%; }
+  #child-article-main #article-main div.article-content {
+    margin: 2% 10%;
+    font-size: 30px; }
+#child-article-main .create-comment {
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%; }
+  #child-article-main .create-comment header h3 {
+    padding-left: 2%;
+    padding-right: 2%; }
+  #child-article-main .create-comment #comment-block {
+    margin: 5% 5%; }
+    #child-article-main .create-comment #comment-block #comment-editor {
+      display: inline-block; }
+    #child-article-main .create-comment #comment-block .commenter-info {
+      display: inline-block;
+      width: 22%;
+      height: 282px;
+      margin-left: 1%;
+      padding-top: 10%;
+      float: right; }
+      #child-article-main .create-comment #comment-block .commenter-info #commentor {
+        display: block;
+        width: 100%;
+        height: 30px; }
+      #child-article-main .create-comment #comment-block .commenter-info button#comment-submit {
+        float: right;
+        margin-top: 5%;
+        width: 100px;
+        height: auto; }
 
 #edit-article-main {
   width: 100%; }

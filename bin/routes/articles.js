@@ -73,6 +73,7 @@
   router.get('/edit/:id', function(req, res){
     var id;
     id = mongoose.Types.ObjectId(req.params.id);
+    console.log(id);
     Article.findById(id, function(err, article){
       if (err) {
         res.send('Server error!');

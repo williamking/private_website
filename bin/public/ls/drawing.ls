@@ -9,6 +9,31 @@ $ ->
         canvas[0].height = 600
         canvas[0].width = 800
 
+        Text-cursor = (width, fill-style)!->
+            this.fill-style = fill-style || 'rgba(0, 0, 0, 0.5)'
+            this.width = width / 2
+            this.left = 0
+            this.top = 0
+
+        Text-cursor.prototype =
+            get-height: (context)->
+                h = context.measure-text 'W' , width
+                return h + h / 6
+            ,
+            craete-path: (context)!->
+                context.begin-path!
+                context.rect this.left, this.top, this.width, this.width, this.get-height context
+            ,
+            draw: (context, left, bottom)!->
+                context.save!
+                this.left = left
+                this.top = bottom - this.fill-style
+                context.fill!
+                context.restore!
+            ,
+            erase: (context, image-data)!->
+                context.put-image-data image-data, 0, 0, this.left, this.top, this.width, this.get-height context
+
         # Transfer the position in window to that in canvas
         window-to-canvas = (canvas, x, y)->
 
@@ -79,6 +104,8 @@ $ ->
             this.BUTTON_BACKGROUND_STYLE = '#eeeeee'
             this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)'
             this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)'
+            # Text cursor
+            this.text-cursor = new Text-cursor!
             # Polygon
             this.polygon-list = []
             this.Polygon = (center-x, center-y, radius, sides, start-angle, stroke-style, fill-style, filled, dashed)!->
@@ -260,6 +287,18 @@ $ ->
                 frame.context.stroke!
             , (frame)!->
                 frame.mode = 'bezier'
+            this.add-button 'text', false, (frame)!->
+                width = frame.BUTTON_WIDTH
+                context = frame.context
+                context.save!
+                context.begin-path!
+                context.font = 'italic 20px monaco'
+                context.text-align = 'start'
+                context.fill-style = 'cornflowerblue'
+                context.fillText 'T', this.originX + width/2 - 6, this.originY + width/2 + 6
+                context.restore!
+            , (frame)!->
+                frame.mode = 'text'
 
             this.update-buttons!
 
@@ -292,6 +331,8 @@ $ ->
                     i-frame.save-drawing-surface!
                 if i-frame.mode is 'pencil' then
                     i-frame.context.begin-path!
+                if i-frame.mode is 'text' then
+                    i-frame.move-cursor loc
 
             iFrame.listener.add-event i-frame.originX, i-frame.origin-y, i-frame.width,
             iFrame.height, 'mousemove', (e, loc)!->
@@ -332,6 +373,10 @@ $ ->
 
 
                 i-frame.dragging = false
+
+        # Process of the text
+        drawing-frame.prototype.move-cursor = (loc)!->
+            this.text-cursor.draw this.context, loc.x, loc.y
 
         # Store the drawing surface
         drawing-frame.prototype.save-drawing-surface = !->

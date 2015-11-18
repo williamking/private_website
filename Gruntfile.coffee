@@ -53,32 +53,21 @@ module.exports = (grunt)->
       watch:
         compile:
       	  options:
-      	    spawn: false
+      	      spawn: false
           files: [
+              'src/public/ls/*.ls'
+              'src/public/sass/*.sass'
               'src/routes/*.ls'
               'src/app.ls'
+              'src/views/*.jade'
           ]
-          tasks: ['livescript', 'copy', 'concat', 'express']
-        compile2:
-            options:
-                spwan: false
-            files: [
-                'src/public/ls/*.ls'
-                'src/public/sass/*.sass'
-            ]
-            tasks: ['livescript', 'sass', 'concat', 'express']
-        compile3:
-            options:
-                spwan: false
-            files: [
-                'src/views/*.jade'
-            ]
-            task: ['sass', 'copy', 'express']
+          tasks: ['clean', 'livescript', 'sass', 'copy', 'concat', 'express']
 
       express:
         dev:
           options:
             script: 'bin/app.js'
+            livereload: true
 
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-concat'

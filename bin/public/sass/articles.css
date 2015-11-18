@@ -15,6 +15,16 @@
     margin-right: 10%; }
     #articles-main #article-list .article {
       overflow: hidden;
-      margin: 2% 10%; }
-      #articles-main #article-list .article .created-time {
-        float: right; }
+      margin: 2% 10%;
+      position: relative; }
+      #articles-main #article-list .article h2 {
+        display: inline-block; }
+      #articles-main #article-list .article .time {
+        float: right;
+        position: absolute;
+        right: 1%;
+        bottom: 0;
+        color: #999999; }
+        #articles-main #article-list .article .time p {
+          display: inline;
+          margin-left: 5px; }

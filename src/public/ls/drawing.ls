@@ -11,23 +11,24 @@ $ ->
 
         Text-cursor = (width, fill-style)!->
             this.fill-style = fill-style || 'rgba(0, 0, 0, 0.5)'
-            this.width = width / 2
+            this.width = width || 2
             this.left = 0
             this.top = 0
 
         Text-cursor.prototype =
             get-height: (context)->
-                h = context.measure-text 'W' , width
+                h = context.measure-text 'W' .width
                 return h + h / 6
             ,
-            craete-path: (context)!->
+            create-path: (context)!->
                 context.begin-path!
-                context.rect this.left, this.top, this.width, this.width, this.get-height context
+                context.rect this.left, this.top, this.width, this.getHeight(context)
             ,
             draw: (context, left, bottom)!->
                 context.save!
                 this.left = left
-                this.top = bottom - this.fill-style
+                this.top = bottom - this.get-height context
+                this.create-path context
                 context.fill!
                 context.restore!
             ,
@@ -106,6 +107,7 @@ $ ->
             this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)'
             # Text cursor
             this.text-cursor = new Text-cursor!
+            this.blinking-interval = false
             # Polygon
             this.polygon-list = []
             this.Polygon = (center-x, center-y, radius, sides, start-angle, stroke-style, fill-style, filled, dashed)!->
@@ -376,7 +378,22 @@ $ ->
 
         # Process of the text
         drawing-frame.prototype.move-cursor = (loc)!->
+            this.text-cursor.erase this.context, this.drawing-surface-data
             this.text-cursor.draw this.context, loc.x, loc.y
+            if not this.blinking-interval
+                this.blink-cursor loc
+
+        drawing-frame.prototype.blink-cursor = (loc)!->
+            that = this
+            context = this.context
+            func = (context, cursor, drawing-surface-data)->
+               (e)!->
+                    cursor.erase context, drawing-surface-data
+                    func2 = (context, cursor)->
+                        (e)!->
+                            cursor.draw context, cursor.left, cursor.top + cursor.get-height context
+                    set-timeout func2(context, cursor), 500
+            this.blinking-interval = set-interval func(this.context, this.text-cursor, this.drawing-surface-data), 500
 
         # Store the drawing surface
         drawing-frame.prototype.save-drawing-surface = !->

@@ -267,24 +267,25 @@
       canvas[0].width = 800;
       TextCursor = function(width, fillStyle){
         this.fillStyle = fillStyle || 'rgba(0, 0, 0, 0.5)';
-        this.width = width / 2;
+        this.width = width || 2;
         this.left = 0;
         this.top = 0;
       };
       TextCursor.prototype = {
         getHeight: function(context){
           var h;
-          h = context.measureText('W', width);
+          h = context.measureText('W').width;
           return h + h / 6;
         },
-        craetePath: function(context){
+        createPath: function(context){
           context.beginPath();
-          context.rect(this.left, this.top, this.width, this.width, this.getHeight(context));
+          context.rect(this.left, this.top, this.width, this.getHeight(context));
         },
         draw: function(context, left, bottom){
           context.save();
           this.left = left;
-          this.top = bottom - this.fillStyle;
+          this.top = bottom - this.getHeight(context);
+          this.createPath(context);
           context.fill();
           context.restore();
         },
@@ -360,6 +361,7 @@
         this.BUTTON_BORDER_STROKE_STYLE = 'rgb(100, 140, 230)';
         this.BUTTON_STROKE_STYLE = 'rgb(100, 140, 230, 0.5)';
         this.textCursor = new TextCursor();
+        this.blinkingInterval = false;
         this.polygonList = [];
         this.Polygon = function(centerX, centerY, radius, sides, startAngle, strokeStyle, fillStyle, filled, dashed){
           this.Point = function(x, y){
@@ -650,7 +652,29 @@
         });
       };
       drawingFrame.prototype.moveCursor = function(loc){
+        this.textCursor.erase(this.context, this.drawingSurfaceData);
         this.textCursor.draw(this.context, loc.x, loc.y);
+        if (!this.blinkingInterval) {
+          this.blinkCursor(loc);
+        }
+      };
+      drawingFrame.prototype.blinkCursor = function(loc){
+        var that, context, func;
+        that = this;
+        context = this.context;
+        func = function(context, cursor, drawingSurfaceData){
+          return function(e){
+            var func2;
+            cursor.erase(context, drawingSurfaceData);
+            func2 = function(context, cursor){
+              return function(e){
+                cursor.draw(context, cursor.left, cursor.top + cursor.getHeight(context));
+              };
+            };
+            setTimeout(func2(context, cursor), 500);
+          };
+        };
+        this.blinkingInterval = setInterval(func(this.context, this.textCursor, this.drawingSurfaceData), 500);
       };
       drawingFrame.prototype.saveDrawingSurface = function(){
         this.drawingSurfaceData = this.context.getImageData(this.originX, this.originY, this.width, this.height);

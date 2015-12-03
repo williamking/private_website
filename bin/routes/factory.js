@@ -16,5 +16,8 @@
   router2.get('/threejs', function(req, res){
     res.render('3dworld');
   });
+  router2.get('/imageprocess', function(req, res){
+    res.render('imageProcess');
+  });
   module.exports = router2;
 }).call(this);

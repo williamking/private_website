@@ -1,0 +1,8 @@
+#image-process {
+  text-align: center; }
+  #image-process #image-shower {
+    height: 800px;
+    width: 1200px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: aquamarine; }

@@ -15,4 +15,7 @@ router2.get '/drawing', (req, res)!->
 router2.get '/threejs', (req, res)!->
     res.render '3dworld'
 
+router2.get '/imageprocess', (req, res)!->
+    res.render 'imageProcess'
+
 module.exports = router2

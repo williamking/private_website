@@ -58,7 +58,7 @@
     });
   }
   app.listen(3000, function(){
-    return console.log('Express listening on port 3000');
+    console.log('Listen to port 3000');
   });
   exports = module.exports = app;
 }).call(this);

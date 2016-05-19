@@ -2,34 +2,26 @@
   from {
     width: 0px;
     height: 0px; }
-
   to {
     width: 500px;
     height: default; } }
-
 @keyframes extent-in {
   from {
     width: 0px;
     height: 0px; }
-
   to {
     width: 500px;
     height: default; } }
-
 @keyframes fade-in {
   from {
     opacity: 0; }
-
   to {
     opacity: auto; } }
-
 @-webkit-keyframes fade-in {
   from {
     opacity: 0; }
-
   to {
     opacity: default; } }
-
 .extent-in-animate {
   animation: extent-in 0.5s forwards;
   -webkit-animation: extent-in 0.5s forwards; }
@@ -41,34 +33,26 @@
   from {
     width: 500px;
     height: default; }
-
   to {
     width: 0px;
     height: 0px; } }
-
 @keyframes extent-out {
   from {
     width: 500px;
     height: default; }
-
   to {
     width: 0px;
     height: 0px; } }
-
 @keyframes fade-out {
   from {
     opacity: default; }
-
   to {
     opacity: 0; } }
-
 @-webkit-keyframes fade-out {
   from {
     opacity: default; }
-
   to {
     opacity: 0; } }
-
 .extent-out-animate {
   animation: extent-out 0.5s forwards;
   -webkit-animation: extent-out 0.5s forwards; }
@@ -79,17 +63,13 @@
 @keyframes nav-fade-in {
   from {
     opacity: 0; }
-
   to {
     opacity: 0.5; } }
-
 @-webkit-keyframes nav-fade-in {
   from {
     opacity: 0; }
-
   to {
     opacity: 0.5; } }
-
 .list-frame:hover {
   animation: nav-fade-in 0.5s forwards;
   -webkit-animation: nav-fade-in 0.5s forwards; }
@@ -112,7 +92,7 @@ body {
       height: 300px;
       width: auto;
       margin: 0 auto;
-      background-image: url("../images/layouts/header.jpg");
+      background-image: url("../resources/images/layouts/header.jpg");
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain; }
@@ -124,16 +104,22 @@ body {
       width: 300px; }
     body div#head nav#navigator {
       height: 15%;
-      padding-left: 20%;
-      padding-right: 35%;
       margin: 0 auto;
       font-size: 20px;
       background-color: darkgrey; }
+      body div#head nav#navigator #nav-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; }
+      body div#head nav#navigator #brand-wrapper {
+        margin-left: 15%;
+        overflow: hidden;
+        display: inline-block; }
+        body div#head nav#navigator #brand-wrapper .navbar-brand {
+          background-color: #8f74f2;
+          border-radius: 5px; }
       body div#head nav#navigator .container-field {
         height: 100%; }
-      body div#head nav#navigator .navbar-brand {
-        background-color: #8f74f2;
-        border-radius: 5px; }
       body div#head nav#navigator .container-header span.navbar-brand {
         font-size: 20px; }
       body div#head nav#navigator ul.nav.navbar-nav {
@@ -165,11 +151,9 @@ body {
         display: inline-block;
         float: right;
         position: relative;
-        left: 40%;
-        padding-top: 1%; }
+        margin-right: 15%; }
         body div#head nav#navigator .authorize button {
-          margin-left: 5px;
-          width: 80px; }
+          margin-left: 5px; }
       body div#head nav#navigator #authorize-message {
         z-index: 1000 !important;
         position: fixed;
@@ -191,7 +175,7 @@ body {
           width: 90%; }
           body div#head nav#navigator #authorize-message header h4 {
             display: inline-block;
-            color: #3388ff; }
+            color: #38f; }
           body div#head nav#navigator #authorize-message header button {
             float: right; }
         body div#head nav#navigator #authorize-message #message-content {
@@ -230,7 +214,7 @@ body {
           width: 90%; }
           body div#head nav#navigator #login #login-header h4 {
             display: inline-block;
-            color: #3388ff; }
+            color: #38f; }
           body div#head nav#navigator #login #login-header button {
             float: right; }
       body div#head nav#navigator #register {
@@ -253,11 +237,11 @@ body {
           width: 90%; }
           body div#head nav#navigator #register #register-header h4 {
             display: inline-block;
-            color: #3388ff; }
+            color: #38f; }
           body div#head nav#navigator #register #register-header button {
             float: right; }
   body #main-content {
-    background-color: white;
+    background-color: #FFF;
     margin: 0 auto;
     padding: 2% 1%;
     width: 70%; }
@@ -287,3 +271,5 @@ body {
           width: 200px; }
           body #footer #link ul li a {
             color: #0040ff; }
+
+/*# sourceMappingURL=layout.css.map */

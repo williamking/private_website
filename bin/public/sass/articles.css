@@ -24,7 +24,9 @@
         position: absolute;
         right: 1%;
         bottom: 0;
-        color: #999999; }
+        color: #999; }
         #articles-main #article-list .article .time p {
           display: inline;
           margin-left: 5px; }
+
+/*# sourceMappingURL=articles.css.map */

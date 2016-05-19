@@ -1,4 +1,6 @@
-module.exports = (grunt)-> 
+webpackConfig = require './bin/webpack.js'
+
+module.exports = (grunt)->
 	grunt.initConfig
       pkg: grunt.file.readJSON 'package.json'
 
@@ -6,7 +8,7 @@ module.exports = (grunt)->
         bin:
           files: [
             expand: true,
-            src: 'bin/*'
+            src: ['bin/*', '!bin/node_modules/*']
           ]
 
       copy:
@@ -14,7 +16,7 @@ module.exports = (grunt)->
           files: [
             expand: true,
             cwd: 'src',
-            src: ['**/*.*', '!**/*.{sass, ls}', '!*.{sass, ls}'],
+            src: ['node_modules/**', 'public/lib/**', 'views/**'],
             dest: 'bin/'
           ]
 
@@ -30,12 +32,20 @@ module.exports = (grunt)->
 
       livescript:
         dist:
-          files: [
+          files: [{
             expand: true,
             cwd: 'src',
             src: ['public/**/*.ls', 'routes/**/*.ls', 'models/*.ls', '*.ls']
             dest: 'bin/',
             ext: '.js'
+            },
+            {
+            expand: true,
+            cwd: '',
+            src: ['*.ls']
+            dest: 'bin/',
+            ext: '.js'
+            },
           ]
 
       concat:
@@ -58,10 +68,14 @@ module.exports = (grunt)->
               'src/public/ls/*.ls'
               'src/public/sass/*.sass'
               'src/routes/*.ls'
-              'src/app.ls'
+              'app.ls'
+              'src/models/*.ls'
               'src/views/*.jade'
           ]
           tasks: ['clean', 'livescript', 'sass', 'copy', 'concat', 'express']
+
+      webpack:
+        webpackConfig
 
       express:
         dev:
@@ -79,5 +93,6 @@ module.exports = (grunt)->
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-express-server'
     grunt.loadNpmTasks 'grunt-livescript'
+    grunt.loadNpmTasks 'grunt-webpack'
 
     grunt.registerTask 'default', ['clean', 'livescript', 'sass', 'copy', 'concat', 'express', 'watch']

@@ -14,13 +14,23 @@ html(lang="zh-CN")
             canvas#clock(width="300" height="300")
             div#left
             div#banner
-            div#clock-image
+            //div#clock-image
             nav(id= "navigator")
                 div.container-fluid
-                    div
-                        span.navbar-brand
-                            |Navigator
-                    div
+                    div#nav-header
+                        div#brand-wrapper
+                            span.navbar-brand
+                                |Navigator
+                            ul.nav.navbar-nav.navigator
+                                li  
+                                    div.list-frame
+                                    a(href= "/") index
+                                li 
+                                    a(href= "/articles") article
+                                li 
+                                    a(href= "/photo") photo
+                                li  
+                                    a(href= "/lab") labtory
                         div.authorize
                             if user
                                 p Welcome, #{username}
@@ -29,16 +39,6 @@ html(lang="zh-CN")
                             else
                                 button#login-button.btn.btn-primary Login
                                 button#register-button.btn.btn-success Register
-                        ul.nav.navbar-nav.navigator
-                            li  
-                                div.list-frame
-                                a(href= "/") index
-                            li 
-                                a(href= "/articles") article
-                            li 
-                                a(href= "/photo") photo
-                            li  
-                                a(href= "/lab") labtory
 
                     div#authorize-message.animate.invisible.modal2
                         header
@@ -113,4 +113,5 @@ html(lang="zh-CN")
                         a(href= "http://weibo.com/p/1005051899517750/home?from=page_100505&mod=TAB#place") My MicroBlog
                     li
                         a(href= "mailto:williamjwking@gmail.com") My email
+        block react
         

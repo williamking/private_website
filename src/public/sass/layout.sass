@@ -132,7 +132,7 @@ body
             height: 300px
             width: auto
             margin: 0 auto
-            background-image: url("../images/layouts/header.jpg")
+            background-image: url("../resources/images/layouts/header.jpg")
             background-repeat: no-repeat
             background-position: center
             background-size: contain
@@ -144,16 +144,22 @@ body
             width: 300px
         nav#navigator
             height: 15%
-            padding-left: 20%
-            padding-right: 35%
             margin: 0 auto
             font-size: 20px
             background-color: darkgrey
+            #nav-header
+                display: flex
+                align-items: center
+                justify-content: space-between
+            #brand-wrapper
+                margin-left: 15%
+                overflow: hidden
+                display: inline-block
+                .navbar-brand
+                    background-color: rgb(143, 116, 242)
+                    border-radius: 5px
             .container-field
                 height: 100%
-            .navbar-brand
-                background-color: rgb(143, 116, 242)
-                border-radius: 5px
             .container-header
                 span.navbar-brand
                     font-size: 20px
@@ -187,11 +193,9 @@ body
                 display: inline-block
                 float: right
                 position: relative
-                left: 40%
-                padding-top: 1%
+                margin-right: 15%
                 button
                     margin-left: 5px
-                    width: 80px
 
             #authorize-message
                 z-index: 1000!important

@@ -14,7 +14,9 @@ div#drawing-canvas {
       margin-right: 10px; }
   div#drawing-canvas canvas#canvas {
     margin: 10%;
-    background: white;
+    background: #ffffff;
     border: thin inset #aaaaaa;
     width: 80%;
     height: 50%; }
+
+/*# sourceMappingURL=drawing.css.map */

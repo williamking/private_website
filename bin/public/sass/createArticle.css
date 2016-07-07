@@ -1,0 +1,36 @@
+#edit-article-main {
+  width: 100%; }
+  #edit-article-main header h1 {
+    text-align: center; }
+  #edit-article-main #article-form {
+    margin: 0 auto; }
+    #edit-article-main #article-form .title {
+      height: 40px;
+      width: 500px;
+      border-radius: 5px;
+      font-size: 20px;
+      margin: 2% auto;
+      display: block;
+      text-align: center; }
+    #edit-article-main #article-form header {
+      margin-top: 1%;
+      text-align: center;
+      overflow: hidden; }
+      #edit-article-main #article-form header .secret, #edit-article-main #article-form header .pswd {
+        margin-right: 2%; }
+    #edit-article-main #article-form #article-editor {
+      text-align: center;
+      width: 80%;
+      margin: 2% auto; }
+      #edit-article-main #article-form #article-editor #article-content {
+        text-align: left;
+        width: 100%; }
+        #edit-article-main #article-form #article-editor #article-content * {
+          margin: 0 auto; }
+      #edit-article-main #article-form #article-editor #article-submit {
+        margin: 1% auto;
+        height: 40px;
+        width: 80px;
+        font-size: 20px; }
+
+/*# sourceMappingURL=createArticle.css.map */

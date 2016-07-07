@@ -1,0 +1,32 @@
+#articles-main {
+  padding: 2%; }
+  #articles-main header.articles-header {
+    margin-left: 10%;
+    margin-right: 10%; }
+    #articles-main header.articles-header h1 {
+      margin-top: 2%;
+      display: inline-block; }
+    #articles-main header.articles-header button {
+      margin-top: 2%;
+      float: right;
+      margin: 20px 0; }
+  #articles-main #article-list {
+    margin-left: 10%;
+    margin-right: 10%; }
+    #articles-main #article-list .article {
+      overflow: hidden;
+      margin: 2% 10%;
+      position: relative; }
+      #articles-main #article-list .article h2 {
+        display: inline-block; }
+      #articles-main #article-list .article .time {
+        float: right;
+        position: absolute;
+        right: 1%;
+        bottom: 0;
+        color: #999; }
+        #articles-main #article-list .article .time p {
+          display: inline;
+          margin-left: 5px; }
+
+/*# sourceMappingURL=articles.css.map */

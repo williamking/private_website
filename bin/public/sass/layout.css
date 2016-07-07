@@ -2,34 +2,26 @@
   from {
     width: 0px;
     height: 0px; }
-
   to {
     width: 500px;
     height: default; } }
-
 @keyframes extent-in {
   from {
     width: 0px;
     height: 0px; }
-
   to {
     width: 500px;
     height: default; } }
-
 @keyframes fade-in {
   from {
     opacity: 0; }
-
   to {
     opacity: auto; } }
-
 @-webkit-keyframes fade-in {
   from {
     opacity: 0; }
-
   to {
     opacity: default; } }
-
 .extent-in-animate {
   animation: extent-in 0.5s forwards;
   -webkit-animation: extent-in 0.5s forwards; }
@@ -41,34 +33,26 @@
   from {
     width: 500px;
     height: default; }
-
   to {
     width: 0px;
     height: 0px; } }
-
 @keyframes extent-out {
   from {
     width: 500px;
     height: default; }
-
   to {
     width: 0px;
     height: 0px; } }
-
 @keyframes fade-out {
   from {
     opacity: default; }
-
   to {
     opacity: 0; } }
-
 @-webkit-keyframes fade-out {
   from {
     opacity: default; }
-
   to {
     opacity: 0; } }
-
 .extent-out-animate {
   animation: extent-out 0.5s forwards;
   -webkit-animation: extent-out 0.5s forwards; }
@@ -127,7 +111,7 @@ body {
         width: 90%; }
         body header#head nav#navigator #authorize-message header h4 {
           display: inline-block;
-          color: #3388ff; }
+          color: #38f; }
         body header#head nav#navigator #authorize-message header button {
           float: right; }
       body header#head nav#navigator #authorize-message #message-content {
@@ -166,7 +150,7 @@ body {
         width: 90%; }
         body header#head nav#navigator #login #login-header h4 {
           display: inline-block;
-          color: #3388ff; }
+          color: #38f; }
         body header#head nav#navigator #login #login-header button {
           float: right; }
     body header#head nav#navigator #register {
@@ -189,11 +173,11 @@ body {
         width: 90%; }
         body header#head nav#navigator #register #register-header h4 {
           display: inline-block;
-          color: #3388ff; }
+          color: #38f; }
         body header#head nav#navigator #register #register-header button {
           float: right; }
   body #main-content {
-    background-color: white;
+    background-color: #FFF;
     margin: 0 auto;
     width: 70%; }
   body footer {
@@ -220,3 +204,5 @@ body {
           width: 200px; }
           body footer #link ul li a {
             color: #0040ff; }
+
+/*# sourceMappingURL=layout.css.map */

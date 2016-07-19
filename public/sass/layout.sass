@@ -1,0 +1,267 @@
+//mixins
+@mixin modal
+    position: fixed
+    left: 56%
+    top: 50%
+    border-radius: 6px
+    border: 1px solid rgba(0, 0, 0, 0.2)
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5)
+    border-width: 1px
+    margin-left: -20%
+    margin-top: -12.5%
+    width: 50%
+    padding: 10px
+    z-index: 2
+    background-color: white
+    transition: 1s
+
+@mixin modal-header
+    margin: 0 auto
+    width: 90%
+    h4
+        display: inline-block
+        color: #38f
+    button
+        float: right
+
+//animate
+
+@-webkit-keyframes extent-in
+    from
+        width: 0px
+        height: 0px
+    to
+        width: 500px
+        height: default
+@keyframes extent-in
+    from
+        width: 0px
+        height: 0px
+    to
+        width: 500px
+        height: default
+
+@keyframes fade-in
+    from
+        opacity: 0
+    to
+        opacity: auto
+
+@-webkit-keyframes fade-in
+    from
+        opacity: 0
+    to
+        opacity: default
+
+//global classes
+
+.extent-in-animate
+    animation: extent-in 0.5s forwards
+    -webkit-animation: extent-in 0.5s forwards
+    *
+        animation: fade-in 0.5s forwards
+        -webkit-animation: fade-in 0.5s forwards
+
+@-webkit-keyframes extent-out
+    from
+        width: 500px
+        height: default
+    to
+        width: 0px
+        height: 0px
+@keyframes extent-out
+    from
+        width: 500px
+        height: default
+    to
+        width: 0px
+        height: 0px
+
+@keyframes fade-out
+    from
+        opacity: default
+    to
+        opacity: 0
+
+@-webkit-keyframes fade-out
+    from
+        opacity: default
+    to
+        opacity: 0
+
+.extent-out-animate
+    animation: extent-out 0.5s forwards
+    -webkit-animation: extent-out 0.5s forwards
+    *
+        animation: fade-out 0.5s forwards
+        -webkit-animation: fade-out 0.5s forwards
+
+@keyframes nav-fade-in
+    from
+        opacity: 0
+    to
+        opacity: 0.5
+
+@-webkit-keyframes nav-fade-in
+    from
+        opacity: 0
+    to
+        opacity: 0.5
+
+.list-frame:hover
+    animation: nav-fade-in 0.5s forwards
+    -webkit-animation: nav-fade-in 0.5s forwards
+
+body
+    //background: url("../images/layouts/body-background.jpg")
+    //background-repeat: no-repeat
+    background-color: aliceblue !important
+    background-size: cover
+    height: 100%
+    div#head
+        width: 100%
+        height: auto
+        background-color: mintcream
+        position: relative
+        #clock
+            display: none
+            width: 300px
+            height: 300px
+        #banner
+            display: block
+            height: 300px
+            width: auto
+            margin: 0 auto
+            background-image: url("../resources/images/layouts/header.jpg")
+            background-repeat: no-repeat
+            background-position: center
+            background-size: contain
+        #clock-image
+            position: absolute
+            right: 10%
+            top: 0
+            height: 300px
+            width: 300px
+        nav#navigator
+            height: 15%
+            margin: 0 auto
+            font-size: 20px
+            background-color: darkgrey
+            #nav-header
+                display: flex
+                align-items: center
+                justify-content: space-between
+            #brand-wrapper
+                margin-left: 15%
+                overflow: hidden
+                display: inline-block
+                .navbar-brand
+                    background-color: rgb(143, 116, 242)
+                    border-radius: 5px
+            .container-field
+                height: 100%
+            .container-header
+                span.navbar-brand
+                    font-size: 20px
+            ul.nav.navbar-nav
+                float: right
+                position: relative
+                //z-index: -1
+                li.locking
+                    posiiton: absolute
+                    div.circle
+                        height: 50px
+                        width: 50px
+                        border-radius: 50%
+                        background-color: blue
+                .list-frame
+                    opacity: 0
+                    position: absolute
+                    height: 100%    
+                    width: 78px
+                    background-color: white
+                li
+                    position: relative
+                    margin-left: 30px
+                    z-index: 1
+                    a
+                        color: white
+                        z-index: 2
+                    a:hover
+                        color: darkgrey
+            .authorize
+                display: inline-block
+                float: right
+                position: relative
+                margin-right: 15%
+                button
+                    margin-left: 5px
+
+            #authorize-message
+                z-index: 1000!important
+                @include modal
+                header
+                    @include modal-header
+                #message-content
+                    width: 60%
+                    margin: 0 auto
+                    *
+                        margin: 5px auto
+                    p
+                        text-align: center
+                    button
+                        margin-left: 42%
+
+            .submit-buttons
+                button
+                    float: right
+                    margin-right: 10px
+                        
+            .input-group
+                margin-left: 10%
+                margin-bottom: 10px
+                width: 60%
+
+            #login
+                @include modal
+                #login-header
+                    @include modal-header
+
+            #register
+                @include modal
+                #register-header
+                    @include modal-header
+
+    #main-content
+        background-color: #FFF
+        margin: 0 auto
+        padding: 2% 1%
+        width: 70%
+        #index-main
+            border: 1px solid #e7e7e7
+
+    #footer
+        width: 100%
+        height: 100px
+        border-color: #e7e7e7
+        margin: 0 auto
+        overflow: hidden
+        background-color: rgb(204, 221, 215)
+        #copy-right
+            display: inline-block
+            float: left
+            margin-left: 10%
+            margin-top: 2.5%
+            color: #0040ff
+        #link
+            float: right
+            display: inline-block
+            margin-top: 2.5%
+            ul
+                list-style: none
+                li
+                    float: left
+                    width: 200px
+                    a
+                        color: #0040ff
+

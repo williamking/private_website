@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,cAAc;EACV,UAAU,EAAE,MAAM;EAClB,4BAAa;IACT,MAAM,EAAE,KAAK;IACb,KAAK,EAAE,MAAM;IACb,YAAY,EAAE,KAAK;IACnB,YAAY,EAAE,GAAG;IACjB,YAAY,EAAE,UAAU",
-"sources": ["../../../src/public/sass/imageProcess.sass"],
-"names": [],
-"file": "imageProcess.css"
-}

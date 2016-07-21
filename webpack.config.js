@@ -3,7 +3,8 @@
 module.exports = {
     watch: false,
     entry: {
-        'layout': __dirname + '/public/react_views/layout_v.jsx'
+        'layout': __dirname + '/src/public/react_views/layout_v.jsx',
+        'index': __dirname + '/src/public/react_views/index_v.jsx'
     },
     output: {
         path: __dirname + 'public/dist',
@@ -15,6 +16,7 @@ module.exports = {
             { test: /\.js$/, loader: 'babel-loader!jsx-loader?harmony', exclude: /node_modules/ },
             { test: /\.jsx$/, loader: 'babel-loader!jsx-loader?harmony', exclude: /node_modules/ },
             { test: /\.sass$/, loader: 'style!css!sass-loader' },
+            { test: /\.ttf$/, loader: 'url-loader', exclude: /node_modules/ },
         ],
     },
     resolve: {

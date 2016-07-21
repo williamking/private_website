@@ -1,33 +1,37 @@
 "use strict";
-
 const React = require("react");
 const ReactDOM = require("react-dom");
 require('../sass/header.sass');
-// require('../css/footer.css');
+require('../sass/footer.sass');
+require('../sass/base.sass');
 
-var Header = React.createClass({
+let Header = React.createClass({
 	getInitialState: function() {
 		return {
 			items: [
 			    {
 			    	name: 'Index',
 			    	url: '/',
-			    	className: 'index'
+			    	className: 'index',
+			    	icon: 'home'
 			    },
 			    {
 			    	name: 'Article',
 			    	url: '/article',
-			    	className: 'article'
+			    	className: 'article',
+			    	icon: 'book'
 			    },
 			    {
 			    	name: 'Photo',
 			    	url: '/photo',
-			    	className: 'photo'
+			    	className: 'photo',
+			    	icon: 'photo'
 			    },
 			    {
 			    	name: 'Lab',
 			    	url: '/lab',
-			    	className: 'lab'
+			    	className: 'lab',
+			    	icon: 'world'
 			    },
 			],
 
@@ -59,14 +63,14 @@ var Header = React.createClass({
                                 	);
                                 } else {
                                 	return [(
-                                		<a className="ui item login">Login</a>
+                                		<a className="ui item login" key="1">Login</a>
                                 	), (
-                                        <a className="ui item register">Register</a>
+                                        <a className="ui item register" key="2">Register</a>
                                 	)];
                                 }
                             })()}
     			        </div>
-    			    </nav>
+    			    </nav>	
 			    </div>
 			</div>
 		)
@@ -75,9 +79,13 @@ var Header = React.createClass({
     renderList: function() {
     	let list = [];
     	this.state.items.map((item, key) => {
-    		let className = 'item nav-item ' + item.className;
+    		let className = 'item nav-item ' + item.className,
+    		    iconClass = 'large ' + item.icon + ' icon'; 
     		list.push(
-    			<a className={ className } href={ item.url } key={ key }>{ item.name }</a>
+    			<a className={ className } href={ item.url } key={ key }>
+    			    <i className={ iconClass }></i>
+    			    { item.name }
+    			</a>
     		);
     	});
     	return list;
@@ -85,19 +93,57 @@ var Header = React.createClass({
 });
 
 var Footer = React.createClass({
+
+    getInitialState: function() {
+    	return {
+            links: [
+            {
+                url: 'https://github.com/williamking',
+                icon: 'github',
+                text: 'My github',
+                name: 'github'
+            },
+            {
+                url: 'mailto:williamjwking@gmail.com',
+                icon: 'mail',
+                text: 'My email',
+                name: 'email'       	
+            }
+            ]
+        };
+    },
+
 	render: function() {
+		let links = this.renderLinks();
 		return (
-			<div className="ui basic center aligned segment">
-			<a href="#">
-			<i className="info icon"/>
-			<span>About us</span>
-		</a>
-		<a href="#">
-			<i className="comment icon"/>
-			<span>Give us some advice</span>
-		</a>
+		<div className="ui basic center aligned segment" id="page-footer">
+		    <div id="copy-right">
+		        <p>
+		            Copyright <i className="copyright icon"></i>2016 William.D.King.
+		        </p>
+		    </div>
+		    <div id="other-link" className="ui horizontal divided list">
+                { links }
+		    </div>
 		</div>
 		);
+	},
+
+	renderLinks: function() {
+		let links = [];
+		this.state.links.map((link, key) => {
+            links.push(
+            <div className="item" key={ key }>
+                <i className={ link.icon + ' icon' + ' ui avatar'}></i>
+                <div className="content">
+                    <a href={ link.url } className={ link.name + '-link' }>
+                        <span>{ link.text }</span>
+                    </a>
+                </div>
+            </div>
+            );
+		});
+		return links;
 	}
 });
 

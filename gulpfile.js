@@ -21,7 +21,12 @@ gulp.task('webpack', () => {
 });
 
 gulp.task('copy', () => {
-    return gulp.src(['src/models*/*', 'src/routes*/*', 'src/public*/**/*', 'src/views*/*', 'src/views*/include*/*.pug', '!src/public*/reactviews*/*'])
+    return gulp.src(['src/models*/*',
+        'src/routes*/*',
+        'src/public*/**/*',
+        'src/views*/*',
+        'src/views*/include*/*.pug',
+        '!src/public*/react_views*/*'])
         .pipe(gulp.dest('./'));
 })
 

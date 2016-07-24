@@ -23,10 +23,12 @@ gulp.task('webpack', () => {
 gulp.task('copy', () => {
     return gulp.src(['src/models*/*',
         'src/routes*/*',
+        'src/routes*/**/*',
+        'src/routes*/routers*/api*/*',
         'src/public*/**/*',
         'src/views*/*',
-        'src/views*/include*/*.pug',
-        '!src/public*/react_views*/*'])
+        'src/views*/include*/*.pug'
+        ])
         .pipe(gulp.dest('./'));
 })
 
@@ -67,7 +69,9 @@ gulp.task('watch', () => {
 
     // watch back-end file
     gulp.watch(['src/models/*.js', 
-        'src/routes/*.js', 'src/routes/**/*.js'], gulpSync.sync(['copy', 'server-restart', 'reload']));
+        'src/routes/*.js',
+        'src/routes/**/*.js',
+        'src/routes/routers/api/*.js'], gulpSync.sync(['copy', 'server-restart', 'reload']));
 
 });
 

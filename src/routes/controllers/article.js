@@ -1,20 +1,85 @@
 const express = require('express'),
       bcrypt = require('bcrypt'),
-      mongoose = require('mongoose');
+      mongoose = require('mongoose'),
+      Promise = require('bluebird'),
+      fs = Promise.promisifyAll(require('fs'));
 
 const router = express.Router();
 // const requireLogin = require('./../authorization/authorize.js').requireLogin
 // const hasLogin = require('./../authorization/authorize.js').hasLogin
 
-Article = require('../../models/Article.js');
+const ArticleMode = {
+    file: Symbol(),
+    database: Symbol(),
+};
 
-exports.showMainPage =  (req, res) => {
-    res.render('articles')
+const dirPath = '/home/william/web-studying-note';
+
+let mode = ArticleMode.file;
+
+let Article = require('../../models/Article.js');
+
+/*
+ * 以下是自定义函数
+ *
+**/
+
+function getFileListFromLocal(dirPath) {
+    let list = [];
+
+    return fs.readdirAsync(dirPath).then((files) => {
+        let states = [];
+        files.forEach((file) => {
+            let pathName = dirPath + '/' + file,
+                fileState = fs.statAsync(pathName);
+            if (file == '.git') return;
+            states.push(fileState.then((stat) => {
+                // console.log(stat);
+                if (stat.isDirectory()) return getFileListFromLocal(pathName);
+                else return {
+                    title: file.split('.')[0],
+                    path: pathName,
+                    createTime: stat.birthtime,
+                    description: '自行想象'
+                };
+            }));
+            });
+        return Promise.all(states).then((results) => {
+            return  results.reduce((a,b) => {
+                if (Object.prototype.toString.call(a) != '[object Array]') {
+                    a = [a];
+                }
+                return a.concat(b);
+            });
+        });
+    })
 }
 
-exports.showCreatePage =  (req, res) => {
-    res.render('createArticle');
+/*
+ * 以下是页面路由函数
+ *
+**/
+
+exports.showMainPage = (req, res) => {
+    res.render('articles');
 }
+
+exports.showCreatePage = (req, res) => {
+    res.render('create_article');
+}
+
+exports.showEditPage = (req, res) => {
+    res.render('child_article');
+};
+
+exports.showDetailPage = (req, res) => {
+    res.render('article_content');
+};
+
+/*
+ * 以下是数据路由函数
+ *
+**/
 
 exports.handleCreate = (req, res) => {
     let [title, content, secret, category, secretPassword] = req.body
@@ -32,25 +97,36 @@ exports.handleCreate = (req, res) => {
     });
 };
 
-exports.handleGet = (req, res) => {
-    let id = mongoose.Types.ObjectId(req.params.id);
-    Article.findById(id, (err, article) => {
-        if (err) {
-            res.send('Server error!');
-            res.end();
-        }
-        else {
-            if (!article) {
-                res.send('Article not found!');
-                res.end();
-            }
-            else {
-                res.render('childArticle', {article: article});
-            }
-        }
-    });
+exports.getArticleList = (req, res) => {
+    // if (mode == ArticleMode.file) {
+    if (req.query.mode == 'file') {
+        getFileListFromLocal(dirPath).then((fileNames) => {
+            console.log(fileNames);
+            res.send(fileNames);
+        }) 
+    }
+
+    // let id = mongoose.Types.ObjectId(req.params.id);
+    // Article.findById(id, (err, article) => {
+    //     if (err) {
+    //         res.send('Server error!');
+    //         res.end();
+    //     }
+    //     else {
+    //         if (!article) {
+    //             res.send('Article not found!');
+    //             res.end();
+    //         }
+    //         else {
+    //             res.render('childArticle', {article: article});
+    //         }
+    //     }
+    // });
 };
 
-exports.handleEditPage = (req, res) => {
-    res.render('childArticle', {article: article});
-};
+exports.getOneArticleByFile = (req, res) => {
+    let path = req.query.path;
+    fs.readFileAsync(path, 'utf8').then((data) => {
+        res.send(data);
+    });
+}

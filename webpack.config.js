@@ -4,7 +4,9 @@ module.exports = {
     watch: false,
     entry: {
         'layout': __dirname + '/src/public/react_views/layout_v.jsx',
-        'index': __dirname + '/src/public/react_views/index_v.jsx'
+        'index': __dirname + '/src/public/react_views/index_v.jsx',
+        'articles': __dirname + '/src/public/react_views/articles_v.jsx',
+        'article_content': __dirname + '/src/public/react_views/article_content_v.jsx',
     },
     output: {
         path: __dirname + 'public/dist',

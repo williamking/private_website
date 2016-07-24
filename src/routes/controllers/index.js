@@ -5,7 +5,6 @@ const express = require('express');
 const User = require('../../models/User.js');
 
 exports.showIndexPage = (req, res) => {
-    console.log(req.session);
     res.render('index', {user: req.session.user, username: req.session.username});
 };
 

@@ -46,34 +46,52 @@
 
 	'use strict';
 
+	// React
+
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(176);
+	// css导入
+	__webpack_require__(172);
 
-	//components
-	const Info = __webpack_require__(178),
-	      RecentArticleList = __webpack_require__(181);
-
-	let Index = React.createClass({ displayName: "Index",
+	const ArticleList = React.createClass({ displayName: "ArticleList",
 	    getInitialState: function () {
 	        return {
-	            recentArticles: [],
-	            info: {
-	                '姓名': '王嘉威',
-	                '英文名': 'William.D.King',
-	                '爱好': 'ACG、音乐'
-	            }
+	            articleList: [{
+	                title: '论如何进入德国骨科',
+	                description: '一个妹控的感言'
+	            }, {
+	                title: 'gulp的配置和使用',
+	                description: '自行想象'
+	            }]
 	        };
 	    },
 
+	    componentDidMount: function () {
+	        $.get('/api/article?mode=file', function (list) {
+	            this.setState({
+	                articleList: list
+	            });
+	        }.bind(this));
+	    },
+
 	    render: function () {
-	        return React.createElement("div", { id: "index-container" }, React.createElement("div", { className: "content-row ui two column grid" }, React.createElement(Info, { data: this.state.info }), React.createElement("div", { className: "ui vertical divider" }), React.createElement(RecentArticleList, { data: this.state.recentArticles })));
+	        let list = this.renderList();
+	        return React.createElement("div", { className: "articles-wrapper column" }, React.createElement("div", { className: "articles-container" }, React.createElement("header", { className: "ui dividing header" }, "Recent Articles"), React.createElement("div", { className: "articles-list ui relaxed divided list" }, list)));
+	    },
+
+	    // 文章列表生成
+	    renderList: function () {
+	        let list = [];
+	        this.state.articleList.map(function (item, key) {
+	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large tag middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("a", { className: "header", href: "/article/file" }, item.title), React.createElement("div", { className: "description" }, item.description))));
+	        });
+	        return list;
 	    }
 	});
 
 	$(function () {
-	    ReactDOM.render(React.createElement(Index, null), $("#index")[0], null);
+	    ReactDOM.render(React.createElement(ArticleList, null), $("#articles-main")[0], null);
 	});
 
 /***/ },
@@ -21109,8 +21127,46 @@
 	module.exports = ReactMount.renderSubtreeIntoContainer;
 
 /***/ },
-/* 172 */,
-/* 173 */,
+/* 172 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(173);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(175)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./articles.sass", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./articles.sass");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 173 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(174)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "#articles-main {\n  padding: 24px;\n  min-height: 500px; }\n  #articles-main .articles-wrapper .articles-container header {\n    font-size: 30px;\n    color: #689dc5; }\n", ""]);
+
+	// exports
+
+
+/***/ },
 /* 174 */
 /***/ function(module, exports) {
 
@@ -21416,192 +21472,6 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
-
-
-/***/ },
-/* 176 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(177);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(175)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./index.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./index.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 177 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(174)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "#index-container {\n  padding: 24px 24px 24px 24px;\n  min-height: 500px; }\n  #index-container .content-row {\n    position: relative; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 178 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	const React = __webpack_require__(1);
-	const ReactDOM = __webpack_require__(33);
-	__webpack_require__(179);
-
-	module.exports = React.createClass({ displayName: "module.exports",
-		render: function () {
-			let info = this.renderInfo();
-			return React.createElement("div", { className: "person-info-wrapper column" }, React.createElement("div", { className: "person-info-container" }, React.createElement("header", { className: "ui dividing header" }, "Information"), React.createElement("div", { className: "person-info-detail ui list" }, info)));
-		},
-
-		renderInfo: function () {
-			let info = [];
-			console.log(this.props.data);
-			for (let key in this.props.data) {
-				let value = this.props.data[key];
-				info.push(React.createElement("div", { className: "person-info-item item", key: key }, React.createElement("div", { className: "key" }, key + ':'), React.createElement("div", { className: "middle aligned content" }, value)));
-			};
-			return info;
-		}
-	});
-
-/***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(180);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(175)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./info.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./info.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(174)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".person-info-wrapper .person-info-container {\n  padding: 10px 10px 10px 10px;\n  border: 2px solid #eeeeee;\n  border-radius: 5px; }\n\n.person-info-wrapper .person-info-detail .person-info-item .key {\n  padding: 4px 4px 4px 4px;\n  display: inline-block;\n  height: 28px;\n  line-height: 20px;\n  text-align: center;\n  vertical-align: middle;\n  background-color: rgba(97, 214, 68, 0.91);\n  border-radius: 2px;\n  margin-right: 5px;\n  color: #ffffff; }\n\n.person-info-wrapper .person-info-detail .person-info-item .content {\n  display: inline-block; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	const React = __webpack_require__(1);
-	const ReactDOM = __webpack_require__(33);
-
-	__webpack_require__(182);
-
-	module.exports = React.createClass({ displayName: "module.exports",
-
-	    getInitialState: function () {
-	        return {
-	            articleList: [{
-	                title: '论如何进入德国骨科',
-	                description: '一个妹控的感言'
-	            }, {
-	                title: 'gulp的配置和使用',
-	                description: '自行想象'
-	            }]
-	        };
-	    },
-
-	    render: function () {
-	        let list = this.renderList();
-	        return React.createElement("div", { className: "recent-articles-wrapper column" }, React.createElement("div", { className: "recent-articles-container" }, React.createElement("header", { className: "ui dividing header" }, "Recent Articles"), React.createElement("div", { className: "recent-articles-list ui relaxed divided list" }, list)));
-	    },
-
-	    renderList: function () {
-	        let list = [];
-	        this.state.articleList.map(function (item, key) {
-	            list.push(React.createElement("div", { className: "person-info-item item", key: key }, React.createElement("i", { className: "large tag middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("a", { className: "header" }, item.title), React.createElement("div", { className: "description" }, item.description))));
-	        });
-	        return list;
-	    }
-	});
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(183);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(175)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./recent_article_list.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./recent_article_list.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(174)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".recent-articles-wrapper .recent-articles-container {\n  padding: 10px 10px 10px 10px;\n  border: 2px solid #eeeeee;\n  border-radius: 5px; }\n", ""]);
-
-	// exports
 
 
 /***/ }

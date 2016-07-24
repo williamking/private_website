@@ -9,7 +9,7 @@ module.exports = React.createClass({
 		return (
 			<div className="person-info-wrapper column">
 			    <div className="person-info-container">
-			        <header className="ui dividing header">Infomation</header>
+			        <header className="ui dividing header">Information</header>
 			        <div className="person-info-detail ui list">
 			            { info }
 			        </div>

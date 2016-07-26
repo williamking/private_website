@@ -48,99 +48,137 @@
 
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
-	__webpack_require__(184);
-	__webpack_require__(186);
-	__webpack_require__(188);
+
+	__webpack_require__(295);
+	__webpack_require__(297);
+	__webpack_require__(299);
+
+	const ModeType = {
+	  normal: Symbol(),
+	  login: Symbol(),
+	  register: Symbol()
+	};
+
+	// 加载模块
+	const LoginForm = __webpack_require__(301);
 
 	let Header = React.createClass({ displayName: "Header",
-		getInitialState: function () {
-			return {
-				items: [{
-					name: 'Index',
-					url: '/',
-					className: 'index',
-					icon: 'home'
-				}, {
-					name: 'Article',
-					url: '/article',
-					className: 'article',
-					icon: 'book'
-				}, {
-					name: 'Photo',
-					url: '/photo',
-					className: 'photo',
-					icon: 'photo'
-				}, {
-					name: 'Lab',
-					url: '/lab',
-					className: 'lab',
-					icon: 'world'
-				}]
+	  getInitialState: function () {
+	    return {
+	      items: [{
+	        name: 'Index',
+	        url: '/',
+	        className: 'index',
+	        icon: 'home'
+	      }, {
+	        name: 'Article',
+	        url: '/article',
+	        className: 'article',
+	        icon: 'book'
+	      }, {
+	        name: 'Photo',
+	        url: '/photo',
+	        className: 'photo',
+	        icon: 'photo'
+	      }, {
+	        name: 'Lab',
+	        url: '/lab',
+	        className: 'lab',
+	        icon: 'world'
+	      }],
+	      mode: ModeType.normal
+	    };
+	  },
 
-			};
-		},
+	  componentDidMount: function () {
+	    this.checkMask();
+	  },
 
-		componentDidMount: function () {},
+	  componentDidUpdate: function () {
+	    this.checkMask();
+	  },
 
-		render: function () {
-			let title = 'William\'s website';
-			let list = this.renderList();
+	  render: function () {
+	    let title = 'William\'s website';
+	    let list = this.renderList();
 
-			return React.createElement("div", { className: "", id: "page-header" }, React.createElement("div", { className: "brand" }, React.createElement("img", { className: "icon", alt: "icon" }), React.createElement("span", null, title), React.createElement("div", { id: "clock-image" })), React.createElement("div", { className: "nav-wrapper" }, React.createElement("nav", { className: "nav-bar ui pointing secondary menu" }, list, React.createElement("div", { className: "authorize right menu" }, function () {
-				if (this.state.login) {
-					return React.createElement("a", { className: "ui item logout" }, "Logout");
-				} else {
-					return [React.createElement("a", { className: "ui item login", key: "1" }, "Login"), React.createElement("a", { className: "ui item register", key: "2" }, "Register")];
-				}
-			}.bind(this)()))));
-		},
+	    return React.createElement("div", { className: "", id: "page-header" }, React.createElement("div", { className: "brand" }, React.createElement("img", { className: "icon", alt: "icon" }), React.createElement("span", null, title), React.createElement("div", { id: "clock-image" })), React.createElement("div", { className: "nav-wrapper" }, React.createElement("nav", { className: "nav-bar ui pointing secondary menu" }, list, React.createElement("div", { className: "authorize right menu" }, function () {
+	      if (this.state.login) {
+	        return React.createElement("a", { className: "ui item logout" }, "Logout");
+	      } else {
+	        return [React.createElement("a", { className: "ui item login", key: "1", onClick: this.setModeToLogin }, "Login"), React.createElement("a", { className: "ui item register", key: "2" }, "Register")];
+	      }
+	    }.bind(this)()))), React.createElement(LoginForm, { show: this.state.mode == ModeType.login, onCancel: this.setModeToNormal }));
+	  },
 
-		renderList: function () {
-			let list = [];
-			this.state.items.map(function (item, key) {
-				let className = 'item nav-item ' + item.className,
-				    iconClass = 'large ' + item.icon + ' icon';
-				list.push(React.createElement("a", { className: className, href: item.url, key: key }, React.createElement("i", { className: iconClass }), item.name));
-			});
-			return list;
-		}
+	  renderList: function () {
+	    let list = [];
+	    this.state.items.map(function (item, key) {
+	      let className = 'item nav-item ' + item.className,
+	          iconClass = 'large ' + item.icon + ' icon';
+	      list.push(React.createElement("a", { className: className, href: item.url, key: key }, React.createElement("i", { className: iconClass }), item.name));
+	    });
+	    return list;
+	  },
+
+	  setModeToLogin: function () {
+	    this.setState({
+	      mode: ModeType.login
+	    });
+	  },
+
+	  setModeToRegister: function () {
+	    this.setState({
+	      mode: ModeType.register
+	    });
+	  },
+
+	  setModeToNormal: function () {
+	    this.setState({
+	      mode: ModeType.normal
+	    });
+	  },
+
+	  checkMask: function () {
+	    if (this.state.mode != ModeType.normal) $('.mask').show();else $('.mask').hide();
+	  }
 	});
 
 	var Footer = React.createClass({ displayName: "Footer",
 
-		getInitialState: function () {
-			return {
-				links: [{
-					url: 'https://github.com/williamking',
-					icon: 'github',
-					text: 'My github',
-					name: 'github'
-				}, {
-					url: 'mailto:williamjwking@gmail.com',
-					icon: 'mail',
-					text: 'My email',
-					name: 'email'
-				}]
-			};
-		},
+	  getInitialState: function () {
+	    return {
+	      links: [{
+	        url: 'https://github.com/williamking',
+	        icon: 'github',
+	        text: 'My github',
+	        name: 'github'
+	      }, {
+	        url: 'mailto:williamjwking@gmail.com',
+	        icon: 'mail',
+	        text: 'My email',
+	        name: 'email'
+	      }]
+	    };
+	  },
 
-		render: function () {
-			let links = this.renderLinks();
-			return React.createElement("div", { className: "ui basic center aligned segment", id: "page-footer" }, React.createElement("div", { id: "copy-right" }, React.createElement("p", null, "Copyright ", React.createElement("i", { className: "copyright icon" }), "2016 William.D.King.")), React.createElement("div", { id: "other-link", className: "ui horizontal divided list" }, links));
-		},
+	  render: function () {
+	    let links = this.renderLinks();
+	    return React.createElement("div", { className: "ui basic center aligned segment", id: "page-footer" }, React.createElement("div", { id: "copy-right" }, React.createElement("p", null, "Copyright ", React.createElement("i", { className: "copyright icon" }), "2016 William.D.King.")), React.createElement("div", { id: "other-link", className: "ui horizontal divided list" }, links));
+	  },
 
-		renderLinks: function () {
-			let links = [];
-			this.state.links.map(function (link, key) {
-				links.push(React.createElement("div", { className: "item", key: key }, React.createElement("i", { className: link.icon + ' icon' + ' ui avatar' }), React.createElement("div", { className: "content" }, React.createElement("a", { href: link.url, className: link.name + '-link' }, React.createElement("span", null, link.text)))));
-			});
-			return links;
-		}
+	  renderLinks: function () {
+	    let links = [];
+	    this.state.links.map(function (link, key) {
+	      links.push(React.createElement("div", { className: "item", key: key }, React.createElement("i", { className: link.icon + ' icon' + ' ui avatar' }), React.createElement("div", { className: "content" }, React.createElement("a", { href: link.url, className: link.name + '-link' }, React.createElement("span", null, link.text)))));
+	    });
+	    return links;
+	  }
 	});
 
 	$(function () {
-		ReactDOM.render(React.createElement(Header, null), $("#header")[0], null);
-		ReactDOM.render(React.createElement(Footer, null), $("#footer")[0], null);
+	  ReactDOM.render(React.createElement(Header, null), $("#header")[0], null);
+	  ReactDOM.render(React.createElement(Footer, null), $("#footer")[0], null);
 	});
 
 /***/ },
@@ -21178,7 +21216,115 @@
 /***/ },
 /* 172 */,
 /* 173 */,
-/* 174 */
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */
 /***/ function(module, exports) {
 
 	/*
@@ -21234,7 +21380,7 @@
 
 
 /***/ },
-/* 175 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -21486,24 +21632,27 @@
 
 
 /***/ },
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(185);
+	var content = __webpack_require__(296);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(175)(content, {});
+	var update = __webpack_require__(283)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21520,10 +21669,10 @@
 	}
 
 /***/ },
-/* 185 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(174)();
+	exports = module.exports = __webpack_require__(282)();
 	// imports
 
 
@@ -21534,16 +21683,16 @@
 
 
 /***/ },
-/* 186 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(187);
+	var content = __webpack_require__(298);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(175)(content, {});
+	var update = __webpack_require__(283)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21560,10 +21709,10 @@
 	}
 
 /***/ },
-/* 187 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(174)();
+	exports = module.exports = __webpack_require__(282)();
 	// imports
 
 
@@ -21574,16 +21723,16 @@
 
 
 /***/ },
-/* 188 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(189);
+	var content = __webpack_require__(300);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(175)(content, {});
+	var update = __webpack_require__(283)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21600,15 +21749,95 @@
 	}
 
 /***/ },
-/* 189 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(174)();
+	exports = module.exports = __webpack_require__(282)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "body {\n  background-color: whitesmoke; }\n  body #main-wrapper {\n    width: 80%;\n    margin: 0 auto;\n    background-color: #ffffff; }\n", ""]);
+	exports.push([module.id, "body {\n  background-color: whitesmoke; }\n  body #main-wrapper {\n    width: 80%;\n    margin: 0 auto;\n    background-color: #ffffff; }\n\n.mask {\n  background-color: #000000;\n  opacity: 0.5;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  z-index: 3; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	let React = __webpack_require__(1);
+	__webpack_require__(302);
+
+	module.exports = React.createClass({ displayName: "module.exports",
+	    getInitialState: function () {
+	        return {
+	            username: '',
+	            password: ''
+	        };
+	    },
+
+	    componentDidMount: function () {
+	        this.checkState();
+	    },
+
+	    componentDidUpdate: function () {
+	        this.checkState();
+	    },
+
+	    render: function () {
+	        return React.createElement("div", { className: "login-form-wrapper" }, React.createElement("form", { className: "ui form", id: "login-form" }, React.createElement("div", { className: "field" }, React.createElement("label", null, "username"), React.createElement("input", { type: "text", name: "username", placeholder: "username" })), React.createElement("div", { className: "field" }, React.createElement("label", null, "password"), React.createElement("input", { type: "password", name: "passowrd", placeholder: "password" })), React.createElement("div", { className: "ui blue submit button" }, "Login"), React.createElement("div", { className: "ui button", onClick: this.props.onCancel }, "Cancel"), React.createElement("div", { className: "ui error message" })));
+	    },
+
+	    checkState: function () {
+	        $('#login-form').form({
+	            fields: {
+	                username: 'empty',
+	                password: ['minlength[6]', 'empty']
+	            }
+	        });
+	        if (!this.props.show) $('.login-form-wrapper').hide();else $('.login-form-wrapper').show();
+	    }
+	});
+
+/***/ },
+/* 302 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(303);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(283)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./login_form.sass", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./login_form.sass");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 303 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(282)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".invisible {\n  display: none; }\n\n.login-form-wrapper {\n  position: fixed;\n  width: 400px;\n  margin: auto auto;\n  left: 0;\n  right: 0;\n  background-color: aliceblue;\n  padding: 24px 24px;\n  border-radius: 8px;\n  border: 1px solid #eeeeee;\n  z-index: 4; }\n", ""]);
 
 	// exports
 

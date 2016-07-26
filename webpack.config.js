@@ -19,6 +19,7 @@ module.exports = {
             { test: /\.jsx$/, loader: 'babel-loader!jsx-loader?harmony', exclude: /node_modules/ },
             { test: /\.sass$/, loader: 'style!css!sass-loader' },
             { test: /\.ttf$/, loader: 'url-loader', exclude: /node_modules/ },
+            { test: /\.jpg$/, loader: 'url-loader?limit=8192' },
         ],
     },
     resolve: {

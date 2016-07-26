@@ -1,10 +1,28 @@
-$header-color: #689dc5
+$header-color: #0ecc54
+$time-color: #689dc5
 
 #articles-main
     padding: 24px
     min-height: 500px
     .articles-wrapper
         .articles-container
-            header
+            h1
                 font-size: 30px
                 color: $header-color
+            .articles-list
+                .article-item
+                    .content
+                        width: 100%
+                        .description
+                            display: inline-block
+                        .time
+                            display: inline-block
+                            float: right
+                            margin-right: 24px
+                            color: #aaaaaa
+                            span
+                               color: $time-color
+        .pagination-container
+            text-align: center
+            padding-top: 20px
+            padding-bottom: 10px

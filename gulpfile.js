@@ -33,7 +33,7 @@ gulp.task('copy', () => {
 })
 
 gulp.task('clean:front-end', () => {
-    return gulp.src(['!public/lib', '!public/resources', 'public/*', 'views/*'], {read: false})
+    return gulp.src(['!public/images', '!public/lib', '!public/resources', 'public/*', 'views/*'], {read: false})
         .pipe(clean());
 });
 

@@ -14,6 +14,8 @@
     "express": "^4.14.0",
     "express-session": "^1.14.0",
     "gulp": "^3.9.1",
+    "marked": "^0.3.5",
+    "moment": "^2.14.1",
     "morgan": "~1.0.0",
     "multer": "^0.1.4",
     "react": "^15.0.2",
@@ -38,10 +40,12 @@
     "jsx-loader": "^0.13.2",
     "moment": "^2.13.0",
     "mongoose": "^4.4.17",
+    "mongoose-valid8": "^0.1.1",
     "node-sass": "^3.8.0",
     "pug": "^2.0.0-beta3",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1"
   }

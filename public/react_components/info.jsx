@@ -1,6 +1,7 @@
-"use strict";
+'use strict';
 const React = require('react');
 const ReactDOM = require('react-dom');
+
 require('../sass/info.sass');
 
 module.exports = React.createClass({

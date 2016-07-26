@@ -1,6 +1,7 @@
 "use strict";
 const React = require('react');
 const ReactDOM = require('react-dom');
+const moment = require('moment');
 
 require('../sass/recent_article_list.sass');
 
@@ -21,6 +22,16 @@ module.exports = React.createClass({
         };
     },
 
+    componentDidMount: function() {
+        $.get('/api/article?mode=file&start=0&end=5', (result) => {
+            if (result.status == 'OK') {
+                this.setState({
+                    articleList: result.data.list
+                });
+            }
+        });
+    },
+
 	render: function() {
 	    let list = this.renderList();
 		return (
@@ -38,12 +49,15 @@ module.exports = React.createClass({
 	renderList: function() {
 		let list = [];
 		this.state.articleList.map((item, key) => {
+            let url = '/article/file/' + '?path=' + item.path;
+            let createTime = moment(item.createTime).format('YYYY-MM-DD');
             list.push(
                 <div className="person-info-item item" key={ key }>
                     <i className="large tag	middle aligned icon"></i>
                     <div className="middle aligned content">
-                        <a className="header">{ item.title }</a>
+                        <a className="header" href={ url }>{ item.title }</a>
                         <div className="description">{ item.description }</div>
+                        <div className="create-time">{ createTime }</div>
                     </div>
                 </div>
             );

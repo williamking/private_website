@@ -33,6 +33,7 @@ function getFileListFromLocal(dirPath) {
             let pathName = dirPath + '/' + file,
                 fileState = fs.statAsync(pathName);
             if (file == '.git') return;
+            if (file == 'README.md') return;
             states.push(fileState.then((stat) => {
                 // console.log(stat);
                 if (stat.isDirectory()) return getFileListFromLocal(pathName);
@@ -53,6 +54,15 @@ function getFileListFromLocal(dirPath) {
             });
         });
     })
+}
+
+function sortByTime(fileNames) {
+    fileNames.sort(function(a, b) {
+        let timeA = new Date(a.createTime),
+            timeB = new Date(b.createTime);
+        return timeA < timeB;
+    });
+    return fileNames;
 }
 
 /*
@@ -101,9 +111,17 @@ exports.getArticleList = (req, res) => {
     // if (mode == ArticleMode.file) {
     if (req.query.mode == 'file') {
         getFileListFromLocal(dirPath).then((fileNames) => {
-            console.log(fileNames);
-            res.send(fileNames);
-        }) 
+            fileNames = sortByTime(fileNames);
+            if (req.query.start && req.query.end && req.query.start <= req.query.end) {
+                fileNames = fileNames.slice(Math.max(0, req.query.start), Math.min(req.query.end, fileNames.length));
+            }
+            res.send({
+                status: 'OK',
+                data: {
+                    list: fileNames
+                }
+            });
+        }); 
     }
 
     // let id = mongoose.Types.ObjectId(req.params.id);
@@ -127,6 +145,14 @@ exports.getArticleList = (req, res) => {
 exports.getOneArticleByFile = (req, res) => {
     let path = req.query.path;
     fs.readFileAsync(path, 'utf8').then((data) => {
-        res.send(data);
+        let title = path.split('/');
+        title = title[title.length - 1].split('.')[0];
+        res.send({
+            status: 'OK',
+            data: {
+                content: data,
+                title: title
+            }
+        });
     });
 }

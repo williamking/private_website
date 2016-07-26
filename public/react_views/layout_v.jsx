@@ -1,9 +1,19 @@
 "use strict";
 const React = require("react");
 const ReactDOM = require("react-dom");
+
 require('../sass/header.sass');
 require('../sass/footer.sass');
 require('../sass/base.sass');
+
+const ModeType = {
+	normal: Symbol(),
+	login: Symbol(),
+	register: Symbol()
+};
+
+// 加载模块
+const LoginForm = require('../react_components/login_form.jsx');
 
 let Header = React.createClass({
 	getInitialState: function() {
@@ -34,11 +44,16 @@ let Header = React.createClass({
 			    	icon: 'world'
 			    },
 			],
-
+            mode: ModeType.normal
 		}
 	},
 
 	componentDidMount: function() {
+        this.checkMask();	
+	},
+
+	componentDidUpdate: function() {
+		this.checkMask();
 	},
 
 	render: function() {
@@ -63,7 +78,7 @@ let Header = React.createClass({
                                 	);
                                 } else {
                                 	return [(
-                                		<a className="ui item login" key="1">Login</a>
+                                		<a className="ui item login" key="1" onClick={ this.setModeToLogin }>Login</a>
                                 	), (
                                         <a className="ui item register" key="2">Register</a>
                                 	)];
@@ -72,6 +87,7 @@ let Header = React.createClass({
     			        </div>
     			    </nav>	
 			    </div>
+			    <LoginForm show={ this.state.mode == ModeType.login } onCancel={ this.setModeToNormal } />
 			</div>
 		)
 	},
@@ -89,6 +105,29 @@ let Header = React.createClass({
     		);
     	});
     	return list;
+    },
+
+    setModeToLogin: function() {
+        this.setState({
+            mode: ModeType.login
+        });
+    },
+
+    setModeToRegister: function() {
+    	this.setState({
+    		mode: ModeType.register
+    	});
+    },
+
+    setModeToNormal: function() {
+    	this.setState({
+    		mode: ModeType.normal
+    	});
+    },
+
+    checkMask: function() {
+		if (this.state.mode != ModeType.normal) $('.mask').show();
+		else $('.mask').hide();
     }
 });
 

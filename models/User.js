@@ -1,6 +1,8 @@
 const mongoose = require('mongoose'),
       bcrypt = require('bcrypt');
 
+const saltRounds = 10;
+
 UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -38,8 +40,8 @@ User.register = (name, password, type, email, signature, qq, birthday, callback)
     User.findOne({name: name}, (err, user) => {
         if (user)
            return callback({message: 'Dulplicated username'});
-        let salt = bcrypt.gen-salt-sync(10)
-        let hash = bcrypt.hash-sync(password, salt)
+        let salt = bcrypt.genSaltSync(10)
+        let hash = bcrypt.hashSync(password, salt)
         let newUser = {
             name: name,
             password: hash,
@@ -70,7 +72,7 @@ User.changeInfo = (userId, value, type, callback) => {
 }
 
 User.changePassword = (userId, password, callback) => {
-    User.findOne({_id:user-id}, (err, user) => {
+    User.findOne({_id:userId}, (err, user) => {
         if (err )
             callback(1, null);
         else {

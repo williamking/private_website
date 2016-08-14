@@ -75,8 +75,16 @@
 	    componentDidMount: function () {
 	        $.get('/api/article?mode=file', function (result) {
 	            if (result.status == 'OK') {
+	                let list = result.data.list;
+
+	                list.sort(function (a, b) {
+	                    let timeA = new Date(a.createTime),
+	                        timeB = new Date(b.createTime);
+	                    return timeB - timeA;
+	                });
+
 	                this.setState({
-	                    articleList: result.data.list
+	                    articleList: list
 	                });
 	            }
 	        }.bind(this));
@@ -96,7 +104,7 @@
 	        let list = [];
 	        let partList = this.state.articleList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.map(function (item, key) {
-	            let url = '/article/file/' + '?path=' + item.path;
+	            let url = '/article/file/' + '?path=' + encodeURIComponent(item.path);
 	            let createTime = moment(item.createTime).format('YYYY-MM-DD');
 	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.description), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + createTime)))));
 	        });

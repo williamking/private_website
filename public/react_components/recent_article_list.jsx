@@ -25,8 +25,16 @@ module.exports = React.createClass({
     componentDidMount: function() {
         $.get('/api/article?mode=file&start=0&end=5', (result) => {
             if (result.status == 'OK') {
+                let list = result.data.list;
+
+                list.sort((a, b) => {
+                    let timeA = new Date(a.createTime),
+                        timeB = new Date(b.createTime);
+                    return timeB - timeA;
+                });
+
                 this.setState({
-                    articleList: result.data.list
+                    articleList: list
                 });
             }
         });

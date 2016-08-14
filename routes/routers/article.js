@@ -7,9 +7,8 @@ const Article = require('../controllers/article'),
       express = require('express'),
       router = express.Router();
 
-// Index
 router.get('/', Article.showMainPage);
 router.get('/file/', Article.showDetailPage);
-
+router.get('/create', Article.showCreatePage);
 
 module.exports = router;

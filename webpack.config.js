@@ -7,6 +7,7 @@ module.exports = {
         'index': __dirname + '/src/public/react_views/index_v.jsx',
         'articles': __dirname + '/src/public/react_views/articles_v.jsx',
         'article_content': __dirname + '/src/public/react_views/article_content_v.jsx',
+        'create_article': __dirname + '/src/public/react_views/create_article_v.jsx',
     },
     output: {
         path: __dirname + 'public/dist',

@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require('express'),
+      bcrypt = require('bcrypt');
       // requireLogin = require('./authorization/authorize.js').requireLogin,
       // hasLogin = require('./authorization/authorize').hasLogin;
 
@@ -8,16 +9,16 @@ exports.showIndexPage = (req, res) => {
     res.render('index', {user: req.session.user, username: req.session.username});
 };
 
-exports.showLoginPage = (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-    console.log(password);
+exports.handleLogin = (req, res) => {
+    let { username, password } = req.body;
+    console.log(req.body);
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(password, salt);
     User.findOne({'name': username}, (err, user) => {
         if (err) {
-            res.status(500).send('Server error');
-            res.end();
+            res.json({
+                status: 'Server error'
+            });
             return;
         }
         else {
@@ -26,7 +27,7 @@ exports.showLoginPage = (req, res) => {
                 return;
             }
             else {
-                if (!bcrypt.compare-sync(password, user.password)) {
+                if (!bcrypt.compareSync(password, user.password)) {
                     res.json({result: 'Error', msg: 'Wrong password!'});
                     return;
                 }
@@ -34,7 +35,7 @@ exports.showLoginPage = (req, res) => {
                     req.session.user = user._id
                     req.session.username = user.name
                     req.session.type = user.type
-                    res.json({result: 'Success', msg: ''});
+                    res.json({status: 'OK'});
                     return;
                 }
             }
@@ -42,13 +43,22 @@ exports.showLoginPage = (req, res) => {
     });
 };
 
-exports.handleLogin = (req, res) => {
-    req.session.user = null;
-    req.session.type = null;
-    res.json({result: 'Success', msg: ''});
+exports.handleLogout = (req, res) => {
+    if (req.session.user) {
+        req.session.user = null;
+        req.session.type = null;
+        req.session.username = null;
+        res.json({ status: 'OK', msg: '' });
+    } else {
+        res.json({ status: 'NOT_LOGIN', msg: '你还没有登录' });
+    }
 };
 
 exports.handleRegister = (req, res) => {
+    if (req.body.password != req.body.confirmPassword) {
+        return res.json({ result: 'failed', msg: '两次输入的密码不一致' });
+    }
+
     User.register(req.body.username, req.body.password, req.body.type, req.body.email,
     req.body.signature, req.body.qq, req.body.birthday, (err, user) => {
         if (err) {
@@ -60,8 +70,19 @@ exports.handleRegister = (req, res) => {
             req.session.user = user._id;
             req.session.username = user.name;
             req.session.type = user.type;
-            res.json({result: 'success'});
+            res.json({status: 'OK', result: 'success'});
         }
     });
 };
 
+exports.handleGetCurrentUser = (req, res) => {
+    if (req.session.user) {
+        res.json({
+            username: req.session.username,
+            user: req.session.user,
+            type: req.session.type
+        });
+    } else {
+        res.json({});
+    }
+}

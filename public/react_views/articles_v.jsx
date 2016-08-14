@@ -31,8 +31,16 @@ const ArticleList = React.createClass({
     componentDidMount: function() {
         $.get('/api/article?mode=file', (result) => {
             if (result.status == 'OK') {
+                let list = result.data.list;
+
+                list.sort((a, b) => {
+                    let timeA = new Date(a.createTime),
+                        timeB = new Date(b.createTime);
+                    return timeB - timeA;
+                });
+
                 this.setState({
-                    articleList: result.data.list
+                    articleList: list
                 });
             }
         });
@@ -66,7 +74,7 @@ const ArticleList = React.createClass({
             (this.state.page - 1) * pageContain,
             this.state.page * pageContain);
 		partList.map((item, key) => {
-            let url = '/article/file/' + '?path=' + item.path;
+            let url = '/article/file/' + '?path=' + encodeURIComponent(item.path);
             let createTime = moment(item.createTime).format('YYYY-MM-DD');
             list.push(
                 <div className="article-item item" key={ key }>

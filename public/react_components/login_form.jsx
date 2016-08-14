@@ -1,9 +1,13 @@
 'use strict';
 
-let React = require('react');
+let React = require('react'),
+    LinkedStateMixin = require('react-addons-linked-state-mixin');
+
 require('../sass/login_form.sass');
 
 module.exports = React.createClass({
+    mixins: [LinkedStateMixin],
+
     getInitialState: function() {
     	return {
     		username: '',
@@ -25,13 +29,13 @@ module.exports = React.createClass({
     		    <form className="ui form" id="login-form">
     		        <div className="field">
     		            <label>username</label>
-    		            <input type="text" name="username" placeholder="username"/>
+    		            <input type="text" name="username" placeholder="username" valueLink={ this.linkState('username') }/>
     		        </div>
     		        <div className="field">
     		            <label>password</label>
-    		            <input type="password" name="passowrd" placeholder="password"/>
+    		            <input type="password" name="passowrd" placeholder="password" valueLink={ this.linkState('password') }/>
     		        </div>
-                    <div className="ui blue submit button">Login</div>
+                    <div className="ui blue button" onClick={ this.login }>Login</div>
                     <div className="ui button" onClick={ this.props.onCancel }>Cancel</div>
                     <div className="ui error message"></div>
     		    </form>
@@ -48,5 +52,24 @@ module.exports = React.createClass({
         });
         if (!this.props.show) $('.login-form-wrapper').hide();
         else $('.login-form-wrapper').show();
+    },
+
+    login: function(event) {
+        // debugger;
+        event.preventDefault();
+        let cancel = this.props.onCancel;
+        let callback = this.props.callback;
+        $.post('/api/login', {
+            username: this.state.username,
+            password: this.state.password
+        }, function(result) {
+            if (result.status == 'OK') {
+                alert('登录成功！');
+                cancel();
+                callback();
+            } else {
+                alert(result.msg);
+            }
+        });
     }
 });

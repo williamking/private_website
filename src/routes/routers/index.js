@@ -5,9 +5,6 @@ const Index = require("../controllers/index"),
 // Index
 router.get('/', Index.showIndexPage);
 
-// Login
-router.get('/login', Index.showLoginPage);
-
 // Register
 // router.get('/register', Index.showRegisterPage);
 

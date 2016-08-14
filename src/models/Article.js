@@ -19,11 +19,8 @@ const ArticleSchema = new mongoose.Schema({
     lastEditAt: { type: Date, default: Date.now },
     content: String,
     category: [String],
+    pv: { type: Number, default: 0 },
     secret: Boolean,
-    secretPassword: {
-       type: 'String',
-       require: true
-    },
     comments: [Comment]
 });
 

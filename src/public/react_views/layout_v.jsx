@@ -14,10 +14,12 @@ const ModeType = {
 
 // 加载模块
 const LoginForm = require('../react_components/login_form.jsx');
+const RegisterForm = require('../react_components/register_form.jsx');
 
 let Header = React.createClass({
 	getInitialState: function() {
 		return {
+			userState: {},
 			items: [
 			    {
 			    	name: 'Index',
@@ -48,8 +50,12 @@ let Header = React.createClass({
 		}
 	},
 
+	componentWillMount: function() {
+        this.getCurrentUser();
+	},
+
 	componentDidMount: function() {
-        this.checkMask();	
+        this.checkMask();
 	},
 
 	componentDidUpdate: function() {
@@ -72,22 +78,25 @@ let Header = React.createClass({
                         { list }
     			        <div className="authorize right menu">
                             {(() => {
-                                if (this.state.login) {
-                                	return (
-                                		<a className="ui item logout">Logout</a>
-                                	);
+                                if (this.state.userState.username) {
+                                	return [(
+                                		<div className="user" key="1">Welcome! { this.state.userState.username }</div>
+                                	), (
+                                        <a className="ui item logout" key="2" onClick={ this.logout }>Logout</a>
+                                	)];
                                 } else {
                                 	return [(
                                 		<a className="ui item login" key="1" onClick={ this.setModeToLogin }>Login</a>
                                 	), (
-                                        <a className="ui item register" key="2">Register</a>
+                                        <a className="ui item register" key="2" onClick={ this.setModeToRegister }>Register</a>
                                 	)];
                                 }
                             })()}
     			        </div>
     			    </nav>	
 			    </div>
-			    <LoginForm show={ this.state.mode == ModeType.login } onCancel={ this.setModeToNormal } />
+			    <LoginForm callback = { this.getCurrentUser } show={ this.state.mode == ModeType.login } onCancel={ this.setModeToNormal } />
+			    <RegisterForm show={ this.state.mode == ModeType.register } onCancel={ this.setModeToNormal } />
 			</div>
 		)
 	},
@@ -128,7 +137,33 @@ let Header = React.createClass({
     checkMask: function() {
 		if (this.state.mode != ModeType.normal) $('.mask').show();
 		else $('.mask').hide();
+    },
+
+    // 获取当前登录状态
+    getCurrentUser: function() {
+	    $.get('/api/get_current_user', (result) => {
+	    	this.setState({
+                userState: {
+                	username: result.username,
+                	userId: result.user,
+                	userType: result.userType
+                }
+	    	});
+	    });
+    },
+
+    logout: function() {
+    	let update = this.getCurrentUser;
+        $.get('/api/logout', (result) => {
+        	if (result.status == 'OK') {
+        		alert('登出成功!');
+                update();
+        	} else {
+        		alert(result.msg);
+        	}
+        })
     }
+
 });
 
 var Footer = React.createClass({

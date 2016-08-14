@@ -60,7 +60,7 @@ function sortByTime(fileNames) {
     fileNames.sort(function(a, b) {
         let timeA = new Date(a.createTime),
             timeB = new Date(b.createTime);
-        return timeA < timeB;
+        return timeB - timeA;
     });
     return fileNames;
 }
@@ -144,6 +144,7 @@ exports.getArticleList = (req, res) => {
 
 exports.getOneArticleByFile = (req, res) => {
     let path = req.query.path;
+    console.log(path);
     fs.readFileAsync(path, 'utf8').then((data) => {
         let title = path.split('/');
         title = title[title.length - 1].split('.')[0];

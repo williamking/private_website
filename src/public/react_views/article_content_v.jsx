@@ -17,6 +17,7 @@ const ArticleContent = React.createClass({
 	getInitialState: function() {
 		let urlParser = new UrlParser(window.location.href);
 		return {
+            id: null,
             articleText: 'This article is empty now.',
             title: 'Loading......',
             path: urlParser.query.path,
@@ -45,9 +46,11 @@ const ArticleContent = React.createClass({
             url = '/api/articles/' + id[id.length - 1];
         }
         $.get(url, (result) => {
+            // console.log(result);
             let lastEditTime = moment(result.data.lastEditAt).format('YYYY-MM-DD');
             if (result.status == 'OK') {
                 this.setState({
+                    id: result.data._id,
                     articleText: marked(result.data.content),
                     title: result.data.title,
                     pv: result.data.pv,
@@ -68,7 +71,7 @@ const ArticleContent = React.createClass({
                                 <div className="title">{ this.state.title }</div>
                                 <div className="article-status">
                                     <div className="ui labeled button">
-                                        <div className="ui red button">
+                                        <div className="ui red button" onClick={ this.admire }>
                                             <i className="thumbs up icon"></i>
                                             Like
                                         </div>
@@ -104,7 +107,20 @@ const ArticleContent = React.createClass({
 			    <Comment comments={ this.state.comments }/>
 			</div>
 		);
-	}
+	},
+
+    admire() {
+        $.get('/api/articles/' + this.state.id + '/admire', (result) => {
+            if (result.status = 'OK') {
+                alert('点赞成功');
+                this.setState({
+                    pv: result.data
+                })
+            } else {
+                alert('服务器菌出了点问题，骚瑞!');
+            }
+        });
+    }
 });
 
 $(function() {

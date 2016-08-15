@@ -166,7 +166,7 @@ exports.getOneArticleByFile = (req, res) => {
 
 exports.getOneArticleById = (req, res) => {
     let id = req.params.id;
-    console.log('Require artilce which id is ' + id);
+    console.log('Require article which id is ' + id);
     Article.findById(id, (err, article) => {
         if (err)
             res.json({ status:'DATABASE_ERROR', msg:'数据库菌出了问题。。。。。。' });
@@ -174,3 +174,15 @@ exports.getOneArticleById = (req, res) => {
             res.json({ status:'OK', data: article });
     });
 };
+
+exports.admireOneArticle = (req, res) => {
+    let id = req.params.id;
+    console.log('Admire article ' + id);
+    Article.admireOneArticle(id, (err, article) => {
+        if (err) res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+        else {
+            if (!article) res.json({ status: 'ARTICLE_NOT_FOUND', msg: '没有该文章喔！' });
+            else res.json({ status: 'OK', data: article.pv });
+        }
+    })
+}

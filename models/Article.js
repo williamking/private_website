@@ -48,7 +48,14 @@ ArticleModel.findIndex = (callback) => {
 };
 
 ArticleModel.findById = (id, callback) => {
-    ArticleModel.findOne({_id: id}).exec(callback);
+    ArticleModel.findOne({_id: id}).exec((err, article) => {
+        console.log(article);
+        if (err || !article) callback(err, null);
+        else {
+            article.readTimes++;
+            article.save(callback);
+        }
+    });
 };
 
 ArticleModel.findByCategory = (author, category, callback) => {
@@ -118,6 +125,32 @@ ArticleModel.getList = (option, callback) => {
             });
         }
         return callback(err, results);
+    });
+};
+
+ArticleModel.admireOneArticle = (id, callback) => {
+    let query = ArticleModel.findOne({ _id: id });
+    query.exec((err, article) => {
+        if (err) return callback(err, null);
+        if (!article) {
+            callback(err, null);
+        } else {
+            article.pv++;
+            article.save(callback);
+        }
+    });
+};
+
+ArticleModel.readOneArticle = (id, callback) => {
+    let query = ArticleModel.findOne({ _id: id });
+    query.exec((err, article) => {
+        if (err) return callback(err, null);
+        if (!article) {
+            callback(err, null);
+        } else {
+            article.readTimes++;
+            article.save(callback);
+        }
     });
 };
 

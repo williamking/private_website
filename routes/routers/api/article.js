@@ -13,3 +13,4 @@ router.get('/', Article.getArticleList);
 router.get('/file/', Article.getOneArticleByFile);
 router.post('/create/', Article.handleCreate);
 router.get('/:id', Article.getOneArticleById);
+router.get('/:id/admire', Article.admireOneArticle);

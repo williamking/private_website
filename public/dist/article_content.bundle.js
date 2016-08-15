@@ -64,6 +64,7 @@
 	    getInitialState: function () {
 	        let urlParser = new UrlParser(window.location.href);
 	        return {
+	            id: null,
 	            articleText: 'This article is empty now.',
 	            title: 'Loading......',
 	            path: urlParser.query.path,
@@ -91,9 +92,11 @@
 	            url = '/api/articles/' + id[id.length - 1];
 	        }
 	        $.get(url, function (result) {
+	            // console.log(result);
 	            let lastEditTime = moment(result.data.lastEditAt).format('YYYY-MM-DD');
 	            if (result.status == 'OK') {
 	                this.setState({
+	                    id: result.data._id,
 	                    articleText: marked(result.data.content),
 	                    title: result.data.title,
 	                    pv: result.data.pv,
@@ -105,7 +108,20 @@
 	    },
 
 	    render: function () {
-	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button" }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { comments: this.state.comments }));
+	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button", onClick: this.admire }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { comments: this.state.comments }));
+	    },
+
+	    admire: function () {
+	        $.get('/api/articles/' + this.state.id + '/admire', function (result) {
+	            if (result.status = 'OK') {
+	                alert('点赞成功');
+	                this.setState({
+	                    pv: result.data
+	                });
+	            } else {
+	                alert('服务器菌出了点问题，骚瑞!');
+	            }
+	        }.bind(this));
 	    }
 	});
 

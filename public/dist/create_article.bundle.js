@@ -69,9 +69,12 @@
 	const ArticleEditor = React.createClass({ displayName: "ArticleEditor",
 		mixins: [LinkedStateMixin],
 
+		/**
+	  * React组件生命周期方法
+	  */
+
 		getInitialState: function () {
 			return {
-
 				title: '',
 				content: '',
 				secret: false,
@@ -79,6 +82,14 @@
 				tagToAdd: '',
 				mode: EditorMode.edit
 			};
+		},
+
+		componentDidMount: function () {
+			this.setValidation();
+		},
+
+		componentDidUpdate: function () {
+			this.setValidation();
 		},
 
 		render: function () {
@@ -106,8 +117,12 @@
 				}
 			}.bind(this)();
 
-			return React.createElement("div", { className: "article-editor-container" }, React.createElement("form", { className: "article-editor ui form" }, React.createElement("h1", { className: "ui dividing header" }, "Create Article"), React.createElement("div", { className: "field" }, React.createElement("label", null, "Title"), React.createElement("input", { type: "text", name: "title", placeholder: "Title", valueLink: this.linkState('title') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "Tags"), React.createElement("div", { className: "two fields" }, React.createElement("div", { className: "field" }, React.createElement("div", { className: "ui action input" }, React.createElement("input", { type: "text", placeholder: "Add a tag", valueLink: this.linkState('tagToAdd') }), React.createElement("button", { className: "ui icon button", onClick: this.addTag }, React.createElement("i", { className: "plus icon", id: "add-tag" })))), React.createElement("div", { className: "field" }, React.createElement("div", { className: "ui multiple fluid selection dropdown" }, tags)))), React.createElement("div", { className: "field" }, React.createElement("div", { className: "ui toggle checkbox" }, React.createElement("input", { type: "checkbox", checked: this.state.secret, name: "title", placeholder: "Title", onChange: this.updateSecret }), React.createElement("label", null, "Is it secret?"))), content, React.createElement("div", { className: "article-control" }, toggle, React.createElement("button", { className: "ui blue button", onClick: this.createArticle }, "Submit"))));
+			return React.createElement("div", { className: "article-editor-container" }, React.createElement("form", { id: "article-editor", className: "ui form" }, React.createElement("h1", { className: "ui dividing header" }, "Create Article"), React.createElement("div", { className: "field" }, React.createElement("label", null, "Title"), React.createElement("input", { type: "text", name: "title", placeholder: "Title", valueLink: this.linkState('title') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "Tags"), React.createElement("div", { className: "two fields" }, React.createElement("div", { className: "field" }, React.createElement("div", { className: "ui action input" }, React.createElement("input", { type: "text", placeholder: "Add a tag", valueLink: this.linkState('tagToAdd') }), React.createElement("button", { className: "ui icon button", onClick: this.addTag }, React.createElement("i", { className: "plus icon", id: "add-tag" })))), React.createElement("div", { className: "field" }, React.createElement("div", { className: "ui multiple fluid selection dropdown" }, tags)))), React.createElement("div", { className: "field" }, React.createElement("div", { className: "ui toggle checkbox" }, React.createElement("input", { type: "checkbox", checked: this.state.secret, name: "title", placeholder: "Title", onChange: this.updateSecret }), React.createElement("label", null, "Is it secret?"))), content, React.createElement("div", { className: "article-control" }, toggle, React.createElement("button", { className: "ui blue button", onClick: this.checkForm }, "Submit"))));
 		},
+
+		/**
+	  * 下面是自定义方法
+	  */
 
 		updateContent: function (content) {
 			this.setState({
@@ -122,7 +137,21 @@
 			};
 		},
 
-		createArticle: function () {},
+		createArticle: function () {
+			$.post('/api/articles/create', {
+				title: this.state.title,
+				content: this.state.content,
+				secret: this.state.secret,
+				category: this.state.tags
+			}, function (result) {
+				if (result.status == 'OK') {
+					alert('发表成功');
+					window.location.href = '/article/' + result.articleId;
+				} else {
+					alert(result.msg);
+				}
+			});
+		},
 
 		produceTag: function (tag, index) {
 			return React.createElement("a", { className: "ui label transition visible", key: index, style: { display: 'inline-block !important' } }, tag, React.createElement("i", { className: "delete icon", "data-index": index, onClick: this.deleteTag }));
@@ -171,6 +200,21 @@
 			this.setState({
 				mode: EditorMode.edit
 			});
+		},
+
+		setValidation: function () {
+			$('#article-editor').form({
+				fields: {
+					title: 'empty',
+					content: 'empty'
+				},
+				onSuccess: this.createArticle
+			});
+		},
+
+		checkForm: function (e) {
+			e.preventDefault();
+			$('#article-editor').form('validate form');
 		}
 
 	});
@@ -34149,7 +34193,7 @@
 
 
 	// module
-	exports.push([module.id, ".article-editor-container {\n  padding: 24px 24px 24px 24px; }\n  .article-editor-container form h1.header {\n    color: #508be8; }\n  .article-editor-container form .codemirror-wrapper {\n    border: 1px solid rgba(34, 36, 38, 0.15); }\n  .article-editor-container form .marked-wrapper {\n    border: 1px solid rgba(34, 36, 38, 0.15);\n    min-height: 300px;\n    padding: 24px 24px 24px 24px; }\n  .article-editor-container form .article-control {\n    margin-top: 12px; }\n    .article-editor-container form .article-control button {\n      margin-right: 8px; }\n  .article-editor-container form .field #add-tag {\n    cursor: pointer; }\n", ""]);
+	exports.push([module.id, ".article-editor-container {\n  padding: 24px 24px 24px 24px; }\n  .article-editor-container #article-editor h1.header {\n    color: #508be8; }\n  .article-editor-container #article-editor .codemirror-wrapper {\n    border: 1px solid rgba(34, 36, 38, 0.15); }\n  .article-editor-container #article-editor .marked-wrapper {\n    border: 1px solid rgba(34, 36, 38, 0.15);\n    min-height: 300px;\n    padding: 24px 24px 24px 24px; }\n  .article-editor-container #article-editor .article-control {\n    margin-top: 12px; }\n    .article-editor-container #article-editor .article-control button {\n      margin-right: 8px; }\n  .article-editor-container #article-editor .field #add-tag {\n    cursor: pointer; }\n", ""]);
 
 	// exports
 

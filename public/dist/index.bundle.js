@@ -35623,7 +35623,7 @@
 	    },
 
 	    componentDidMount: function () {
-	        $.get('/api/article?mode=file&start=0&end=5', function (result) {
+	        $.get('/api/articles?mode=file&start=0&end=5', function (result) {
 	            if (result.status == 'OK') {
 	                let list = result.data.list;
 

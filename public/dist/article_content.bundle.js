@@ -55,49 +55,62 @@
 	//导入模块
 	const Comment = __webpack_require__(173);
 	const UrlParser = __webpack_require__(279);
+	const moment = __webpack_require__(174);
 
 	// css导入
 	__webpack_require__(280);
 
 	const ArticleContent = React.createClass({ displayName: "ArticleContent",
-	  getInitialState: function () {
-	    let urlParser = new UrlParser(window.location.href);
-	    return {
-	      articleText: 'This article is empty now.',
-	      title: 'Loading......',
-	      path: urlParser.query.path,
-	      comments: [{
-	        author: '赵日天',
-	        content: '我赵日天不服',
-	        createTime: new Date()
-	      }, {
-	        author: '赵日天',
-	        content: '我赵日天不服',
-	        createTime: new Date()
-	      }]
-	    };
-	  },
+	    getInitialState: function () {
+	        let urlParser = new UrlParser(window.location.href);
+	        return {
+	            articleText: 'This article is empty now.',
+	            title: 'Loading......',
+	            path: urlParser.query.path,
+	            comments: [{
+	                author: '赵日天',
+	                content: '我赵日天不服',
+	                createTime: new Date()
+	            }, {
+	                author: '赵日天',
+	                content: '我赵日天不服',
+	                createTime: new Date()
+	            }],
+	            pv: 0,
+	            lastEditTime: 'loading......',
+	            readTimes: 'loading......'
+	        };
+	    },
 
-	  componentDidMount: function () {
-	    if (!this.state.path) return;
-	    let url = '/api/article/file?path=' + this.state.path;
-	    $.get(url, function (result) {
-	      if (result.status == 'OK') {
-	        this.setState({
-	          articleText: marked(result.data.content),
-	          title: result.data.title
-	        });
-	      }
-	    }.bind(this).bind(this));
-	  },
+	    componentDidMount: function () {
+	        let url;
+	        if (this.state.path) {
+	            url = '/api/articles/file?path=' + this.state.path;
+	        } else {
+	            let id = window.location.href.split('/');
+	            url = '/api/articles/' + id[id.length - 1];
+	        }
+	        $.get(url, function (result) {
+	            let lastEditTime = moment(result.data.lastEditAt).format('YYYY-MM-DD');
+	            if (result.status == 'OK') {
+	                this.setState({
+	                    articleText: marked(result.data.content),
+	                    title: result.data.title,
+	                    pv: result.data.pv,
+	                    lastEditTime: lastEditTime,
+	                    readTimes: result.data.readTimes
+	                });
+	            }
+	        }.bind(this));
+	    },
 
-	  render: function () {
-	    return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header" }, this.state.title), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { comments: this.state.comments }));
-	  }
+	    render: function () {
+	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button" }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { comments: this.state.comments }));
+	    }
 	});
 
 	$(function () {
-	  ReactDOM.render(React.createElement(ArticleContent, null), $("#article-content")[0], null);
+	    ReactDOM.render(React.createElement(ArticleContent, null), $("#article-content")[0], null);
 	});
 
 /***/ },
@@ -36578,7 +36591,7 @@
 
 
 	// module
-	exports.push([module.id, "#article-content {\n  padding: 24px 24px 24px 24px; }\n  #article-content #article-text {\n    padding: 20px 20px;\n    background-color: aliceblue;\n    border-radius: 8px; }\n  #article-content h4 {\n    color: #25a7c7; }\n", ""]);
+	exports.push([module.id, "#article-content {\n  padding: 24px 24px 24px 24px; }\n  #article-content .article-header {\n    overflow: hidden; }\n    #article-content .article-header .section {\n      overflow: hidden; }\n    #article-content .article-header .title {\n      display: inline-block; }\n    #article-content .article-header .article-status {\n      display: inline-block;\n      float: right; }\n    #article-content .article-header .time {\n      float: right;\n      font-size: 16px; }\n      #article-content .article-header .time span {\n        color: purple; }\n  #article-content #article-text {\n    padding: 20px 20px;\n    background-color: aliceblue;\n    border-radius: 8px; }\n  #article-content h4 {\n    color: #25a7c7; }\n", ""]);
 
 	// exports
 

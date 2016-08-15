@@ -51,6 +51,8 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 	const moment = __webpack_require__(174);
+	const UrlParser = __webpack_require__(279);
+
 	const pageContain = 10;
 
 	const Pagination = __webpack_require__(284);
@@ -61,52 +63,80 @@
 	const ArticleList = React.createClass({ displayName: "ArticleList",
 	    getInitialState: function () {
 	        return {
-	            articleList: [{
-	                title: '论如何进入德国骨科',
-	                description: '一个妹控的感言'
-	            }, {
-	                title: 'gulp的配置和使用',
-	                description: '自行想象'
-	            }],
-	            page: 1
+	            // articleList: [
+	            // {
+	            //     title: '论如何进入德国骨科',
+	            //     description: '一个妹控的感言'
+	            // },
+	            // {
+	            // 	title: 'gulp的配置和使用',
+	            // 	description: '自行想象'
+	            // }
+	            // ],
+	            articleList: [],
+	            page: 1,
+	            file: false
 	        };
 	    },
 
 	    componentDidMount: function () {
-	        $.get('/api/article?mode=file', function (result) {
+	        let urlParser = new UrlParser(window.location.href);
+	        let queryUrl = '/api/articles';
+	        let mode = urlParser.query['mode'];
+	        if (mode) {
+	            queryUrl += '?mode=' + urlParser.query['mode'];
+
+	            if (mode == 'file') {
+	                this.setState({
+	                    file: true
+	                });
+	            }
+	        }
+	        $.get(queryUrl, function (result) {
 	            if (result.status == 'OK') {
 	                let list = result.data.list;
 
-	                list.sort(function (a, b) {
-	                    let timeA = new Date(a.createTime),
-	                        timeB = new Date(b.createTime);
-	                    return timeB - timeA;
-	                });
+	                // list.sort((a, b) => {
+	                //     let timeA = new Date(a.createTime),
+	                //         timeB = new Date(b.createTime);
+	                //     return timeB - timeA;
+	                // });
 
 	                this.setState({
 	                    articleList: list
 	                });
+	            } else {
+	                alert(result.msg);
 	            }
 	        }.bind(this));
 	    },
 
 	    render: function () {
-	        let list = this.renderList();
-	        let pages = this.state.articleList.length / pageContain;
-	        if (this.state.articleList.length % pageContain != 0) {
-	            ++pages;
-	        }
-	        return React.createElement("div", { className: "articles-wrapper column" }, React.createElement("div", { className: "articles-container" }, React.createElement("h1", { className: "ui dividing header" }, "Recent Articles"), React.createElement("div", { className: "articles-list ui relaxed divided list" }, list)), React.createElement("div", { className: "pagination-container" }, React.createElement(Pagination, { setPage: this.setPage, pages: pages })));
+	        let list;
+	        if (this.state.file) list = this.renderFileList();else list = this.renderList();
+	        let pages = Math.ceil(this.state.articleList.length / pageContain);
+	        return React.createElement("div", { className: "articles-wrapper column" }, React.createElement("div", { className: "articles-container" }, React.createElement("h1", { className: "ui dividing header" }, "Recent Articles", React.createElement("a", { href: "/article/create", className: "ui green button" }, "Create")), React.createElement("div", { className: "articles-list ui relaxed divided list" }, list)), React.createElement("div", { className: "pagination-container" }, React.createElement(Pagination, { setPage: this.setPage, pages: pages })));
 	    },
 
 	    // 文章列表生成
-	    renderList: function () {
+	    renderFileList: function () {
 	        let list = [];
 	        let partList = this.state.articleList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.map(function (item, key) {
 	            let url = '/article/file/' + '?path=' + encodeURIComponent(item.path);
 	            let createTime = moment(item.createTime).format('YYYY-MM-DD');
-	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.description), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + createTime)))));
+	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.description), React.createElement("div", { className: "time" }, "Created at", React.createElement("span", null, ' ' + createTime)))));
+	        });
+	        return list;
+	    },
+
+	    renderList: function () {
+	        let list = [];
+	        let partList = this.state.articleList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
+	        partList.map(function (item, key) {
+	            let url = '/article/' + item._id;
+	            let lastEditTime = moment(item.lastEditTime).format('YYYY-MM-DD');
+	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.content), React.createElement("div", { className: "time" }, "Last Edited at", React.createElement("span", null, ' ' + lastEditTime)))));
 	        });
 	        return list;
 	    },
@@ -35207,7 +35237,39 @@
 
 /***/ },
 /* 278 */,
-/* 279 */,
+/* 279 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	function UrlParser(url) {
+	  this.url = url;
+	  this.query = {};
+	  this.parse();
+	}
+
+	Object.defineProperty(UrlParser.prototype, "parse", { writable: true, configurable: true, value: function () {
+	    var $__0, $__1, $__2;let queryString = this.url.split('?')[1];
+	    if (!queryString) return;
+	    let items = queryString.split('&');
+	    var item;for ($__0 = items, $__1 = Array.isArray($__0), $__2 = 0, $__0 = $__1 ? $__0 : $__0[/*global Symbol*/typeof Symbol == "function" ? Symbol.iterator : "@@iterator"]();;) {
+	      if ($__1) {
+	        if ($__2 >= $__0.length) break;item = $__0[$__2++];
+	      } else {
+	        $__2 = $__0.next();if ($__2.done) break;item = $__2.value;
+	      }
+	      let data = item.split('='),
+	          key = data[0],
+	          value = data[1];
+	      if (key && value) {
+	        this.query[key] = value;
+	      }
+	    }
+	  } });
+
+	module.exports = UrlParser;
+
+/***/ },
 /* 280 */,
 /* 281 */,
 /* 282 */
@@ -35615,7 +35677,7 @@
 
 
 	// module
-	exports.push([module.id, "#articles-main {\n  padding: 24px;\n  min-height: 500px; }\n  #articles-main .articles-wrapper .articles-container h1 {\n    font-size: 30px;\n    color: #0ecc54; }\n  #articles-main .articles-wrapper .articles-container .articles-list .article-item .content {\n    width: 100%; }\n    #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .description {\n      display: inline-block; }\n    #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .time {\n      display: inline-block;\n      float: right;\n      margin-right: 24px;\n      color: #aaaaaa; }\n      #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .time span {\n        color: #689dc5; }\n  #articles-main .articles-wrapper .pagination-container {\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 10px; }\n", ""]);
+	exports.push([module.id, "#articles-main {\n  padding: 24px;\n  min-height: 500px; }\n  #articles-main .articles-wrapper .articles-container h1 {\n    font-size: 30px;\n    color: #0ecc54; }\n    #articles-main .articles-wrapper .articles-container h1 a {\n      float: right; }\n  #articles-main .articles-wrapper .articles-container .articles-list .article-item .content {\n    width: 100%; }\n    #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .description {\n      display: inline-block; }\n    #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .time {\n      display: inline-block;\n      float: right;\n      margin-right: 24px;\n      color: #aaaaaa; }\n      #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .time span {\n        color: #689dc5; }\n  #articles-main .articles-wrapper .pagination-container {\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 10px; }\n", ""]);
 
 	// exports
 

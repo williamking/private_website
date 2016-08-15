@@ -62,9 +62,10 @@ exports.handleRegister = (req, res) => {
     User.register(req.body.username, req.body.password, req.body.type, req.body.email,
     req.body.signature, req.body.qq, req.body.birthday, (err, user) => {
         if (err) {
-            res.status(500).send(err.message);
-            console.log(err);
-            res.end();
+            res.json({
+                status: 'DATABASE_ERROR',
+                msg: err.message
+            });
         }
         else {
             req.session.user = user._id;

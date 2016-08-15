@@ -22,9 +22,12 @@ const EditorMode = {
 const ArticleEditor = React.createClass({
 	mixins: [LinkedStateMixin],
 
+    /**
+     * React组件生命周期方法
+     */
+
 	getInitialState() {
 	    return {
-
 	    	title: '',
 	        content: '',
 	        secret: false,
@@ -33,6 +36,14 @@ const ArticleEditor = React.createClass({
 	        mode: EditorMode.edit
 	    };
 	},
+
+    componentDidMount: function() {
+        this.setValidation();
+    },
+
+    componentDidUpdate: function() {
+        this.setValidation();
+    },
 
 	render() {
         var tags = [];
@@ -68,7 +79,7 @@ const ArticleEditor = React.createClass({
 
 		return (
 			<div className="article-editor-container">
-			    <form className="article-editor ui form">
+			    <form id="article-editor" className="ui form">
 			        <h1 className="ui dividing header">Create Article</h1>
 			        <div className="field">
 			            <label>Title</label>
@@ -101,12 +112,16 @@ const ArticleEditor = React.createClass({
 			        { content }
 			        <div className="article-control">
 			            { toggle }
-			            <button className="ui blue button" onClick={ this.createArticle }>Submit</button>
+			            <button className="ui blue button" onClick={ this.checkForm }>Submit</button>
 			        </div>
 			    </form>
 			</div>
 		);
 	},
+
+	/**
+	 * 下面是自定义方法
+	 */
 
 	updateContent(content) {
         this.setState({
@@ -122,7 +137,19 @@ const ArticleEditor = React.createClass({
 	},
 
 	createArticle() {
-
+        $.post('/api/articles/create', {
+        	title: this.state.title,
+        	content: this.state.content,
+        	secret: this.state.secret,
+        	category: this.state.tags
+        }, (result) => {
+            if (result.status == 'OK') {
+                alert('发表成功');
+                window.location.href = '/article/' + result.articleId;
+            } else {
+            	alert(result.msg);
+            }
+        });
 	},
 
 	produceTag(tag, index) {
@@ -177,7 +204,22 @@ const ArticleEditor = React.createClass({
 		this.setState({
             mode: EditorMode.edit
 		});
-	}
+	},
+
+	setValidation() {
+        $('#article-editor').form({
+        	fields: {
+        		title: 'empty',
+        		content: 'empty'
+        	},
+        	onSuccess: this.createArticle
+        });
+	},
+
+    checkForm(e) {
+    	e.preventDefault();
+    	$('#article-editor').form('validate form');
+    }
 
 });
 

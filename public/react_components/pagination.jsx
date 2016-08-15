@@ -31,7 +31,7 @@ module.exports = React.createClass({
         	this.props.setPage(this.props.pages);
         	this.setState({
         		currentPage: this.props.pages
-        	});            	
+        	});
         };
 
     	items.push(

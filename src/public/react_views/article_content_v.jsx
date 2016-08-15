@@ -8,6 +8,7 @@ const marked = require('marked');
 //导入模块
 const Comment = require('../react_components/comment.jsx');
 const UrlParser = require('../lib/url.js');
+const moment = require('moment');
 
 // css导入
 require('../sass/article_content.sass');
@@ -28,21 +29,33 @@ const ArticleContent = React.createClass({
             	author: '赵日天',
             	content: '我赵日天不服',
             	createTime: new Date()
-            }]
+            }],
+            pv: 0,
+            lastEditTime: 'loading......',
+            readTimes: 'loading......'
         }
 	},
 
 	componentDidMount: function() {
-		if (!this.state.path) return;
-		let url = '/api/article/file?path=' + this.state.path;
-		$.get(url, ((result) => {
-			if (result.status == 'OK') {
+        let url;
+		if (this.state.path) {
+		    url = '/api/articles/file?path=' + this.state.path;
+        } else {
+            let id = window.location.href.split('/');
+            url = '/api/articles/' + id[id.length - 1];
+        }
+        $.get(url, (result) => {
+            let lastEditTime = moment(result.data.lastEditAt).format('YYYY-MM-DD');
+            if (result.status == 'OK') {
                 this.setState({
-             	    articleText: marked(result.data.content),
-             	    title: result.data.title
+                    articleText: marked(result.data.content),
+                    title: result.data.title,
+                    pv: result.data.pv,
+                    lastEditTime,
+                    readTimes: result.data.readTimes
                 });
             }
-		}).bind(this));
+        });
 	},
 
 	render: function() {
@@ -50,8 +63,35 @@ const ArticleContent = React.createClass({
 			<div className="article-content-wrapper">
 			    <div className="article-content-container">
                     <article>
-                        <header className="ui dividing huge header">
-                            { this.state.title }
+                        <header className="ui dividing huge header article-header">
+                            <div className="section">
+                                <div className="title">{ this.state.title }</div>
+                                <div className="article-status">
+                                    <div className="ui labeled button">
+                                        <div className="ui red button">
+                                            <i className="thumbs up icon"></i>
+                                            Like
+                                        </div>
+                                        <a className="ui basic red left pointing label">
+                                            { this.state.pv }
+                                        </a>
+                                    </div>
+                                    <div className="ui labeled button">
+                                        <div className="ui basic blue button">
+                                            <i className="user icon"></i>
+                                            ReadingTimes
+                                        </div>
+                                        <a className="ui basic blue left pointing label">
+                                            { this.state.readTimes }
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="time">Last edited at  
+                                <span>
+                                    { ' ' + this.state.lastEditTime }
+                                </span>
+                            </div>
                         </header>
                         <div className="content" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
                         </div>

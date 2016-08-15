@@ -4,6 +4,8 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const moment = require('moment');
+const UrlParser = require('../lib/url.js');
+
 const pageContain = 10;
 
 const Pagination = require('../react_components/pagination.jsx');
@@ -14,48 +16,68 @@ require('../sass/articles.sass');
 const ArticleList = React.createClass({
     getInitialState: function() {
         return {
-            articleList: [
-            {
-                title: '论如何进入德国骨科',
-                description: '一个妹控的感言'
-            },
-            {
-            	title: 'gulp的配置和使用',
-            	description: '自行想象'
-            }
-            ],
-            page: 1
+            // articleList: [
+            // {
+            //     title: '论如何进入德国骨科',
+            //     description: '一个妹控的感言'
+            // },
+            // {
+            // 	title: 'gulp的配置和使用',
+            // 	description: '自行想象'
+            // }
+            // ],
+            articleList: [],
+            page: 1,
+            file: false
         };
     },
 
     componentDidMount: function() {
-        $.get('/api/article?mode=file', (result) => {
+        let urlParser = new UrlParser(window.location.href);
+        let queryUrl = '/api/articles';
+        let mode = urlParser.query['mode'];
+        if (mode) {
+            queryUrl += '?mode=' + urlParser.query['mode'];
+           
+            if (mode == 'file') {
+                this.setState({
+                    file: true
+                });
+            }           
+        }
+        $.get(queryUrl, (result) => {
             if (result.status == 'OK') {
                 let list = result.data.list;
 
-                list.sort((a, b) => {
-                    let timeA = new Date(a.createTime),
-                        timeB = new Date(b.createTime);
-                    return timeB - timeA;
-                });
+                // list.sort((a, b) => {
+                //     let timeA = new Date(a.createTime),
+                //         timeB = new Date(b.createTime);
+                //     return timeB - timeA;
+                // });
 
                 this.setState({
                     articleList: list
                 });
+            } else {
+                alert(result.msg);
             }
         });
     },
 
 	render: function() {
-	    let list = this.renderList();
-        let pages = this.state.articleList.length / pageContain;
-        if (this.state.articleList.length % pageContain != 0) {
-            ++pages;
-        }
+        let list;
+        if (this.state.file)
+	        list = this.renderFileList();
+        else
+            list = this.renderList();
+        let pages = Math.ceil(this.state.articleList.length / pageContain);
 		return (
 			<div className="articles-wrapper column">
 			    <div className="articles-container">
-			        <h1 className="ui dividing header">Recent Articles</h1>
+			        <h1 className="ui dividing header">
+                        Recent Articles
+                        <a href="/article/create" className="ui green button">Create</a>
+                    </h1>
 			        <div className="articles-list ui relaxed divided list">
 			            { list }
 			        </div>
@@ -68,7 +90,7 @@ const ArticleList = React.createClass({
 	},
 
     // 文章列表生成
-	renderList: function() {
+	renderFileList: function() {
 		let list = [];
         let partList = this.state.articleList.slice(
             (this.state.page - 1) * pageContain,
@@ -84,7 +106,7 @@ const ArticleList = React.createClass({
                             <a href={ url }>{ item.title }</a>
                         </h2>
                         <div className="description">{ item.description }</div>
-                        <div className="time">Last edited at  
+                        <div className="time">Created at  
                             <span>
                                 { ' ' + createTime }
                             </span>
@@ -95,6 +117,34 @@ const ArticleList = React.createClass({
 		});
 		return list;
 	},
+
+    renderList: function() {
+        let list = [];
+        let partList = this.state.articleList.slice(
+            (this.state.page - 1) * pageContain,
+            this.state.page * pageContain);
+        partList.map((item, key) => {
+            let url = '/article/' + item._id;
+            let lastEditTime = moment(item.lastEditTime).format('YYYY-MM-DD');
+            list.push(
+                <div className="article-item item" key={ key }>
+                    <i className="large bookmark middle aligned icon"></i>
+                    <div className="middle aligned content">
+                        <h2 className="header">
+                            <a href={ url }>{ item.title }</a>
+                        </h2>
+                        <div className="description">{ item.content }</div>
+                        <div className="time">Last Edited at  
+                            <span>
+                                { ' ' + lastEditTime }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        });
+        return list;        
+    },
 
     //分页切换
     setPage: function(page) {

@@ -9,30 +9,24 @@ const ArticleSchema = new mongoose.Schema({
         required: true
     },
     createAt: { type: Date, default: Date.now },
-    author: {
-        _id: {
-            type: ObjectId,
-            ref: 'User'
-        },
-        name: String
-    },
     lastEditAt: { type: Date, default: Date.now },
     content: String,
     category: [String],
     pv: { type: Number, default: 0 },
+    readTimes: { type: Number, default: 0 },
     secret: Boolean,
     comments: [Comment]
 });
 
 const ArticleModel = mongoose.model('Article', ArticleSchema);
 
-ArticleModel.createArticle = (title, content, author, category, secret, secretpassword, callback) => {
+ArticleModel.createArticle = (args, callback) => {
+    let { title, content, category, secret } = args;
     article = new ArticleModel({
-        title: title,
-        author: author,
-        content: content,
+        title,
+        content,
+        category,
         secret: secret,
-        secretPassword: secretPassword,
         comments: []
     });
     article.save(callback);
@@ -81,7 +75,7 @@ ArticleModel.addComment = (content, commentor, callback) => {
             if (article) {
                 Comment.addComment(content, commentor, null, callback, (err, comment) => {
                   article.comments.push(comment);
-                  callback(0, commentk);
+                  callback(0, comment);
                 });
             } else {
                 callback(1, null);
@@ -105,4 +99,26 @@ ArticleModel.drop = (id, callback) => {
     ArticleModel.remove({_id: id}, callback);
 };
 
-module.exports = ArticleModel
+ArticleModel.getList = (option, callback) => {
+    let query = ArticleModel.find({});
+    if (option.skip && option.limit) {
+        query.skip(skip);
+        query.limit(limit);
+    }
+    query.exec((err, articles) => {
+        let results = [];
+        if (err) return callback(err, articles);
+        for (let article of articles) {
+            results.push({
+                _id: article._id,
+                title: article.title,
+                lastEditAt: article.lastEditAt,
+                category: article.category,
+                content: article.content.substr(0, 50) + '...'
+            });
+        }
+        return callback(err, results);
+    });
+};
+
+module.exports = ArticleModel;

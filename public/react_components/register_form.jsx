@@ -91,7 +91,6 @@ module.exports = React.createClass({
             email: this.state.email,
             signature: this.state.signature,
         }, function(result) {
-            console.log(result);
             if (result.status == 'OK') {
                 alert('注册成功！');
                 cancel();

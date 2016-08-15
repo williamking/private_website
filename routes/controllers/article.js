@@ -92,17 +92,17 @@ exports.showDetailPage = (req, res) => {
 **/
 
 exports.handleCreate = (req, res) => {
-    let [title, content, secret, category, secretPassword] = req.body
-    let user = {
-        _id: req.session.user,
-        name: req.session.username
-    };
-    Article.createArticle(title, content, user, category, secret, secret-password, (err, article) => {
+    let requireField = ['title', 'content', 'category', 'secret'];
+    for (let key of requireField) {
+        if (Object.keys(req.body).indexOf(key) == -1)
+            return res.json({status: 'LACK_FEILD', msg: '文章信息缺少'});
+    }
+    Article.createArticle(req.body, (err, article) => {
         if (err)
-            res.json({result: 'Server Error', msg: err.status});
+            res.json({status: 'Server Error', msg: err.status});
         else {
             if (article)
-                res.json({result: 'Success', articleId: article._id});
+                res.json({status: 'OK', articleId: article._id});
         }
     });
 };
@@ -122,29 +122,35 @@ exports.getArticleList = (req, res) => {
                 }
             });
         }); 
+    } else {
+        let skip = req.query.start,
+            limit = req.query.end - req.query.start;
+        let option = {};
+        if (skip && limit) {
+            option = {
+                skip,
+                limit
+            };
+        }
+        Article.getList(option, (err, articles) => {
+            if (err) {
+                res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+            }
+            else {
+                if (!articles) {
+                    res.json({ status: 'ARTICLE_NOT_FOUND', msg: '找不到文章' });
+                }
+                else {
+                    res.json({ status: 'OK', data: { list: articles } });
+                }
+            }
+        });
     }
-
-    // let id = mongoose.Types.ObjectId(req.params.id);
-    // Article.findById(id, (err, article) => {
-    //     if (err) {
-    //         res.send('Server error!');
-    //         res.end();
-    //     }
-    //     else {
-    //         if (!article) {
-    //             res.send('Article not found!');
-    //             res.end();
-    //         }
-    //         else {
-    //             res.render('childArticle', {article: article});
-    //         }
-    //     }
-    // });
 };
 
 exports.getOneArticleByFile = (req, res) => {
     let path = req.query.path;
-    console.log(path);
+    console.log('Require article file from: ' + path);
     fs.readFileAsync(path, 'utf8').then((data) => {
         let title = path.split('/');
         title = title[title.length - 1].split('.')[0];
@@ -156,4 +162,15 @@ exports.getOneArticleByFile = (req, res) => {
             }
         });
     });
-}
+};
+
+exports.getOneArticleById = (req, res) => {
+    let id = req.params.id;
+    console.log('Require artilce which id is ' + id);
+    Article.findById(id, (err, article) => {
+        if (err)
+            res.json({ status:'DATABASE_ERROR', msg:'数据库菌出了问题。。。。。。' });
+        else
+            res.json({ status:'OK', data: article });
+    });
+};

@@ -23,7 +23,7 @@ module.exports = React.createClass({
     },
 
     componentDidMount: function() {
-        $.get('/api/article?mode=file&start=0&end=5', (result) => {
+        $.get('/api/articles?mode=file&start=0&end=5', (result) => {
             if (result.status == 'OK') {
                 let list = result.data.list;
 

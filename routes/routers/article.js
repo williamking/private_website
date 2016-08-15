@@ -10,5 +10,6 @@ const Article = require('../controllers/article'),
 router.get('/', Article.showMainPage);
 router.get('/file/', Article.showDetailPage);
 router.get('/create', Article.showCreatePage);
+router.get('/:id', Article.showDetailPage);
 
 module.exports = router;

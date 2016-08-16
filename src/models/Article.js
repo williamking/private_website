@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Comment = require('./Comment.js');
+const Comment = require('./Comment.js').schema;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -47,13 +47,16 @@ ArticleModel.findIndex = (callback) => {
     ArticleModel.find({}).sort({'createAt': 1}).select('title author createAt').exec(callback)
 };
 
-ArticleModel.findById = (id, callback) => {
+ArticleModel.findById = (id, read, callback) => {
     ArticleModel.findOne({_id: id}).exec((err, article) => {
-        console.log(article);
         if (err || !article) callback(err, null);
         else {
-            article.readTimes++;
-            article.save(callback);
+            if (read) {
+                article.readTimes++;
+                article.save(callback);
+            } else {
+                callback(err, article);
+            }
         }
     });
 };

@@ -14,3 +14,5 @@ router.get('/file/', Article.getOneArticleByFile);
 router.post('/create/', Article.handleCreate);
 router.get('/:id', Article.getOneArticleById);
 router.get('/:id/admire', Article.admireOneArticle);
+router.post('/:id/comments', Article.commentOneArticle);
+router.post('/:id/comments/:commentId', Article.replyOneComment);

@@ -1,31 +1,20 @@
 const mongoose = require('mongoose');
 
-ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId
 
-CommentSchema = new mongoose.Schema({
-    content: String,
+const CommentSchema = new mongoose.Schema({
+    content: { type:String, require: true },
     commentor: String,
     commentAt: { type: Date, default: Date.now },
-    replyTo : { type: ObjectId, default: null }
+    reply: { type: String, default: '' },
+    repliedAt: { type: Date }
 });
 
-CommentModel = mongoose.model('Comment', CommentSchema);
+const CommentModel = mongoose.model('Comment', CommentSchema);
 
-CommentModel.addComment = (content, commentor, replyTo, callback) => {
+CommentModel.create = (obj, callback) => {
     let newComment;
-    if (replyTo != null) {
-        newComment = new CommentModel ({
-            content: content,
-            commentor: commentor,
-            replyTo: replyTo
-        });
-    }
-    else {
-        newComment = new CommentModel ({
-            content: content,
-            commentor: commentor
-        });
-    }
+    newComment = new CommentModel(obj);
     let func = (callback, newComment) => {
         return (err) => {
             if (err)
@@ -42,4 +31,7 @@ CommentModel.findById = (id, callback) => {
     CommentModel.findOne({_id: id}, callback);
 };
 
-module.exports = CommentModel();
+module.exports = {
+    model: CommentModel,
+    schema: CommentSchema
+};

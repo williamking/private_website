@@ -17,7 +17,8 @@ const dirPath = '/home/william/web-studying-note';
 
 let mode = ArticleMode.file;
 
-let Article = require('../../models/Article.js');
+let Article = require('../../models/Article.js'),
+    Comment = require('../../models/Comment.js').model;
 
 /*
  * 以下是自定义函数
@@ -167,7 +168,7 @@ exports.getOneArticleByFile = (req, res) => {
 exports.getOneArticleById = (req, res) => {
     let id = req.params.id;
     console.log('Require article which id is ' + id);
-    Article.findById(id, (err, article) => {
+    Article.findById(id, true, (err, article) => {
         if (err)
             res.json({ status:'DATABASE_ERROR', msg:'数据库菌出了问题。。。。。。' });
         else
@@ -185,4 +186,55 @@ exports.admireOneArticle = (req, res) => {
             else res.json({ status: 'OK', data: article.pv });
         }
     })
+}
+
+exports.commentOneArticle = (req, res) => {
+    let id = req.params.id;
+    console.log('查找被评论的文章');
+    Article.findById(id, false, (err, article) => {
+        if (err || !article) {
+            res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+        } else {
+            console.log('成功，创建新评论......');
+            article.comments.unshift({
+                content: req.body.content,
+                commentor: req.body.commentor || 'visitor'
+            });
+            article.save((err, article) => {
+                console.log(article);
+                if (err || !article) {
+                    res.json({
+                        status: 'DATABASE_ERROR',
+                        msg: '数据库菌出了问题。。。。。。'
+                    })
+                } else {
+                    res.json({
+                        status: 'OK',
+                        data: article.comments[0]
+                    });
+                }
+            });
+        }
+    });
+}
+
+exports.replyOneComment = (req, res) => {
+    let id = req.params.id;
+    console.log('查找被评论的文章');
+    Article.findById(id, false, (err, article) => {
+        if (err || !article) {
+            res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+        } else {
+            console.log('成功，查找评论......');
+            let comment = article.comments.id(req.params.commentId);
+            comment.reply = req.body.content;
+            article.save((err, article) => {
+                if (err || !article)
+                    return res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+                else {
+                    res.json({ status: 'OK', data: comment });
+                }
+            });
+        }
+    });
 }

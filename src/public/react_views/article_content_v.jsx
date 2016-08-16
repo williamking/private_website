@@ -21,19 +21,21 @@ const ArticleContent = React.createClass({
             articleText: 'This article is empty now.',
             title: 'Loading......',
             path: urlParser.query.path,
-            comments: [{
-            	author: '赵日天',
-            	content: '我赵日天不服',
-            	createTime: new Date()
-            },
-            {
-            	author: '赵日天',
-            	content: '我赵日天不服',
-            	createTime: new Date()
-            }],
+            // comments: [{
+            // 	commentor: '赵日天',
+            // 	content: '我赵日天不服',
+            // 	commentAt: new Date()
+            // },
+            // {
+            // 	commentor: '赵日天',
+            // 	content: '我赵日天不服',
+            // 	commentAt: new Date()
+            // }],
+            comments: [],
             pv: 0,
             lastEditTime: 'loading......',
-            readTimes: 'loading......'
+            readTimes: 'loading......',
+            commentContent: ''
         }
 	},
 
@@ -46,7 +48,6 @@ const ArticleContent = React.createClass({
             url = '/api/articles/' + id[id.length - 1];
         }
         $.get(url, (result) => {
-            // console.log(result);
             let lastEditTime = moment(result.data.lastEditAt).format('YYYY-MM-DD');
             if (result.status == 'OK') {
                 this.setState({
@@ -55,7 +56,8 @@ const ArticleContent = React.createClass({
                     title: result.data.title,
                     pv: result.data.pv,
                     lastEditTime,
-                    readTimes: result.data.readTimes
+                    readTimes: result.data.readTimes,
+                    comments: result.data.comments
                 });
             }
         });
@@ -104,7 +106,7 @@ const ArticleContent = React.createClass({
 			        <i className="comment icon"></i>
 			        Comments
 			    </h4>
-			    <Comment comments={ this.state.comments }/>
+			    <Comment comments={ this.state.comments } id={ this.state.id } handleCommentUpdate={ this.handleCommentUpdate } />
 			</div>
 		);
 	},
@@ -119,6 +121,14 @@ const ArticleContent = React.createClass({
             } else {
                 alert('服务器菌出了点问题，骚瑞!');
             }
+        });
+    },
+
+    handleCommentUpdate(index, comment) {
+        let comments = this.state.comments;
+        comments[index] = comment;
+        this.setState({
+            comments
         });
     }
 });

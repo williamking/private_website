@@ -27,7 +27,9 @@ gulp.task('copy', () => {
         'src/routes*/routers*/api*/*',
         'src/public*/**/*',
         'src/views*/*',
-        'src/views*/include*/*.pug'
+        'src/views*/include*/*.pug',
+        'src/config*/env/*',
+        'src/config*/*'
         ])
         .pipe(gulp.dest('./'));
 })
@@ -49,13 +51,15 @@ gulp.task('reload', () => {
 
 gulp.task('server-start', (cb) => {
     server.listen({ path: './app.js' });
-    setTimeout(function() {
+    setTimeout(() => {
         cb(null);
     }, 200);
 });
 
 gulp.task('server-restart', () => {
-    server.restart();
+    setTimeout(() => {
+        server.restart();
+    }, 200);
 })
 
 gulp.task('watch', () => {

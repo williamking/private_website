@@ -11,8 +11,13 @@ module.exports = React.createClass({
 			<div className="person-info-wrapper column">
 			    <div className="person-info-container">
 			        <header className="ui dividing header">Information</header>
-			        <div className="person-info-detail ui list">
-			            { info }
+			        <div className="person-info">
+			            <div className="avatar">
+			                <img src="https://www.gravatar.com/avatar/4c5c6071248b020be7f7777d5ae03a35?s=100"></img>
+			            </div>
+			            <div className="person-info-detail ui list">
+			                { info }
+			            </div>
 			        </div>
 			    </div>
 			</div>

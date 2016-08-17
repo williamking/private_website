@@ -56,9 +56,10 @@
 	const Comment = __webpack_require__(173);
 	const UrlParser = __webpack_require__(288);
 	const moment = __webpack_require__(175);
+	const scroll = __webpack_require__(289);
 
 	// css导入
-	__webpack_require__(289);
+	__webpack_require__(290);
 
 	const ArticleContent = React.createClass({ displayName: "ArticleContent",
 	    getInitialState: function () {
@@ -111,7 +112,7 @@
 	    },
 
 	    render: function () {
-	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button", onClick: this.admire }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { comments: this.state.comments, id: this.state.id, handleCommentUpdate: this.handleCommentUpdate }));
+	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button", onClick: this.admire }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header", name: "comments", id: "comments" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { addComment: this.addComment, comments: this.state.comments, id: this.state.id, handleCommentUpdate: this.handleCommentUpdate }));
 	    },
 
 	    admire: function () {
@@ -133,6 +134,27 @@
 	        this.setState({
 	            comments: comments
 	        });
+	        // setTimeout(() => {
+	        //     location.hash='#comments';
+	        // }, 1000);
+	    },
+
+	    addComment: function (id, content) {
+	        $.post('/api/articles/' + id + '/comments', {
+	            content: content
+	        }, function (result) {
+	            if (result.status == 'OK') {
+	                alert('评论成功');
+	                let comments = this.state.comments;
+	                comments.unshift(result.data);
+	                this.setState({
+	                    comments: comments
+	                });
+	                scroll('#comments');
+	            } else {
+	                alert(result.msg);
+	            }
+	        }.bind(this));
 	    }
 	});
 
@@ -22495,7 +22517,8 @@
 	    },
 
 	    render: function () {
-	        return React.createElement("div", { className: "ui comments", style: { 'maxWidth': '100%' } }, this.renderComments(), React.createElement("form", { className: "ui reply form" }, React.createElement("div", { className: "field" }, React.createElement("textarea", { valueLink: this.linkState('content') })), React.createElement("div", { className: "ui primary labled icon button", onClick: this.addComment }, React.createElement("i", { className: "icon edit" }), "Comment")));
+	        let comments = this.renderComments();
+	        return React.createElement("div", { className: "ui comments", style: { 'maxWidth': '100%' } }, comments, React.createElement("form", { className: "ui reply form" }, React.createElement("div", { className: "field" }, React.createElement("textarea", { valueLink: this.linkState('content') })), React.createElement("div", { className: "ui primary labled icon button", onClick: this.handleAdd }, React.createElement("i", { className: "icon edit" }), "Comment")));
 	    },
 
 	    renderComments: function () {
@@ -22507,23 +22530,12 @@
 	        return comments;
 	    },
 
-	    addComment: function (e) {
+	    handleAdd: function (e) {
 	        e.preventDefault();
-	        $.post('/api/articles/' + this.props.id + '/comments', {
-	            content: this.state.content
-	        }, function (result) {
-	            if (result.status == 'OK') {
-	                alert('评论成功');
-	                let comments = this.state.comments;
-	                comments.unshift(result.data);
-	                this.setState({
-	                    comments: comments,
-	                    content: ''
-	                });
-	            } else {
-	                alert(result.msg);
-	            }
-	        }.bind(this));
+	        this.props.addComment(this.props.id, this.state.content);
+	        this.setState({
+	            content: ''
+	        });
 	    }
 
 	});
@@ -22551,6 +22563,16 @@
 	        };
 	    },
 
+	    componentWillReceiveProps: function (nextProps) {
+	        console.log('update list');
+	        console.log(nextProps.comment);
+	        this.setState({
+	            comment: nextProps.comment,
+	            reply: false,
+	            content: ''
+	        });
+	    },
+
 	    render: function () {
 	        let comment = this.state.comment;
 	        let commentTime = moment(comment.commentAt).format('YYYY-MM-YY h:mm:ss');
@@ -22569,7 +22591,7 @@
 	                return;
 	            }
 	        }.bind(this)();
-	        return React.createElement("div", { className: "comment" }, React.createElement("a", { className: "avatar" }, React.createElement("img", { src: __webpack_require__(283), className: ".avatar" })), React.createElement("div", { className: "content" }, React.createElement("a", { className: "author" }, comment.commentor), React.createElement("div", { className: "metadata" }, React.createElement("span", { className: "date" }, "Commented at ", commentTime)), React.createElement("div", { className: "text" }, comment.content), React.createElement("div", { className: "actions" }, React.createElement("a", { className: "reply", onClick: this.toggleReply }, "Reply"))), replyBlock, replyEditor, React.createElement("div", { className: "ui dividing header" }));
+	        return React.createElement("div", { className: "comment" }, React.createElement("a", { className: "avatar" }, React.createElement("img", { src: comment.avatar, className: "avatar" })), React.createElement("div", { className: "content" }, React.createElement("a", { className: "author" }, comment.commentor), React.createElement("div", { className: "metadata" }, React.createElement("span", { className: "date" }, "Commented at ", commentTime)), React.createElement("div", { className: "text" }, comment.content), React.createElement("div", { className: "actions" }, React.createElement("a", { className: "reply", onClick: this.toggleReply }, "Reply"))), replyBlock, replyEditor, React.createElement("div", { className: "ui dividing header" }));
 	    },
 
 	    toggleReply: function () {
@@ -37260,12 +37282,26 @@
 
 /***/ },
 /* 289 */
+/***/ function(module, exports) {
+
+	/**
+	 * 滚动到某个id位置
+	 */
+
+	module.exports = function (selector, time) {
+	    $('html body').animate({
+	        scrollTop: $(selector).offset().top
+	    }, time);
+	};
+
+/***/ },
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(290);
+	var content = __webpack_require__(291);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -37285,7 +37321,7 @@
 	}
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();

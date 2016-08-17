@@ -16,6 +16,16 @@ module.exports = React.createClass({
   	    };
   	},
 
+    componentWillReceiveProps(nextProps) {
+        console.log('update list');
+        console.log(nextProps.comment);
+        this.setState({
+            comment: nextProps.comment,
+            reply: false,
+            content: ''
+        });
+    },
+
 	  render() {
 		    let comment = this.state.comment;
         let commentTime = moment(comment.commentAt).format('YYYY-MM-YY h:mm:ss');
@@ -61,7 +71,7 @@ module.exports = React.createClass({
         return (
            	<div className="comment">
                	    <a className="avatar">
-               	        <img src={ require('../images/visitor.jpg') } className=".avatar"></img>
+               	        <img src={ comment.avatar } className="avatar"></img>
                	    </a>
                	    <div className="content">
                	        <a className="author">{ comment.commentor }</a>

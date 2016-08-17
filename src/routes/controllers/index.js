@@ -35,6 +35,7 @@ exports.handleLogin = (req, res) => {
                     req.session.user = user._id
                     req.session.username = user.name
                     req.session.type = user.type
+                    req.session.avatar = user.avatar
                     res.json({status: 'OK'});
                     return;
                 }

@@ -1,7 +1,10 @@
 const mongoose = require('mongoose'),
-      bcrypt = require('bcrypt');
+      bcrypt = require('bcrypt'),
+      crypto = require('crypto');
 
 const saltRounds = 10;
+
+const md5 = crypto.createHash('md5');
 
 UserSchema = new mongoose.Schema({
     name: {
@@ -11,7 +14,8 @@ UserSchema = new mongoose.Schema({
                 /^[a-zA-Z0-9]{4,}$/.test(name);
             },
             message: 'The length of username should be at least 4!'
-        }
+        },
+        unique: true
     },
     password: String,
     email: {
@@ -23,6 +27,7 @@ UserSchema = new mongoose.Schema({
             message: 'Invalid form of email.'
         }
     },
+    avatar: String,
     signature: String,
     qq: String,
     birthday: Date,
@@ -37,6 +42,8 @@ User = mongoose.model('User', UserSchema);
 
 
 User.register = (name, password, type, email, signature, qq, birthday, callback) => {
+    let email_md5 = md5.update(email.toLowerCase()).digest('hex');
+    let avatar = 'https://www.gravatar.com/avatar/' + email_md5 + '?s=48';
     User.findOne({name: name}, (err, user) => {
         if (user)
            return callback({message: 'Dulplicated username'});
@@ -49,6 +56,7 @@ User.register = (name, password, type, email, signature, qq, birthday, callback)
             email: email,
             signature: signature,
             qq: qq,
+            avatar,
             birthday: birthday,
             hobbies: []
         }

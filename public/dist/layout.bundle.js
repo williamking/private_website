@@ -49,9 +49,9 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(313);
-	__webpack_require__(315);
-	__webpack_require__(317);
+	__webpack_require__(314);
+	__webpack_require__(316);
+	__webpack_require__(318);
 
 	const ModeType = {
 	    normal: Symbol(),
@@ -60,8 +60,9 @@
 	};
 
 	// 加载模块
-	const LoginForm = __webpack_require__(319);
-	const RegisterForm = __webpack_require__(322);
+	const LoginForm = __webpack_require__(320);
+	const RegisterForm = __webpack_require__(323);
+	const Clock = __webpack_require__(328);
 
 	let Header = React.createClass({ displayName: "Header",
 	    getInitialState: function () {
@@ -108,7 +109,7 @@
 	        let title = 'William\'s website';
 	        let list = this.renderList();
 
-	        return React.createElement("div", { className: "", id: "page-header" }, React.createElement("div", { className: "brand" }, React.createElement("img", { className: "icon", alt: "icon" }), React.createElement("span", null, title), React.createElement("div", { id: "clock-image" })), React.createElement("div", { className: "nav-wrapper" }, React.createElement("nav", { className: "nav-bar ui pointing secondary menu" }, list, React.createElement("div", { className: "authorize right menu" }, function () {
+	        return React.createElement("div", { className: "", id: "page-header" }, React.createElement("div", { className: "brand" }, React.createElement("div", { className: "title" }, title), React.createElement(Clock, null)), React.createElement("div", { className: "nav-wrapper" }, React.createElement("nav", { className: "nav-bar ui pointing secondary menu" }, list, React.createElement("div", { className: "authorize right menu" }, function () {
 	            if (this.state.userState.username) {
 	                return [React.createElement("div", { className: "user", key: "1" }, "Welcome! ", this.state.userState.username), React.createElement("a", { className: "ui item logout", key: "2", onClick: this.logout }, "Logout")];
 	            } else {
@@ -21921,13 +21922,14 @@
 /* 310 */,
 /* 311 */,
 /* 312 */,
-/* 313 */
+/* 313 */,
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(314);
+	var content = __webpack_require__(315);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -21947,7 +21949,7 @@
 	}
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -21955,19 +21957,19 @@
 
 
 	// module
-	exports.push([module.id, "@font-face {\n  font-family: \"Dancing Script\";\n  src: url(\"/lib/fonts/Dancing_Script/DancingScript-Regular.ttf\"); }\n\n@font-face {\n  font-family: \"Permanent Marker\";\n  src: url(\"/lib/fonts/Permanent_Marker/PermanentMarker.ttf\"); }\n\n#page-header .brand {\n  height: 60px;\n  background-color: #8ccedf; }\n  #page-header .brand span {\n    font-family: 'Dancing Script', cursive;\n    font-size: 45px;\n    line-height: 40px;\n    vertical-align: 30%;\n    margin-left: 10px;\n    color: #EEEEEE; }\n  #page-header .brand .icon {\n    width: 100px;\n    height: 100%; }\n\n#page-header .nav-wrapper {\n  background-color: #ffffff; }\n  #page-header .nav-wrapper .nav-bar .nav-item {\n    height: 60px;\n    line-height: 60px;\n    font-size: 25px;\n    text-align: right;\n    font-family: 'Permanent Marker', cursive; }\n  #page-header .nav-wrapper .nav-bar .item:hover {\n    color: #7891f5;\n    border-color: #7891f5; }\n  #page-header .nav-wrapper .nav-bar .authorize .user {\n    position: relative;\n    margin: auto auto;\n    font-size: 21px; }\n  #page-header .nav-wrapper .nav-bar .authorize .item {\n    font-size: 20px; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: \"Dancing Script\";\n  src: url(\"/lib/fonts/Dancing_Script/DancingScript-Regular.ttf\"); }\n\n@font-face {\n  font-family: \"Permanent Marker\";\n  src: url(\"/lib/fonts/Permanent_Marker/PermanentMarker.ttf\"); }\n\n#page-header .brand {\n  display: flex;\n  height: 60px;\n  background-color: #8ccedf;\n  align-items: center;\n  justify-content: space-between; }\n  #page-header .brand .title {\n    font-family: 'Dancing Script', cursive;\n    font-size: 45px;\n    line-height: 40px;\n    vertical-align: 30%;\n    margin-left: 10px;\n    color: #EEEEEE; }\n  #page-header .brand .icon {\n    width: 100px;\n    height: 100%; }\n\n#page-header .nav-wrapper {\n  background-color: #ffffff; }\n  #page-header .nav-wrapper .nav-bar .nav-item {\n    height: 60px;\n    line-height: 60px;\n    font-size: 25px;\n    text-align: right;\n    font-family: 'Permanent Marker', cursive; }\n  #page-header .nav-wrapper .nav-bar .item:hover {\n    color: #7891f5;\n    border-color: #7891f5; }\n  #page-header .nav-wrapper .nav-bar .authorize .user {\n    position: relative;\n    margin: auto auto;\n    font-size: 21px; }\n  #page-header .nav-wrapper .nav-bar .authorize .item {\n    font-size: 20px; }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(316);
+	var content = __webpack_require__(317);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -21987,7 +21989,7 @@
 	}
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22001,13 +22003,13 @@
 
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(318);
+	var content = __webpack_require__(319);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22027,7 +22029,7 @@
 	}
 
 /***/ },
-/* 318 */
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22041,7 +22043,7 @@
 
 
 /***/ },
-/* 319 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22049,7 +22051,7 @@
 	let React = __webpack_require__(1),
 	    LinkedStateMixin = __webpack_require__(279);
 
-	__webpack_require__(320);
+	__webpack_require__(321);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 	    mixins: [LinkedStateMixin],
@@ -22104,13 +22106,13 @@
 	});
 
 /***/ },
-/* 320 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(321);
+	var content = __webpack_require__(322);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22130,7 +22132,7 @@
 	}
 
 /***/ },
-/* 321 */
+/* 322 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22144,7 +22146,7 @@
 
 
 /***/ },
-/* 322 */
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22152,8 +22154,8 @@
 	let React = __webpack_require__(1),
 	    LinkedStateMixin = __webpack_require__(279);
 
-	__webpack_require__(323);
-	__webpack_require__(325);
+	__webpack_require__(324);
+	__webpack_require__(326);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 	    mixins: [LinkedStateMixin],
@@ -22222,13 +22224,13 @@
 	});
 
 /***/ },
-/* 323 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(324);
+	var content = __webpack_require__(325);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22248,7 +22250,7 @@
 	}
 
 /***/ },
-/* 324 */
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22262,7 +22264,7 @@
 
 
 /***/ },
-/* 325 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -22282,7 +22284,7 @@
 	    "use strict";
 	    if (true) {
 	        // using AMD; register as anon module
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(326)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(327)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	    } else {
 	        // no AMD; invoke directly
 	        factory( (typeof(jQuery) != 'undefined') ? jQuery : window.Zepto );
@@ -23546,7 +23548,7 @@
 
 
 /***/ },
-/* 326 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*eslint-disable no-unused-vars*/
@@ -33624,6 +33626,189 @@
 	return jQuery;
 	} );
 
+
+/***/ },
+/* 328 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// 引入模块
+
+	const React = __webpack_require__(1);
+	__webpack_require__(329);
+
+	let ClockCanvas = null;
+	let Timer = null;
+
+	var ____Classz = React.Component;for (var ____Classz____Key in ____Classz) {
+	    if (____Classz.hasOwnProperty(____Classz____Key)) {
+	        Clock[____Classz____Key] = ____Classz[____Classz____Key];
+	    }
+	}var ____SuperProtoOf____Classz = ____Classz === null ? null : ____Classz.prototype;Clock.prototype = Object.create(____SuperProtoOf____Classz);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Classz;
+	function Clock(props) {
+	    ____Classz.call(this, props);
+	    this.displayName = 'Clock';
+	    this.state = {
+	        mode: 'electrict',
+	        hour: 1,
+	        minute: null,
+	        second: null,
+	        size: '150px'
+	    };
+	}
+
+	Object.defineProperty(Clock.prototype, "componentDidMount", { writable: true, configurable: true, value: function () {
+	        ClockCanvas = __webpack_require__(331)();
+	        Timer = setInterval(function () {
+	            let date = new Date(),
+	                hour = date.getHours(),
+	                minute = date.getMinutes(),
+	                second = date.getSeconds();
+	            hour = hour < 10 ? '0' + hour : hour;
+	            minute = minute < 10 ? '0' + minute : minute;
+	            second = second < 10 ? '0' + second : second;
+	            this.setState({
+	                hour: hour,
+	                minute: minute,
+	                second: second
+	            });
+	        }.bind(this), 1000);
+	        $('#clock-image').css('width', this.state.size);
+	        $('#clock-image').css('height', this.state.size);
+	    } });
+
+	Object.defineProperty(Clock.prototype, "render", { writable: true, configurable: true, value: function () {
+	        let clock = this.getImage();
+	        return React.createElement("div", { id: "clock-wrapper" }, React.createElement("canvas", { ref: "canvas", id: "clock", width: this.state.size, height: this.state.size }), clock, React.createElement("div", { id: "clock-image" }));
+	    } });
+
+	Object.defineProperty(Clock.prototype, "getImage", { writable: true, configurable: true, value: function () {
+	        if (this.state.mode == 'electrict') {
+	            return React.createElement("div", { className: "electrict-clock" }, this.state.hour, " : ", this.state.minute, " : ", this.state.second);
+	        }
+	    } });
+
+	module.exports = Clock;
+
+/***/ },
+/* 329 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(330);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(287)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./clock.sass", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./clock.sass");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 330 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(286)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "#clock-wrapper {\n  margin-right: 20px;\n  position: relative;\n  height: 100%;\n  display: flex; }\n  #clock-wrapper #clock {\n    display: none; }\n  #clock-wrapper .electrict-clock {\n    font-size: 24px;\n    color: #eeeeee; }\n  #clock-wrapper #clock-image {\n    position: absolute;\n    float: right;\n    right: -20px;\n    top: 0px; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 331 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	    var canvas = document.getElementById("clock"),
+	        context = canvas.getContext('2d'),
+	        FONT_HEIGHT = 15,
+	        MARGIN = 35,
+	        HAND_TRUNCATION = canvas.width / 25,
+	        MINUTE_HAND_TRUNCATION = canvas.width / 15,
+	        HOUR_HAND_TRUNCATION = canvas.width / 10,
+	        NUMERAL_SPACING = 20,
+	        RADIUS = canvas.width / 2 - MARGIN,
+	        HAND_RADIUS = RADIUS + NUMERAL_SPACING;
+
+	    function drawCircle() {
+	        context.beginPath();
+	        context.arc(canvas.width / 2, canvas.height / 2, RADIUS, 0, Math.PI * 2, true);
+	        context.stroke();
+	    }
+
+	    function drawNumberals() {
+	        var numberals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	            angle = 0,
+	            numberalWidth = 0;
+	        numberals.forEach(function (numberal) {
+	            angle = Math.PI / 6 * (numberal - 3);
+	            numberalWidth = context.measureText(numberal).width;
+	            context.fillText(numberal, canvas.width / 2 + Math.cos(angle) * HAND_RADIUS - numberalWidth / 2, canvas.height / 2 + Math.sin(angle) * HAND_RADIUS + FONT_HEIGHT / 3);
+	        });
+	    }
+
+	    function drawCenter() {
+	        context.beginPath();
+	        context.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2, true);
+	        context.fill();
+	    }
+
+	    function drawHand(loc, unit) {
+	        var angle = Math.PI * 2 * (loc / 60) - Math.PI / 2,
+	            handRadius;
+	        if (unit == 'hour') handRadius = RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION - MINUTE_HAND_TRUNCATION;
+	        if (unit == 'minute') handRadius = RADIUS - MINUTE_HAND_TRUNCATION;
+	        if (unit == 'second') handRadius = RADIUS - HAND_TRUNCATION;
+	        context.moveTo(canvas.width / 2, canvas.height / 2);
+	        context.lineTo(canvas.width / 2 + Math.cos(angle) * handRadius, canvas.height / 2 + Math.sin(angle) * handRadius);
+	        context.stroke();
+	    }
+
+	    function drawHands() {
+	        var date = new Date(),
+	            hour = date.getHours();
+	        hour = hour > 12 ? hour - 12 : hour;
+
+	        drawHand(hour * 5 + date.getMinutes() / 60 * 5, 'hour');
+	        drawHand(date.getMinutes(), 'minute');
+	        drawHand(date.getSeconds(), 'second');
+	    }
+
+	    function takeSnapShots() {
+	        document.getElementById("clock-image").style.backgroundImage = "url(" + canvas.toDataURL() + ")";
+	        //canvas.style.display = "none";
+	    }
+
+	    function drawClock() {
+	        context.clearRect(0, 0, canvas.width, canvas.height);
+
+	        drawCircle();
+	        drawCenter();
+	        drawNumberals();
+	        drawHands();
+	        takeSnapShots();
+	    }
+
+	    context.font = FONT_HEIGHT + 'px Arial';
+	    this.loop = setInterval(drawClock, 1000);
+	}.bind(this);
 
 /***/ }
 /******/ ]);

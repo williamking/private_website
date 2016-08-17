@@ -49,11 +49,11 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(305);
+	__webpack_require__(306);
 
 	//components
-	const Info = __webpack_require__(307),
-	      RecentArticleList = __webpack_require__(310);
+	const Info = __webpack_require__(308),
+	      RecentArticleList = __webpack_require__(311);
 
 	let Index = React.createClass({ displayName: "Index",
 	    getInitialState: function () {
@@ -35492,13 +35492,14 @@
 /* 302 */,
 /* 303 */,
 /* 304 */,
-/* 305 */
+/* 305 */,
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(306);
+	var content = __webpack_require__(307);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35518,7 +35519,7 @@
 	}
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -35532,7 +35533,7 @@
 
 
 /***/ },
-/* 307 */
+/* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35540,12 +35541,12 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(308);
+	__webpack_require__(309);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 		render: function () {
 			let info = this.renderInfo();
-			return React.createElement("div", { className: "person-info-wrapper column" }, React.createElement("div", { className: "person-info-container" }, React.createElement("header", { className: "ui dividing header" }, "Information"), React.createElement("div", { className: "person-info-detail ui list" }, info)));
+			return React.createElement("div", { className: "person-info-wrapper column" }, React.createElement("div", { className: "person-info-container" }, React.createElement("header", { className: "ui dividing header" }, "Information"), React.createElement("div", { className: "person-info" }, React.createElement("div", { className: "avatar" }, React.createElement("img", { src: "https://www.gravatar.com/avatar/4c5c6071248b020be7f7777d5ae03a35?s=100" })), React.createElement("div", { className: "person-info-detail ui list" }, info))));
 		},
 
 		renderInfo: function () {
@@ -35560,13 +35561,13 @@
 	});
 
 /***/ },
-/* 308 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(309);
+	var content = __webpack_require__(310);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35586,7 +35587,7 @@
 	}
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -35594,13 +35595,13 @@
 
 
 	// module
-	exports.push([module.id, ".person-info-wrapper .person-info-container {\n  padding: 10px 10px 10px 10px;\n  border: 2px solid #eeeeee;\n  border-radius: 5px; }\n\n.person-info-wrapper .person-info-detail .person-info-item .key {\n  padding: 4px 4px 4px 4px;\n  display: inline-block;\n  height: 28px;\n  line-height: 20px;\n  text-align: center;\n  vertical-align: middle;\n  background-color: rgba(97, 214, 68, 0.91);\n  border-radius: 2px;\n  margin-right: 5px;\n  color: #ffffff; }\n\n.person-info-wrapper .person-info-detail .person-info-item .content {\n  display: inline-block; }\n", ""]);
+	exports.push([module.id, ".person-info-wrapper .person-info-container {\n  padding: 10px 10px 10px 10px;\n  border: 2px solid #eeeeee;\n  border-radius: 5px;\n  overflow: hidden; }\n  .person-info-wrapper .person-info-container .person-info {\n    display: flex; }\n    .person-info-wrapper .person-info-container .person-info .avatar {\n      flex: 0.6; }\n    .person-info-wrapper .person-info-container .person-info .person-info-detail {\n      flex: 1;\n      margin-top: 0; }\n      .person-info-wrapper .person-info-container .person-info .person-info-detail .person-info-item .key {\n        padding: 4px 4px 4px 4px;\n        display: inline-block;\n        height: 28px;\n        line-height: 20px;\n        text-align: center;\n        vertical-align: middle;\n        background-color: rgba(97, 214, 68, 0.91);\n        border-radius: 2px;\n        margin-right: 5px;\n        color: #ffffff; }\n      .person-info-wrapper .person-info-container .person-info .person-info-detail .person-info-item .content {\n        display: inline-block; }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35609,32 +35610,35 @@
 	const ReactDOM = __webpack_require__(33);
 	const moment = __webpack_require__(175);
 
-	__webpack_require__(311);
+	__webpack_require__(312);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 
 	    getInitialState: function () {
 	        return {
-	            articleList: [{
-	                title: '论如何进入德国骨科',
-	                description: '一个妹控的感言'
-	            }, {
-	                title: 'gulp的配置和使用',
-	                description: '自行想象'
-	            }]
+	            articleList: [
+	                // {
+	                //     title: '论如何进入德国骨科',
+	                //     description: '一个妹控的感言'
+	                // },
+	                // {
+	                // 	title: 'gulp的配置和使用',
+	                // 	description: '自行想象'
+	                // }
+	            ]
 	        };
 	    },
 
 	    componentDidMount: function () {
-	        $.get('/api/articles?mode=file&start=0&end=5', function (result) {
+	        $.get('/api/articles?start=0&end=5', function (result) {
 	            if (result.status == 'OK') {
 	                let list = result.data.list;
 
-	                list.sort(function (a, b) {
-	                    let timeA = new Date(a.createTime),
-	                        timeB = new Date(b.createTime);
-	                    return timeB - timeA;
-	                });
+	                // list.sort((a, b) => {
+	                //     let timeA = new Date(a.createTime),
+	                //         timeB = new Date(b.createTime);
+	                //     return timeB - timeA;
+	                // });
 
 	                this.setState({
 	                    articleList: list
@@ -35651,22 +35655,22 @@
 	    renderList: function () {
 	        let list = [];
 	        this.state.articleList.map(function (item, key) {
-	            let url = '/article/file/' + '?path=' + item.path;
-	            let createTime = moment(item.createTime).format('YYYY-MM-DD');
-	            list.push(React.createElement("div", { className: "person-info-item item", key: key }, React.createElement("i", { className: "large tag middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("a", { className: "header", href: url }, item.title), React.createElement("div", { className: "description" }, item.description), React.createElement("div", { className: "create-time" }, createTime))));
+	            let url = '/article/' + item._id;
+	            let createTime = moment(item.lastEditAt).format('YYYY-MM-DD');
+	            list.push(React.createElement("div", { className: "person-info-item item", key: key }, React.createElement("i", { className: "large tag middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("a", { className: "header", href: url }, item.title), React.createElement("div", { className: "description" }, item.content), React.createElement("div", { className: "create-time" }, createTime))));
 	        });
 	        return list;
 	    }
 	});
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(312);
+	var content = __webpack_require__(313);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35686,7 +35690,7 @@
 	}
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();

@@ -7,7 +7,8 @@ const CommentSchema = new mongoose.Schema({
     commentor: String,
     commentAt: { type: Date, default: Date.now },
     reply: { type: String, default: '' },
-    repliedAt: { type: Date }
+    repliedAt: { type: Date },
+    avatar: String
 });
 
 const CommentModel = mongoose.model('Comment', CommentSchema);

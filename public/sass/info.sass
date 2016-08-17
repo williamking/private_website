@@ -7,18 +7,25 @@ $info-border-radius: 5px
         padding: 10px 10px 10px 10px
         border: $info-border
         border-radius: $info-border-radius
-    .person-info-detail
-        .person-info-item
-            .key
-                padding: 4px 4px 4px 4px
-                display: inline-block
-                height: 28px
-                line-height: 20px
-                text-align: center
-                vertical-align: middle
-                background-color: $key-color
-                border-radius: 2px
-                margin-right: 5px
-                color: #ffffff
-            .content
-                display: inline-block
+        overflow: hidden
+        .person-info
+            display: flex
+            .avatar
+                flex: 0.6
+            .person-info-detail
+                flex: 1
+                margin-top: 0
+                .person-info-item
+                    .key
+                        padding: 4px 4px 4px 4px
+                        display: inline-block
+                        height: 28px
+                        line-height: 20px
+                        text-align: center
+                        vertical-align: middle
+                        background-color: $key-color
+                        border-radius: 2px
+                        margin-right: 5px
+                        color: #ffffff
+                    .content
+                        display: inline-block

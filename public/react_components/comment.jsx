@@ -24,14 +24,15 @@ module.exports = React.createClass({
     },
 
 	render() {
+        let comments = this.renderComments();
 		return (
 			<div className="ui comments" style={{ 'maxWidth': '100%' }}>
-			    { this.renderComments() }
+			    { comments }
                 <form className="ui reply form">
                     <div className="field">
                         <textarea valueLink={ this.linkState('content') }></textarea>
                     </div>
-                    <div className="ui primary labled icon button" onClick={ this.addComment }>
+                    <div className="ui primary labled icon button" onClick={ this.handleAdd }>
                         <i className="icon edit"></i>
                         Comment
                     </div>
@@ -51,23 +52,12 @@ module.exports = React.createClass({
         return comments;
 	},
 
-    addComment(e) {
+    handleAdd(e) {
         e.preventDefault();
-        $.post('/api/articles/' + this.props.id + '/comments', {
-            content: this.state.content
-        }, (result) => {
-            if (result.status == 'OK') {
-                alert('评论成功');
-                let comments = this.state.comments;
-                comments.unshift(result.data);
-                this.setState({
-                    comments,
-                    content: ''
-                });
-            } else {
-                alert(result.msg);
-            }
-        });
+        this.props.addComment(this.props.id, this.state.content);
+        this.setState({
+            content: ''
+        })
     }
 
 });

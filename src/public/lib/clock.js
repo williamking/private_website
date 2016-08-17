@@ -1,4 +1,4 @@
-$(function() {
+module.exports = () => {
     var canvas = document.getElementById("clock"),
         context = canvas.getContext('2d'),
         FONT_HEIGHT = 15,
@@ -49,7 +49,7 @@ $(function() {
     }    
 
     function drawHands() {
-        var date = new Date,
+        var date = new Date(),
             hour = date.getHours();
         hour = hour > 12 ? hour - 12 : hour;    
 
@@ -75,5 +75,5 @@ $(function() {
 
 
     context.font = FONT_HEIGHT + 'px Arial';
-    loop = setInterval(drawClock, 1000);
-});
+    this.loop = setInterval(drawClock, 1000);
+};

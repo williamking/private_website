@@ -112,9 +112,10 @@ ArticleModel.drop = (id, callback) => {
 ArticleModel.getList = (option, callback) => {
     let query = ArticleModel.find({});
     if (option.skip && option.limit) {
-        query.skip(skip);
-        query.limit(limit);
+        query.skip(option.skip);
+        query.limit(option.limit);
     }
+    query.sort({ lastEditAt: -1 });
     query.exec((err, articles) => {
         let results = [];
         if (err) return callback(err, articles);

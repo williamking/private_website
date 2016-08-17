@@ -198,10 +198,10 @@ exports.commentOneArticle = (req, res) => {
             console.log('成功，创建新评论......');
             article.comments.unshift({
                 content: req.body.content,
-                commentor: req.body.commentor || 'visitor'
+                commentor: req.session.username || 'visitor',
+                avatar: req.session.avatar || '/images/visitor.jpg'
             });
             article.save((err, article) => {
-                console.log(article);
                 if (err || !article) {
                     res.json({
                         status: 'DATABASE_ERROR',

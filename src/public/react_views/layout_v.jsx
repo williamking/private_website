@@ -15,6 +15,7 @@ const ModeType = {
 // 加载模块
 const LoginForm = require('../react_components/login_form.jsx');
 const RegisterForm = require('../react_components/register_form.jsx');
+const Clock = require('../react_components/clock.jsx');
 
 let Header = React.createClass({
 	getInitialState: function() {
@@ -69,9 +70,8 @@ let Header = React.createClass({
 		return(
 			<div className="" id="page-header">
 			    <div className="brand">
-			        <img className="icon" alt="icon"></img>
-			        <span>{ title }</span>
-			        <div id="clock-image"></div>
+			        <div className="title">{ title }</div>
+                    <Clock />
 			    </div>
 			    <div className="nav-wrapper">
 			        <nav className="nav-bar ui pointing secondary menu">

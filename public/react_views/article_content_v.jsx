@@ -9,6 +9,7 @@ const marked = require('marked');
 const Comment = require('../react_components/comment.jsx');
 const UrlParser = require('../lib/url.js');
 const moment = require('moment');
+const scroll = require('../lib/scroll.js');
 
 // css导入
 require('../sass/article_content.sass');
@@ -102,11 +103,11 @@ const ArticleContent = React.createClass({
                         </div>
                     </article>
 			    </div>
-			    <h4 className="ui horizontal divider header">
+			    <h4 className="ui horizontal divider header" name="comments" id="comments">
 			        <i className="comment icon"></i>
 			        Comments
 			    </h4>
-			    <Comment comments={ this.state.comments } id={ this.state.id } handleCommentUpdate={ this.handleCommentUpdate } />
+			    <Comment addComment={ this.addComment } comments={ this.state.comments } id={ this.state.id } handleCommentUpdate={ this.handleCommentUpdate } />
 			</div>
 		);
 	},
@@ -117,7 +118,7 @@ const ArticleContent = React.createClass({
                 alert('点赞成功');
                 this.setState({
                     pv: result.data
-                })
+                });
             } else {
                 alert('服务器菌出了点问题，骚瑞!');
             }
@@ -129,6 +130,27 @@ const ArticleContent = React.createClass({
         comments[index] = comment;
         this.setState({
             comments
+        });
+        // setTimeout(() => {
+        //     location.hash='#comments';
+        // }, 1000);
+    },
+
+    addComment(id, content) {
+        $.post('/api/articles/' + id + '/comments', {
+            content
+        }, (result) => {
+            if (result.status == 'OK') {
+                alert('评论成功');
+                let comments = this.state.comments;
+                comments.unshift(result.data);
+                this.setState({
+                    comments
+                });
+                scroll('#comments');
+            } else {
+                alert(result.msg);
+            }
         });
     }
 });

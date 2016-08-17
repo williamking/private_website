@@ -10,28 +10,28 @@ module.exports = React.createClass({
     getInitialState: function() {
         return {
             articleList: [
-            {
-                title: '论如何进入德国骨科',
-                description: '一个妹控的感言'
-            },
-            {
-            	title: 'gulp的配置和使用',
-            	description: '自行想象'
-            }
+            // {
+            //     title: '论如何进入德国骨科',
+            //     description: '一个妹控的感言'
+            // },
+            // {
+            // 	title: 'gulp的配置和使用',
+            // 	description: '自行想象'
+            // }
             ]
         };
     },
 
     componentDidMount: function() {
-        $.get('/api/articles?mode=file&start=0&end=5', (result) => {
+        $.get('/api/articles?start=0&end=5', (result) => {
             if (result.status == 'OK') {
                 let list = result.data.list;
 
-                list.sort((a, b) => {
-                    let timeA = new Date(a.createTime),
-                        timeB = new Date(b.createTime);
-                    return timeB - timeA;
-                });
+                // list.sort((a, b) => {
+                //     let timeA = new Date(a.createTime),
+                //         timeB = new Date(b.createTime);
+                //     return timeB - timeA;
+                // });
 
                 this.setState({
                     articleList: list
@@ -57,14 +57,14 @@ module.exports = React.createClass({
 	renderList: function() {
 		let list = [];
 		this.state.articleList.map((item, key) => {
-            let url = '/article/file/' + '?path=' + item.path;
-            let createTime = moment(item.createTime).format('YYYY-MM-DD');
+            let url = '/article/' + item._id;
+            let createTime = moment(item.lastEditAt).format('YYYY-MM-DD');
             list.push(
                 <div className="person-info-item item" key={ key }>
                     <i className="large tag	middle aligned icon"></i>
                     <div className="middle aligned content">
                         <a className="header" href={ url }>{ item.title }</a>
-                        <div className="description">{ item.description }</div>
+                        <div className="description">{ item.content }</div>
                         <div className="create-time">{ createTime }</div>
                     </div>
                 </div>

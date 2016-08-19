@@ -4,7 +4,6 @@ let React = require('react'),
     LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 require('../sass/register_form.sass');
-require('jquery-form');
 
 module.exports = React.createClass({
     mixins: [LinkedStateMixin],

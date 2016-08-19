@@ -124,6 +124,7 @@ exports.getArticleList = (req, res) => {
             });
         }); 
     } else {
+        console.log(req.query);
         let skip = req.query.start,
             limit = req.query.end - req.query.start;
         let option = {};

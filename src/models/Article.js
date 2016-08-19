@@ -127,8 +127,6 @@ ArticleModel.getList = (option, callback) => {
             console.log(err);
             return callback(err, articles);
         }
-        console.log('get articles: ');
-        console.log(articles);
         for (let article of articles) {
             results.push({
                 _id: article._id,

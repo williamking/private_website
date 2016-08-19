@@ -117,8 +117,8 @@ ArticleModel.getList = (option, callback) => {
         query= ArticleModel.find({});
     }
     if (option.skip && option.limit) {
-        query.skip(option.skip);
-        query.limit(option.limit);
+        if (skip > 0) query.skip(parseInt(option.skip));
+        query.limit(parseInt(option.limit));
     }
     query.sort({ lastEditAt: -1 });
     query.exec((err, articles) => {

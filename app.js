@@ -13,7 +13,7 @@ let express = require('express'),
     busboy = require('connect-busboy');
 
 /*port*/
-let port = 8000;
+let { port } = require('./config/config');
 
 let app = express();
 

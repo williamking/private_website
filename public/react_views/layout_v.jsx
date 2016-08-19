@@ -36,13 +36,13 @@ let Header = React.createClass({
 			    },
 			    {
 			    	name: 'Photo',
-			    	url: '/photo',
+			    	url: '/',
 			    	className: 'photo',
 			    	icon: 'photo'
 			    },
 			    {
 			    	name: 'Lab',
-			    	url: '/lab',
+			    	url: '/',
 			    	className: 'lab',
 			    	icon: 'world'
 			    },

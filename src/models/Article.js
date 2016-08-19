@@ -123,7 +123,10 @@ ArticleModel.getList = (option, callback) => {
     query.sort({ lastEditAt: -1 });
     query.exec((err, articles) => {
         let results = [];
-        if (err) return callback(err, articles);
+        if (err) {
+            console.log(err);
+            return callback(err, articles);
+        }
         console.log('get articles: ');
         console.log(articles);
         for (let article of articles) {

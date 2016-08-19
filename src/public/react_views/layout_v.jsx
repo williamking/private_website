@@ -157,6 +157,7 @@ let Header = React.createClass({
         $.get('/api/logout', (result) => {
         	if (result.status == 'OK') {
         		alert('登出成功!');
+                sessionStorage.role = null;
                 update();
         	} else {
         		alert(result.msg);

@@ -43,10 +43,10 @@ class Clock extends React.Component {
     render() {
     	let clock = this.getImage();
         return (
-        	<div id="clock-wrapper">
+        	<div id="clock-wrapper" onMouseOver={ this.showClock } onMouseOut={ this.hideClock }>
                 <canvas ref="canvas" id="clock" width={ this.state.size } height={ this.state.size }></canvas>
                 { clock }
-                <div id="clock-image"></div>
+                <div id="clock-image" className="invisible"></div>
             </div>
         );
     }
@@ -59,6 +59,14 @@ class Clock extends React.Component {
     			</div>
     		)
     	}
+    }
+
+    showClock() {
+    	$('#clock-image').removeClass('invisible');
+    }
+
+    hideClock() {
+    	$('#clock-image').addClass('invisible');
     }
 }
 

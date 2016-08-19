@@ -49,11 +49,11 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(306);
+	__webpack_require__(309);
 
 	//components
-	const Info = __webpack_require__(308),
-	      RecentArticleList = __webpack_require__(311);
+	const Info = __webpack_require__(311),
+	      RecentArticleList = __webpack_require__(314);
 
 	let Index = React.createClass({ displayName: "Index",
 	    getInitialState: function () {
@@ -35493,13 +35493,16 @@
 /* 303 */,
 /* 304 */,
 /* 305 */,
-/* 306 */
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(307);
+	var content = __webpack_require__(310);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35519,7 +35522,7 @@
 	}
 
 /***/ },
-/* 307 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -35533,7 +35536,7 @@
 
 
 /***/ },
-/* 308 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35541,7 +35544,7 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(309);
+	__webpack_require__(312);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 		render: function () {
@@ -35561,13 +35564,13 @@
 	});
 
 /***/ },
-/* 309 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(310);
+	var content = __webpack_require__(313);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35587,7 +35590,7 @@
 	}
 
 /***/ },
-/* 310 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -35601,7 +35604,7 @@
 
 
 /***/ },
-/* 311 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35610,7 +35613,7 @@
 	const ReactDOM = __webpack_require__(33);
 	const moment = __webpack_require__(175);
 
-	__webpack_require__(312);
+	__webpack_require__(315);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 
@@ -35664,13 +35667,13 @@
 	});
 
 /***/ },
-/* 312 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(313);
+	var content = __webpack_require__(316);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35690,7 +35693,7 @@
 	}
 
 /***/ },
-/* 313 */
+/* 316 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();

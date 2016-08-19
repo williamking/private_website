@@ -1,4 +1,4 @@
-'use strict';
+    'use strict';
 
 // 组件导入
 const React = require('react');
@@ -12,6 +12,9 @@ const Pagination = require('../react_components/pagination.jsx');
 
 // css导入
 require('../sass/articles.sass');
+
+// React组件
+const Tags = require('../react_components/tags.jsx');
 
 const ArticleList = React.createClass({
     getInitialState: function() {
@@ -36,15 +39,16 @@ const ArticleList = React.createClass({
         let urlParser = new UrlParser(window.location.href);
         let queryUrl = '/api/articles';
         let mode = urlParser.query['mode'];
+        let tag = urlParser.query['tag'];
         if (mode) {
-            queryUrl += '?mode=' + urlParser.query['mode'];
-           
+            queryUrl += '?mode=' + mode;
             if (mode == 'file') {
                 this.setState({
                     file: true
                 });
             }           
         }
+        if (tag) queryUrl += '?tag=' + encodeURIComponent(tag);
         $.get(queryUrl, (result) => {
             if (result.status == 'OK') {
                 let list = result.data.list;
@@ -76,11 +80,21 @@ const ArticleList = React.createClass({
 			    <div className="articles-container">
 			        <h1 className="ui dividing header">
                         Recent Articles
-                        <a href="/article/create" className="ui green button">Create</a>
+                        { (() => {
+                            if (sessionStorage.role == 'true')
+                                return <a href="/article/create" className="ui green button">Create</a>
+                          })()
+                        } 
                     </h1>
-			        <div className="articles-list ui relaxed divided list">
-			            { list }
-			        </div>
+                    <div className="section">
+			            <div className="articles-list ui relaxed divided list">
+			                { list }
+			            </div>
+                        <div className="vertical-divider"></div>
+                        <div className="tag list">
+                            <Tags />
+                        </div>
+                    </div>
 			    </div>
                 <div className="pagination-container">
                     <Pagination setPage={ this.setPage } pages={ pages } />

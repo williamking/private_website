@@ -64,6 +64,7 @@ module.exports = React.createClass({
             password: this.state.password
         }, function(result) {
             if (result.status == 'OK') {
+                sessionStorage.role = result.data.role;
                 alert('登录成功！');
                 cancel();
                 callback();

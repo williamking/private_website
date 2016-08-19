@@ -5,6 +5,7 @@ const mongoose = require('mongoose'),
 const saltRounds = 10;
 
 const md5 = crypto.createHash('md5');
+const { saltNum } = require('../config/config');
 
 UserSchema = new mongoose.Schema({
     name: {
@@ -47,7 +48,7 @@ User.register = (name, password, type, email, signature, qq, birthday, callback)
     User.findOne({name: name}, (err, user) => {
         if (user)
            return callback({message: 'Dulplicated username'});
-        let salt = bcrypt.genSaltSync(10)
+        let salt = bcrypt.genSaltSync(saltNum);
         let hash = bcrypt.hashSync(password, salt)
         let newUser = {
             name: name,

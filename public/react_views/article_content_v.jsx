@@ -33,6 +33,7 @@ const ArticleContent = React.createClass({
             // 	commentAt: new Date()
             // }],
             comments: [],
+            tags: [],
             pv: 0,
             lastEditTime: 'loading......',
             readTimes: 'loading......',
@@ -56,6 +57,7 @@ const ArticleContent = React.createClass({
                     articleText: marked(result.data.content),
                     title: result.data.title,
                     pv: result.data.pv,
+                    tags: result.data.category,
                     lastEditTime,
                     readTimes: result.data.readTimes,
                     comments: result.data.comments
@@ -65,6 +67,7 @@ const ArticleContent = React.createClass({
 	},
 
 	render: function() {
+        let tags = this.renderTags();
 		return (
 			<div className="article-content-wrapper">
 			    <div className="article-content-container">
@@ -93,10 +96,16 @@ const ArticleContent = React.createClass({
                                     </div>
                                 </div>
                             </div>
-                            <div className="time">Last edited at  
-                                <span>
-                                    { ' ' + this.state.lastEditTime }
-                                </span>
+                            <div className="section">
+                                <div className="tags">
+                                    <span>tags: </span>
+                                    { tags }
+                                </div>
+                                <div className="time">Last edited at  
+                                    <span>
+                                        { ' ' + this.state.lastEditTime }
+                                    </span>
+                                </div>
                             </div>
                         </header>
                         <div className="content" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
@@ -152,6 +161,16 @@ const ArticleContent = React.createClass({
                 alert(result.msg);
             }
         });
+    },
+
+    renderTags() {
+        let tags = [];
+        this.state.tags.forEach((value, index) => {
+            tags.push(
+                <a className="ui teal tag label" key={ index }>{ value }</a> 
+            );
+        });
+        return tags;
     }
 });
 

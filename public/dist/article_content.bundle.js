@@ -80,6 +80,7 @@
 	            // 	commentAt: new Date()
 	            // }],
 	            comments: [],
+	            tags: [],
 	            pv: 0,
 	            lastEditTime: 'loading......',
 	            readTimes: 'loading......',
@@ -103,6 +104,7 @@
 	                    articleText: marked(result.data.content),
 	                    title: result.data.title,
 	                    pv: result.data.pv,
+	                    tags: result.data.category,
 	                    lastEditTime: lastEditTime,
 	                    readTimes: result.data.readTimes,
 	                    comments: result.data.comments
@@ -112,7 +114,8 @@
 	    },
 
 	    render: function () {
-	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button", onClick: this.admire }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header", name: "comments", id: "comments" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { addComment: this.addComment, comments: this.state.comments, id: this.state.id, handleCommentUpdate: this.handleCommentUpdate }));
+	        let tags = this.renderTags();
+	        return React.createElement("div", { className: "article-content-wrapper" }, React.createElement("div", { className: "article-content-container" }, React.createElement("article", null, React.createElement("header", { className: "ui dividing huge header article-header" }, React.createElement("div", { className: "section" }, React.createElement("div", { className: "title" }, this.state.title), React.createElement("div", { className: "article-status" }, React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui red button", onClick: this.admire }, React.createElement("i", { className: "thumbs up icon" }), "Like"), React.createElement("a", { className: "ui basic red left pointing label" }, this.state.pv)), React.createElement("div", { className: "ui labeled button" }, React.createElement("div", { className: "ui basic blue button" }, React.createElement("i", { className: "user icon" }), "ReadingTimes"), React.createElement("a", { className: "ui basic blue left pointing label" }, this.state.readTimes)))), React.createElement("div", { className: "section" }, React.createElement("div", { className: "tags" }, React.createElement("span", null, "tags: "), tags), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + this.state.lastEditTime)))), React.createElement("div", { className: "content", id: "article-text", dangerouslySetInnerHTML: { __html: this.state.articleText } }))), React.createElement("h4", { className: "ui horizontal divider header", name: "comments", id: "comments" }, React.createElement("i", { className: "comment icon" }), "Comments"), React.createElement(Comment, { addComment: this.addComment, comments: this.state.comments, id: this.state.id, handleCommentUpdate: this.handleCommentUpdate }));
 	    },
 
 	    admire: function () {
@@ -155,6 +158,14 @@
 	                alert(result.msg);
 	            }
 	        }.bind(this));
+	    },
+
+	    renderTags: function () {
+	        let tags = [];
+	        this.state.tags.forEach(function (value, index) {
+	            tags.push(React.createElement("a", { className: "ui teal tag label", key: index }, value));
+	        });
+	        return tags;
 	    }
 	});
 
@@ -37329,7 +37340,7 @@
 
 
 	// module
-	exports.push([module.id, "#article-content {\n  padding: 24px 24px 24px 24px; }\n  #article-content .article-header {\n    overflow: hidden; }\n    #article-content .article-header .section {\n      overflow: hidden; }\n    #article-content .article-header .title {\n      display: inline-block; }\n    #article-content .article-header .article-status {\n      display: inline-block;\n      float: right; }\n    #article-content .article-header .time {\n      float: right;\n      font-size: 16px; }\n      #article-content .article-header .time span {\n        color: purple; }\n  #article-content #article-text {\n    padding: 20px 20px;\n    background-color: aliceblue;\n    border-radius: 8px; }\n  #article-content h4 {\n    color: #25a7c7; }\n", ""]);
+	exports.push([module.id, "#article-content {\n  padding: 24px 24px 24px 24px; }\n  #article-content .article-header {\n    overflow: hidden; }\n    #article-content .article-header .section {\n      overflow: hidden; }\n      #article-content .article-header .section .tags {\n        display: inline-block;\n        font-size: 16px; }\n        #article-content .article-header .section .tags .tag {\n          margin-left: 15px;\n          margin-right: 5px; }\n    #article-content .article-header .title {\n      display: inline-block; }\n    #article-content .article-header .article-status {\n      display: inline-block;\n      float: right; }\n    #article-content .article-header .time {\n      float: right;\n      font-size: 16px; }\n      #article-content .article-header .time span {\n        color: purple; }\n  #article-content #article-text {\n    padding: 20px 20px;\n    background-color: aliceblue;\n    border-radius: 8px; }\n  #article-content h4 {\n    color: #25a7c7; }\n", ""]);
 
 	// exports
 

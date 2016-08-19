@@ -39,7 +39,8 @@ module.exports = () => {
     function drawHand(loc, unit) {
         var angle = (Math.PI * 2) * (loc / 60) - Math.PI / 2,
             handRadius;
-        if (unit == 'hour') handRadius = RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION - MINUTE_HAND_TRUNCATION;
+        // if (unit == 'hour') handRadius = RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION - MINUTE_HAND_TRUNCATION;
+        if (unit == 'hour') handRadius = RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION;
         if (unit == 'minute') handRadius = RADIUS - MINUTE_HAND_TRUNCATION;
         if (unit == 'second') handRadius = RADIUS - HAND_TRUNCATION;
         context.moveTo(canvas.width / 2, canvas.height / 2);

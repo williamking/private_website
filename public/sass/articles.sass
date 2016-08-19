@@ -11,19 +11,26 @@ $time-color: #689dc5
                 color: $header-color
                 a
                     float: right
-            .articles-list
-                .article-item
-                    .content
-                        width: 100%
-                        .description
-                            display: inline-block
-                        .time
-                            display: inline-block
-                            float: right
-                            margin-right: 24px
-                            color: #aaaaaa
-                            span
-                               color: $time-color
+            .section
+                display: flex
+                min-height: 350px
+                .articles-list
+                    flex: 8
+                    border-right: 2px solid #eeeeee
+                    .article-item
+                        .content
+                            width: 100%
+                            .description
+                                display: inline-block
+                            .time
+                                display: inline-block
+                                float: right
+                                margin-right: 24px
+                                color: #aaaaaa
+                                span
+                                   color: $time-color
+                .tag
+                    flex: 2
         .pagination-container
             text-align: center
             padding-top: 20px

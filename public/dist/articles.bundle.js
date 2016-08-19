@@ -60,6 +60,9 @@
 	// css导入
 	__webpack_require__(293);
 
+	// React组件
+	const Tags = __webpack_require__(295);
+
 	const ArticleList = React.createClass({ displayName: "ArticleList",
 	    getInitialState: function () {
 	        return {
@@ -83,15 +86,16 @@
 	        let urlParser = new UrlParser(window.location.href);
 	        let queryUrl = '/api/articles';
 	        let mode = urlParser.query['mode'];
+	        let tag = urlParser.query['tag'];
 	        if (mode) {
-	            queryUrl += '?mode=' + urlParser.query['mode'];
-
+	            queryUrl += '?mode=' + mode;
 	            if (mode == 'file') {
 	                this.setState({
 	                    file: true
 	                });
 	            }
 	        }
+	        if (tag) queryUrl += '?tag=' + encodeURIComponent(tag);
 	        $.get(queryUrl, function (result) {
 	            if (result.status == 'OK') {
 	                let list = result.data.list;
@@ -115,7 +119,9 @@
 	        let list;
 	        if (this.state.file) list = this.renderFileList();else list = this.renderList();
 	        let pages = Math.ceil(this.state.articleList.length / pageContain);
-	        return React.createElement("div", { className: "articles-wrapper column" }, React.createElement("div", { className: "articles-container" }, React.createElement("h1", { className: "ui dividing header" }, "Recent Articles", React.createElement("a", { href: "/article/create", className: "ui green button" }, "Create")), React.createElement("div", { className: "articles-list ui relaxed divided list" }, list)), React.createElement("div", { className: "pagination-container" }, React.createElement(Pagination, { setPage: this.setPage, pages: pages })));
+	        return React.createElement("div", { className: "articles-wrapper column" }, React.createElement("div", { className: "articles-container" }, React.createElement("h1", { className: "ui dividing header" }, "Recent Articles", function () {
+	            if (sessionStorage.role == 'true') return React.createElement("a", { href: "/article/create", className: "ui green button" }, "Create");
+	        }()), React.createElement("div", { className: "section" }, React.createElement("div", { className: "articles-list ui relaxed divided list" }, list), React.createElement("div", { className: "vertical-divider" }), React.createElement("div", { className: "tag list" }, React.createElement(Tags, null)))), React.createElement("div", { className: "pagination-container" }, React.createElement(Pagination, { setPage: this.setPage, pages: pages })));
 	    },
 
 	    // 文章列表生成
@@ -35685,7 +35691,114 @@
 
 
 	// module
-	exports.push([module.id, "#articles-main {\n  padding: 24px;\n  min-height: 500px; }\n  #articles-main .articles-wrapper .articles-container h1 {\n    font-size: 30px;\n    color: #0ecc54; }\n    #articles-main .articles-wrapper .articles-container h1 a {\n      float: right; }\n  #articles-main .articles-wrapper .articles-container .articles-list .article-item .content {\n    width: 100%; }\n    #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .description {\n      display: inline-block; }\n    #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .time {\n      display: inline-block;\n      float: right;\n      margin-right: 24px;\n      color: #aaaaaa; }\n      #articles-main .articles-wrapper .articles-container .articles-list .article-item .content .time span {\n        color: #689dc5; }\n  #articles-main .articles-wrapper .pagination-container {\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 10px; }\n", ""]);
+	exports.push([module.id, "#articles-main {\n  padding: 24px;\n  min-height: 500px; }\n  #articles-main .articles-wrapper .articles-container h1 {\n    font-size: 30px;\n    color: #0ecc54; }\n    #articles-main .articles-wrapper .articles-container h1 a {\n      float: right; }\n  #articles-main .articles-wrapper .articles-container .section {\n    display: flex;\n    min-height: 350px; }\n    #articles-main .articles-wrapper .articles-container .section .articles-list {\n      flex: 8;\n      border-right: 2px solid #eeeeee; }\n      #articles-main .articles-wrapper .articles-container .section .articles-list .article-item .content {\n        width: 100%; }\n        #articles-main .articles-wrapper .articles-container .section .articles-list .article-item .content .description {\n          display: inline-block; }\n        #articles-main .articles-wrapper .articles-container .section .articles-list .article-item .content .time {\n          display: inline-block;\n          float: right;\n          margin-right: 24px;\n          color: #aaaaaa; }\n          #articles-main .articles-wrapper .articles-container .section .articles-list .article-item .content .time span {\n            color: #689dc5; }\n    #articles-main .articles-wrapper .articles-container .section .tag {\n      flex: 2; }\n  #articles-main .articles-wrapper .pagination-container {\n    text-align: center;\n    padding-top: 20px;\n    padding-bottom: 10px; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// 引入模块
+
+	const React = __webpack_require__(1);
+
+	let TagColor = ['red', 'teal', 'green', 'purple', 'pink', 'yellow'];
+
+	__webpack_require__(296);
+
+	var ____Class3 = React.Component;for (var ____Class3____Key in ____Class3) {
+	    if (____Class3.hasOwnProperty(____Class3____Key)) {
+	        Tags[____Class3____Key] = ____Class3[____Class3____Key];
+	    }
+	}var ____SuperProtoOf____Class3 = ____Class3 === null ? null : ____Class3.prototype;Tags.prototype = Object.create(____SuperProtoOf____Class3);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Class3;
+	function Tags(props) {
+	    ____Class3.call(this, props);
+	    this.displayName = 'Tags';
+	    this.state = {
+	        tags: []
+	    };
+	}
+
+	Object.defineProperty(Tags.prototype, "componentDidMount", { writable: true, configurable: true, value: function () {
+	        this.getTags();
+	    } });
+
+	Object.defineProperty(Tags.prototype, "render", { writable: true, configurable: true, value: function () {
+	        let tags = this.renderTags();
+	        return React.createElement("div", { className: "tags-wrapper" }, React.createElement("h2", { className: "ui header" }, React.createElement("i", { className: "tag blue icon" }), React.createElement("div", { className: "blue content" }, "Tags", React.createElement("div", { className: "sub header" }, "Search by tag"))), React.createElement("div", { className: "tags" }, tags));
+	    } });
+
+	Object.defineProperty(Tags.prototype, "getRandomColor", { writable: true, configurable: true, value: function () {
+	        let index = Math.floor(Math.random() * TagColor.length);
+	        if (index == TagColor.length) --index;
+	        return TagColor[index];
+	    } });
+
+	Object.defineProperty(Tags.prototype, "renderTags", { writable: true, configurable: true, value: function () {
+	        let tags = [];
+	        this.state.tags.forEach(function (tag, index) {
+	            let color = this.getRandomColor();
+	            let className = 'ui tag label ' + color;
+	            let url = '/article?tag=' + tag;
+	            tags.push(React.createElement("a", { className: className, key: index, href: url }, tag));
+	        }.bind(this));
+	        return tags;
+	    } });
+
+	Object.defineProperty(Tags.prototype, "getTags", { writable: true, configurable: true, value: function () {
+	        $.get('/api/articles/tags', function (result) {
+	            if (result.status == 'OK') {
+	                this.setState({
+	                    tags: result.data
+	                });
+	            } else {
+	                alert('数据库菌出了点问题......');
+	            }
+	        }.bind(this));
+	    } });
+
+	module.exports = Tags;
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(297);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(287)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./tags.sass", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./tags.sass");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(286)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".tags-wrapper {\n  padding: 4px 4px 4px 4px; }\n  .tags-wrapper .tags .tag {\n    margin-right: 5px;\n    margin-bottom: 5px; }\n", ""]);
 
 	// exports
 

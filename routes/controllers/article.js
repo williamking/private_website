@@ -133,6 +133,9 @@ exports.getArticleList = (req, res) => {
                 limit
             };
         }
+
+        if (req.query.tag) option.tag = req.query.tag;
+
         Article.getList(option, (err, articles) => {
             if (err) {
                 res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
@@ -237,4 +240,14 @@ exports.replyOneComment = (req, res) => {
             });
         }
     });
-}
+};
+
+exports.getTags = (req, res) => {
+    Article.getTags((err, tags) => {
+        if (err || !tags) {
+            res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+        } else {
+            res.json({ status: 'OK', data: tags });
+        }
+    })
+};

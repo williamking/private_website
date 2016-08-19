@@ -110,7 +110,12 @@ ArticleModel.drop = (id, callback) => {
 };
 
 ArticleModel.getList = (option, callback) => {
-    let query = ArticleModel.find({});
+    let query;
+    if (option.tag) {
+        query= ArticleModel.find({category: option.tag});
+    } else {
+        query= ArticleModel.find({});
+    }
     if (option.skip && option.limit) {
         query.skip(option.skip);
         query.limit(option.limit);
@@ -157,5 +162,26 @@ ArticleModel.readOneArticle = (id, callback) => {
         }
     });
 };
+
+ArticleModel.getTags = (callback) => {
+    ArticleModel
+    .find({})
+    .select('category')
+    .exec((err, categories) => {
+        if (err) return callback(err, null);
+        let ca = [];
+        for (let item of categories) {
+            ca = ca.concat(item.category);
+        }
+        let hash = {}, result = [];
+        for (let item of ca) {
+            if (!hash[item]) {
+                hash[item] = 1;
+                result.push(item);
+            }
+        }
+        return callback(err, result);
+    })
+}
 
 module.exports = ArticleModel;

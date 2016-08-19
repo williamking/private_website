@@ -13,12 +13,11 @@ let express = require('express'),
     busboy = require('connect-busboy');
 
 /*port*/
-let { port } = require('./config/config');
+let { port, database } = require('./config/config');
 
 let app = express();
 
-let db = require('./models/db.js');
-mongoose.connect(db.url);
+mongoose.connect(database);
 
 /*set views*/
 app.set('views', path.join(__dirname, 'views'));

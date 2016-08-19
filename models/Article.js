@@ -124,6 +124,8 @@ ArticleModel.getList = (option, callback) => {
     query.exec((err, articles) => {
         let results = [];
         if (err) return callback(err, articles);
+        console.log('get articles: ');
+        console.log(articles);
         for (let article of articles) {
             results.push({
                 _id: article._id,

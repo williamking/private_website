@@ -13,7 +13,8 @@ const express = require('express'),
     logger = require('morgan'),
     favicon = require('static-favicon'),
     busboy = require('connect-busboy'),
-    spdy = require('spdy');
+    spdy = require('spdy'),
+    compress = require('compression');
 
 /*port*/
 const { port, database } = require('./config/config');
@@ -30,8 +31,9 @@ app.set('view engine', 'pug');
 app.locals.moment = moment;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(compress());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
 app.use(expressSession({
     secret: 'mySecretKey',

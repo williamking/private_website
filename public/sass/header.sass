@@ -1,0 +1,48 @@
+$header-border: 2px solid rgba(34, 36, 28, 0.15)
+$brand-background-color: #8ccedf
+
+@font-face
+    font-family: "Dancing Script"
+    src: url("/lib/fonts/Dancing_Script/DancingScript-Regular.ttf")
+
+@font-face
+    font-family: "Permanent Marker"
+    src: url("/lib/fonts/Permanent_Marker/PermanentMarker.ttf")
+
+
+#page-header
+    .brand
+        display: flex
+        height: 60px
+        background-color: $brand-background-color
+        align-items: center
+        justify-content: space-between
+        .title
+            font-family: 'Dancing Script', cursive
+            font-size: 45px
+            line-height: 40px
+            vertical-align: 30%
+            margin-left: 10px
+            color: #EEEEEE
+        .icon
+            width: 100px
+            height: 100%
+    .nav-wrapper
+        background-color: #ffffff
+        .nav-bar
+            .nav-item
+                height: 60px
+                line-height: 60px
+                font-size: 25px
+                text-align: right
+                font-family: 'Permanent Marker', cursive
+            .item:hover
+                color: #7891f5
+                border-color: #7891f5
+            .authorize
+                .user
+                    position: relative
+                    margin: auto auto
+                    font-size: 21px
+                .item
+                    font-size: 20px

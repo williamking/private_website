@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    div#articles-main
+        //- header.articles-header
+        //-     h1 文章列表
+        //-     button.btn.btn-default
+        //-         a(href="/articles/create") 创建新文章
+        //- div.hz-line
+        //- div#article-list
+        //-     if index
+        //-         each article in index
+        //-             div.article
+        //-                 h2
+        //-                     a(href="/articles/#{article._id}") #{article.title}
+        //-                 - var time = moment(article.createAt).format('MMM-D-YY')
+        //-                 div.time
+        //-                     span.glyphicon.glyphicon-time(aria-hidden="true")
+        //-                     p.created-time Created at #{time}
+        //-             div.hz-line
+        //-     else
+        //-         p 还没有任何文章哦
+
+block script
+    script(src="/dist/articles.bundle.js")

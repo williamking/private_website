@@ -1,6 +1,8 @@
 "use strict";
+/* set node_env */
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-let express = require('express'),
+const express = require('express'),
     http = require('http'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
@@ -10,12 +12,13 @@ let express = require('express'),
     moment = require('moment'),
     logger = require('morgan'),
     favicon = require('static-favicon'),
-    busboy = require('connect-busboy');
+    busboy = require('connect-busboy'),
+    spdy = require('spdy');
 
 /*port*/
-let { port, database } = require('./config/config');
+const { port, database } = require('./config/config');
 
-let app = express();
+const app = express();
 
 mongoose.connect(database);
 
@@ -42,6 +45,9 @@ app.use(busboy());
 /*set routes*/
 require('./routes/route')(app);
 
-app.listen(port, () => {
+let { spdy_options } = require('./config/config');
+let server = spdy.createServer(spdy_options, app);
+server.listen(port, () => {
+    console.log('The NODE_ENV is: ' + process.env.NODE_ENV);
     console.log('server listened on ' + port);
 });

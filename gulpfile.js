@@ -10,7 +10,7 @@ const gulp = require('gulp'),
 
 gulp.task('brower-sync', ['copy'], () => {
     browerSync.init({
-        proxy: 'http://localhost:8000',
+        proxy: 'https://localhost:8000',
     });
 });
 

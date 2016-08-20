@@ -117,7 +117,7 @@ ArticleModel.getList = (option, callback) => {
         query= ArticleModel.find({});
     }
     if (option.skip && option.limit) {
-        if (skip > 0) query.skip(parseInt(option.skip));
+        if (option.skip > 0) query.skip(parseInt(option.skip));
         query.limit(parseInt(option.limit));
     }
     query.sort({ lastEditAt: -1 });
@@ -127,8 +127,6 @@ ArticleModel.getList = (option, callback) => {
             console.log(err);
             return callback(err, articles);
         }
-        console.log('get articles: ');
-        console.log(articles);
         for (let article of articles) {
             results.push({
                 _id: article._id,

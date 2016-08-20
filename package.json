@@ -48,6 +48,7 @@
     "pug": "^2.0.0-beta3",
     "react-addons-linked-state-mixin": "^15.2.1",
     "sass-loader": "^4.0.0",
+    "spdy": "^3.4.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.0",

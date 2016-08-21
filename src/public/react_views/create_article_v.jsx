@@ -132,7 +132,8 @@ const ArticleEditor = React.createClass({
 	getOptions() {
 		return {
 			lineNumbers: true,
-			mode: 'markdown'
+			mode: 'markdown',
+			lineWrapping: true
 		}
 	},
 

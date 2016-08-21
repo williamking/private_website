@@ -76,5 +76,5 @@ module.exports = () => {
 
 
     context.font = FONT_HEIGHT + 'px Arial';
-    this.loop = setInterval(drawClock, 1000);
+    let loop = setInterval(drawClock, 1000);
 };

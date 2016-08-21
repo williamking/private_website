@@ -93,8 +93,12 @@ gulp.task('minify:js', () => {
       .pipe(gulp.dest('public/dist'));
 });
 
+gulp.task('apply-prod-environment', () => {
+    process.env.NODE_ENV = 'production';
+});
+
 gulp.task('minify', ['minify:image', 'minify:js']);
 
 gulp.task('dev', gulpSync.sync(['clean', 'copy', 'webpack', 'watch', 'server-start', 'brower-sync']));
 
-gulp.task('default', gulpSync.sync(['clean', 'copy', 'webpack', 'minify']));
+gulp.task('default', gulpSync.sync(['apply-prod-environment', 'clean', 'copy', 'webpack', 'minify']));

@@ -6,7 +6,9 @@ const gulp = require('gulp'),
     browerSync = require('browser-sync').create(),
     gulpSync = require('gulp-sync')(gulp),
     server = require('gulp-develop-server'),
-    clean = require('gulp-clean');
+    clean = require('gulp-clean'),
+    imageMin = require('gulp-imagemin'),
+    uglify = require('gulp-uglify');
 
 gulp.task('brower-sync', ['copy'], () => {
     browerSync.init({
@@ -79,4 +81,20 @@ gulp.task('watch', () => {
 
 });
 
-gulp.task('default', gulpSync.sync(['clean', 'copy', 'webpack', 'watch', 'server-start', 'brower-sync']));
+gulp.task('minify:image', () => {
+    return gulp.src('public/images/*')
+      .pipe(imageMin())
+      .pipe(gulp.dest('public/images'));
+});
+
+gulp.task('minify:js', () => {
+    return gulp.src('public/dist/*.js')
+      .pipe(uglify())
+      .pipe(gulp.dest('public/dist'));
+});
+
+gulp.task('minify', ['minify:image', 'minify:js']);
+
+gulp.task('dev', gulpSync.sync(['clean', 'copy', 'webpack', 'watch', 'server-start', 'brower-sync']));
+
+gulp.task('default', gulpSync.sync(['clean', 'copy', 'webpack', 'minify']));

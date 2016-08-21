@@ -14,8 +14,6 @@ if (process.env.NODE_ENV == 'production') {
     );
 }
 
-console.log(plugins);
-
 module.exports = {
     watch: false,
     entry: {

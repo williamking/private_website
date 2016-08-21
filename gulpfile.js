@@ -27,6 +27,7 @@ gulp.task('copy', () => {
         'src/routes*/*',
         'src/routes*/**/*',
         'src/routes*/routers*/api*/*',
+        '!src/public/images',
         'src/public*/**/*',
         'src/views*/*',
         'src/views*/include*/*.pug',

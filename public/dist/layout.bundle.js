@@ -22281,13 +22281,13 @@
 	var ClockCanvas = null;
 	var Timer = null;
 
-	var ____Classa = React.Component;for (var ____Classa____Key in ____Classa) {
-	    if (____Classa.hasOwnProperty(____Classa____Key)) {
-	        Clock[____Classa____Key] = ____Classa[____Classa____Key];
+	var ____Class2 = React.Component;for (var ____Class2____Key in ____Class2) {
+	    if (____Class2.hasOwnProperty(____Class2____Key)) {
+	        Clock[____Class2____Key] = ____Class2[____Class2____Key];
 	    }
-	}var ____SuperProtoOf____Classa = ____Classa === null ? null : ____Classa.prototype;Clock.prototype = Object.create(____SuperProtoOf____Classa);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Classa;
+	}var ____SuperProtoOf____Class2 = ____Class2 === null ? null : ____Class2.prototype;Clock.prototype = Object.create(____SuperProtoOf____Class2);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Class2;
 	function Clock(props) {
-	    ____Classa.call(this, props);
+	    ____Class2.call(this, props);
 	    this.displayName = 'Clock';
 	    this.state = {
 	        mode: 'electrict',

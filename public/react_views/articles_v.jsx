@@ -111,7 +111,7 @@ const ArticleList = React.createClass({
             this.state.page * pageContain);
 		partList.map((item, key) => {
             let url = '/article/file/' + '?path=' + encodeURIComponent(item.path);
-            let createTime = moment(item.createTime).format('YYYY-MM-DD');
+            let createTime = moment(item.lastEditTime).format('YYYY-MM-DD');
             list.push(
                 <div className="article-item item" key={ key }>
                     <i className="large bookmark middle aligned icon"></i>
@@ -120,7 +120,7 @@ const ArticleList = React.createClass({
                             <a href={ url }>{ item.title }</a>
                         </h2>
                         <div className="description">{ item.description }</div>
-                        <div className="time">Created at  
+                        <div className="time">Last edited at  
                             <span>
                                 { ' ' + createTime }
                             </span>
@@ -139,7 +139,7 @@ const ArticleList = React.createClass({
             this.state.page * pageContain);
         partList.map((item, key) => {
             let url = '/article/' + item._id;
-            let lastEditTime = moment(item.lastEditTime).format('YYYY-MM-DD');
+            let lastEditTime = moment(item.lastEditAt).format('YYYY-MM-DD');
             list.push(
                 <div className="article-item item" key={ key }>
                     <i className="large bookmark middle aligned icon"></i>

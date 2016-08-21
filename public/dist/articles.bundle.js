@@ -130,8 +130,8 @@
 	        var partList = this.state.articleList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.map(function (item, key) {
 	            var url = '/article/file/' + '?path=' + encodeURIComponent(item.path);
-	            var createTime = moment(item.createTime).format('YYYY-MM-DD');
-	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.description), React.createElement("div", { className: "time" }, "Created at", React.createElement("span", null, ' ' + createTime)))));
+	            var createTime = moment(item.lastEditTime).format('YYYY-MM-DD');
+	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.description), React.createElement("div", { className: "time" }, "Last edited at", React.createElement("span", null, ' ' + createTime)))));
 	        });
 	        return list;
 	    },
@@ -141,7 +141,7 @@
 	        var partList = this.state.articleList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.map(function (item, key) {
 	            var url = '/article/' + item._id;
-	            var lastEditTime = moment(item.lastEditTime).format('YYYY-MM-DD');
+	            var lastEditTime = moment(item.lastEditAt).format('YYYY-MM-DD');
 	            list.push(React.createElement("div", { className: "article-item item", key: key }, React.createElement("i", { className: "large bookmark middle aligned icon" }), React.createElement("div", { className: "middle aligned content" }, React.createElement("h2", { className: "header" }, React.createElement("a", { href: url }, item.title)), React.createElement("div", { className: "description" }, item.content), React.createElement("div", { className: "time" }, "Last Edited at", React.createElement("span", null, ' ' + lastEditTime)))));
 	        });
 	        return list;
@@ -35717,13 +35717,13 @@
 
 	__webpack_require__(296);
 
-	var ____Class1 = React.Component;for (var ____Class1____Key in ____Class1) {
-	    if (____Class1.hasOwnProperty(____Class1____Key)) {
-	        Tags[____Class1____Key] = ____Class1[____Class1____Key];
+	var ____Classb = React.Component;for (var ____Classb____Key in ____Classb) {
+	    if (____Classb.hasOwnProperty(____Classb____Key)) {
+	        Tags[____Classb____Key] = ____Classb[____Classb____Key];
 	    }
-	}var ____SuperProtoOf____Class1 = ____Class1 === null ? null : ____Class1.prototype;Tags.prototype = Object.create(____SuperProtoOf____Class1);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Class1;
+	}var ____SuperProtoOf____Classb = ____Classb === null ? null : ____Classb.prototype;Tags.prototype = Object.create(____SuperProtoOf____Classb);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Classb;
 	function Tags(props) {
-	    ____Class1.call(this, props);
+	    ____Classb.call(this, props);
 	    this.displayName = 'Tags';
 	    this.state = {
 	        tags: []

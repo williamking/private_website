@@ -42,7 +42,7 @@ let Header = React.createClass({
 			    },
 			    {
 			    	name: 'Lab',
-			    	url: '/',
+			    	url: '/lab',
 			    	className: 'lab',
 			    	icon: 'world'
 			    },

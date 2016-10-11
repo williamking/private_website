@@ -44,176 +44,46 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(317);
-	__webpack_require__(319);
-	__webpack_require__(321);
+	var pageContain = 5;
 
-	var ModeType = {
-	    normal: Symbol(),
-	    login: Symbol(),
-	    register: Symbol()
-	};
+	// React组件
+	var Pagination = __webpack_require__(297);
 
-	// 加载模块
-	var LoginForm = __webpack_require__(323);
-	var RegisterForm = __webpack_require__(326);
-	var Clock = __webpack_require__(329);
+	var ____Class0 = React.Component;for (var ____Class0____Key in ____Class0) {
+	    if (____Class0.hasOwnProperty(____Class0____Key)) {
+	        LabList[____Class0____Key] = ____Class0[____Class0____Key];
+	    }
+	}var ____SuperProtoOf____Class0 = ____Class0 === null ? null : ____Class0.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class0);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class0;
+	function LabList(props) {
+	    ____Class0.call(this, props);
+	    this.displayName = 'LabList';
+	    this.state = {
+	        labList: [],
+	        page: 1
+	    };
+	}
 
-	var Header = React.createClass({ displayName: "Header",
-	    getInitialState: function getInitialState() {
-	        return {
-	            userState: {},
-	            items: [{
-	                name: 'Index',
-	                url: '/',
-	                className: 'index',
-	                icon: 'home'
-	            }, {
-	                name: 'Article',
-	                url: '/article',
-	                className: 'article',
-	                icon: 'book'
-	            }, {
-	                name: 'Photo',
-	                url: '/',
-	                className: 'photo',
-	                icon: 'photo'
-	            }, {
-	                name: 'Lab',
-	                url: '/lab',
-	                className: 'lab',
-	                icon: 'world'
-	            }],
-	            mode: ModeType.normal
-	        };
-	    },
-
-	    componentWillMount: function componentWillMount() {
-	        this.getCurrentUser();
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        this.checkMask();
-	    },
-
-	    componentDidUpdate: function componentDidUpdate() {
-	        this.checkMask();
-	    },
-
-	    render: function render() {
-	        var title = 'William\'s website';
+	Object.defineProperty(LabList.prototype, "render", { writable: true, configurable: true, value: function value() {
 	        var list = this.renderList();
+	        var pages = Math.ceil(this.state.labList.length / pageContain);
+	        return React.createElement("div", { className: "lab-list-wrapper" }, React.createElement("h1", { className: "ui dividing header" }, "William's Lab"), React.createElement("div", { className: "lab-list-container" }, list));
+	    } });
 
-	        return React.createElement("div", { className: "", id: "page-header" }, React.createElement("div", { className: "brand" }, React.createElement("div", { className: "title" }, title), React.createElement(Clock, null)), React.createElement("div", { className: "nav-wrapper" }, React.createElement("nav", { className: "nav-bar ui pointing secondary menu" }, list, React.createElement("div", { className: "authorize right menu" }, function () {
-	            if (this.state.userState.username) {
-	                return [React.createElement("div", { className: "user", key: "1" }, "Welcome! ", this.state.userState.username), React.createElement("a", { className: "ui item logout", key: "2", onClick: this.logout }, "Logout")];
-	            } else {
-	                return [React.createElement("a", { className: "ui item login", key: "1", onClick: this.setModeToLogin }, "Login"), React.createElement("a", { className: "ui item register", key: "2", onClick: this.setModeToRegister }, "Register")];
-	            }
-	        }.bind(this)()))), React.createElement(LoginForm, { callback: this.getCurrentUser, show: this.state.mode == ModeType.login, onCancel: this.setModeToNormal }), React.createElement(RegisterForm, { show: this.state.mode == ModeType.register, onCancel: this.setModeToNormal }));
-	    },
-
-	    renderList: function renderList() {
+	Object.defineProperty(LabList.prototype, "renderList", { writable: true, configurable: true, value: function value() {
 	        var list = [];
-	        this.state.items.map(function (item, key) {
-	            var className = 'item nav-item ' + item.className,
-	                iconClass = 'large ' + item.icon + ' icon';
-	            list.push(React.createElement("a", { className: className, href: item.url, key: key }, React.createElement("i", { className: iconClass }), item.name));
+	        var partList = this.state.lanList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
+	        this.state.partList.forEach(function (lab, index) {
+	            list.push(React.createElement("div", { className: "ui card", key: index }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
 	        });
 	        return list;
-	    },
+	    } });
 
-	    setModeToLogin: function setModeToLogin() {
-	        this.setState({
-	            mode: ModeType.login
-	        });
-	    },
-
-	    setModeToRegister: function setModeToRegister() {
-	        this.setState({
-	            mode: ModeType.register
-	        });
-	    },
-
-	    setModeToNormal: function setModeToNormal() {
-	        this.setState({
-	            mode: ModeType.normal
-	        });
-	    },
-
-	    checkMask: function checkMask() {
-	        if (this.state.mode != ModeType.normal) $('.mask').show();else $('.mask').hide();
-	    },
-
-	    // 获取当前登录状态
-	    getCurrentUser: function getCurrentUser() {
-	        $.get('/api/get_current_user', function (result) {
-	            this.setState({
-	                userState: {
-	                    username: result.username,
-	                    userId: result.user,
-	                    userType: result.userType
-	                }
-	            });
-	        }.bind(this));
-	    },
-
-	    logout: function logout() {
-	        var update = this.getCurrentUser;
-	        $.get('/api/logout', function (result) {
-	            if (result.status == 'OK') {
-	                alert('登出成功!');
-	                sessionStorage.role = null;
-	                update();
-	            } else {
-	                alert(result.msg);
-	            }
-	        });
-	    }
-
-	});
-
-	var Footer = React.createClass({ displayName: "Footer",
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            links: [{
-	                url: 'https://github.com/williamking',
-	                icon: 'github',
-	                text: 'My github',
-	                name: 'github'
-	            }, {
-	                url: 'mailto:williamjwking@gmail.com',
-	                icon: 'mail',
-	                text: 'My email',
-	                name: 'email'
-	            }]
-	        };
-	    },
-
-	    render: function render() {
-	        var links = this.renderLinks();
-	        return React.createElement("div", { className: "ui basic center aligned segment", id: "page-footer" }, React.createElement("div", { id: "copy-right" }, React.createElement("p", null, "Copyright ", React.createElement("i", { className: "copyright icon" }), "2016 William.D.King.")), React.createElement("div", { id: "other-link", className: "ui horizontal divided list" }, links));
-	    },
-
-	    renderLinks: function renderLinks() {
-	        var links = [];
-	        this.state.links.map(function (link, key) {
-	            links.push(React.createElement("div", { className: "item", key: key }, React.createElement("i", { className: link.icon + ' icon' + ' ui avatar' }), React.createElement("div", { className: "content" }, React.createElement("a", { href: link.url, className: link.name + '-link' }, React.createElement("span", null, link.text)))));
-	        });
-	        return links;
-	    }
-	});
-
-	$(function () {
-	    ReactDOM.render(React.createElement(Header, null), $("#header")[0], null);
-	    ReactDOM.render(React.createElement(Footer, null), $("#footer")[0], null);
-	});
+	module.exports = LabList;
 
 /***/ },
 /* 1 */
@@ -21355,549 +21225,15 @@
 /* 276 */,
 /* 277 */,
 /* 278 */,
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(280);
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule LinkedStateMixin
-	 */
-
-	'use strict';
-
-	var ReactLink = __webpack_require__(281);
-	var ReactStateSetters = __webpack_require__(282);
-
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 * See https://facebook.github.io/react/docs/two-way-binding-helpers.html
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function (key) {
-	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
-	  }
-	};
-
-	module.exports = LinkedStateMixin;
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactLink
-	 */
-
-	'use strict';
-
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   _handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-
-	var React = __webpack_require__(2);
-
-	/**
-	 * Deprecated: An an easy way to express two-way binding with React. 
-	 * See https://facebook.github.io/react/docs/two-way-binding-helpers.html
-	 *
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: linkType === undefined ? React.PropTypes.any.isRequired : linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-
-	module.exports = ReactLink;
-
-/***/ },
-/* 282 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-
-	'use strict';
-
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (component, funcReturningState) {
-	    return function (a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-
-	module.exports = ReactStateSetters;
-
-/***/ },
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
 /* 283 */,
 /* 284 */,
 /* 285 */,
-/* 286 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0,
-		styleElementsInsertedAtTop = [];
-
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-		// By default, add <style> tags to the bottom of <head>.
-		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-
-	function insertStyleElement(options, styleElement) {
-		var head = getHeadElement();
-		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-		if (options.insertAt === "top") {
-			if(!lastStyleElementInsertedAtTop) {
-				head.insertBefore(styleElement, head.firstChild);
-			} else if(lastStyleElementInsertedAtTop.nextSibling) {
-				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-			} else {
-				head.appendChild(styleElement);
-			}
-			styleElementsInsertedAtTop.push(styleElement);
-		} else if (options.insertAt === "bottom") {
-			head.appendChild(styleElement);
-		} else {
-			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-		}
-	}
-
-	function removeStyleElement(styleElement) {
-		styleElement.parentNode.removeChild(styleElement);
-		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-		if(idx >= 0) {
-			styleElementsInsertedAtTop.splice(idx, 1);
-		}
-	}
-
-	function createStyleElement(options) {
-		var styleElement = document.createElement("style");
-		styleElement.type = "text/css";
-		insertStyleElement(options, styleElement);
-		return styleElement;
-	}
-
-	function createLinkElement(options) {
-		var linkElement = document.createElement("link");
-		linkElement.rel = "stylesheet";
-		insertStyleElement(options, linkElement);
-		return linkElement;
-	}
-
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement(options));
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement(options);
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement(options);
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				removeStyleElement(styleElement);
-			};
-		}
-
-		update(obj);
-
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-
-	var replaceText = (function () {
-		var textStore = [];
-
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var sourceMap = obj.sourceMap;
-
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-
-		var blob = new Blob([css], { type: "text/css" });
-
-		var oldSrc = linkElement.href;
-
-		linkElement.href = URL.createObjectURL(blob);
-
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
-
-/***/ },
+/* 286 */,
+/* 287 */,
 /* 288 */,
 /* 289 */,
 /* 290 */,
@@ -21907,559 +21243,74 @@
 /* 294 */,
 /* 295 */,
 /* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */,
-/* 315 */,
-/* 316 */,
-/* 317 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(318);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./header.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./header.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 318 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "@font-face {\n  font-family: \"Dancing Script\";\n  src: url(\"/lib/fonts/Dancing_Script/DancingScript-Regular.ttf\"); }\n\n@font-face {\n  font-family: \"Permanent Marker\";\n  src: url(\"/lib/fonts/Permanent_Marker/PermanentMarker.ttf\"); }\n\n#page-header .brand {\n  display: flex;\n  height: 60px;\n  background-color: #8ccedf;\n  align-items: center;\n  justify-content: space-between; }\n  #page-header .brand .title {\n    font-family: 'Dancing Script', cursive;\n    font-size: 45px;\n    line-height: 40px;\n    vertical-align: 30%;\n    margin-left: 10px;\n    color: #EEEEEE; }\n  #page-header .brand .icon {\n    width: 100px;\n    height: 100%; }\n\n#page-header .nav-wrapper {\n  background-color: #ffffff; }\n  #page-header .nav-wrapper .nav-bar .nav-item {\n    height: 60px;\n    line-height: 60px;\n    font-size: 25px;\n    text-align: right;\n    font-family: 'Permanent Marker', cursive; }\n  #page-header .nav-wrapper .nav-bar .item:hover {\n    color: #7891f5;\n    border-color: #7891f5; }\n  #page-header .nav-wrapper .nav-bar .authorize .user {\n    position: relative;\n    margin: auto auto;\n    font-size: 21px; }\n  #page-header .nav-wrapper .nav-bar .authorize .item {\n    font-size: 20px; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 319 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(320);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./footer.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./footer.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 320 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "#page-footer {\n  background-color: #8ccedf;\n  font-size: 15px; }\n  #page-footer #copy-right p {\n    color: #eeeeee; }\n  #page-footer #other-link * {\n    color: #eeeeee; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 321 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(322);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./base.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./base.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 322 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "body {\n  background-color: whitesmoke; }\n  body #main-wrapper {\n    width: 80%;\n    margin: 0 auto;\n    background-color: #ffffff; }\n\n.mask {\n  background-color: #000000;\n  opacity: 0.5;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  z-index: 3; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 323 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	var React = __webpack_require__(1),
-	    LinkedStateMixin = __webpack_require__(279);
-
-	__webpack_require__(324);
-
-	module.exports = React.createClass({ displayName: "module.exports",
-	    mixins: [LinkedStateMixin],
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            username: '',
-	            password: ''
-	        };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        this.checkState();
-	    },
-
-	    componentDidUpdate: function componentDidUpdate() {
-	        this.checkState();
-	    },
-
-	    render: function render() {
-	        return React.createElement("div", { className: "login-form-wrapper" }, React.createElement("form", { className: "ui form", id: "login-form" }, React.createElement("div", { className: "field" }, React.createElement("label", null, "username"), React.createElement("input", { type: "text", name: "username", placeholder: "username", valueLink: this.linkState('username') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "password"), React.createElement("input", { type: "password", name: "passowrd", placeholder: "password", valueLink: this.linkState('password') })), React.createElement("div", { className: "ui blue button", onClick: this.login }, "Login"), React.createElement("div", { className: "ui button", onClick: this.props.onCancel }, "Cancel"), React.createElement("div", { className: "ui error message" })));
-	    },
-
-	    checkState: function checkState() {
-	        $('#login-form').form({
-	            fields: {
-	                username: 'empty',
-	                password: ['minlength[6]', 'empty']
-	            }
-	        });
-	        if (!this.props.show) $('.login-form-wrapper').hide();else $('.login-form-wrapper').show();
-	    },
-
-	    login: function login(event) {
-	        // debugger;
-	        event.preventDefault();
-	        var cancel = this.props.onCancel;
-	        var callback = this.props.callback;
-	        $.post('/api/login', {
-	            username: this.state.username,
-	            password: this.state.password
-	        }, function (result) {
-	            if (result.status == 'OK') {
-	                sessionStorage.role = result.data.role;
-	                alert('登录成功！');
-	                cancel();
-	                callback();
-	            } else {
-	                alert(result.msg);
-	            }
-	        });
-	    }
-	});
-
-/***/ },
-/* 324 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(325);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./login_form.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./login_form.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 325 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".invisible {\n  display: none; }\n\n.login-form-wrapper {\n  position: fixed;\n  width: 400px;\n  left: 50%;\n  top: 50%;\n  transform: translateY(-50%) translateX(-50%);\n  background-color: aliceblue;\n  padding: 24px 24px;\n  border-radius: 8px;\n  border: 1px solid #eeeeee;\n  z-index: 4; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 326 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1),
-	    LinkedStateMixin = __webpack_require__(279);
-
-	__webpack_require__(327);
-
-	module.exports = React.createClass({ displayName: "module.exports",
-	    mixins: [LinkedStateMixin],
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            username: '',
-	            password: '',
-	            confirmPassword: '',
-	            email: '',
-	            signature: '',
-	            qq: '',
-	            birthday: '',
-	            hobbies: ''
-	        };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        this.checkState();
-	    },
-
-	    componentDidUpdate: function componentDidUpdate() {
-	        this.checkState();
-	    },
-
-	    render: function render() {
-	        return React.createElement("div", { className: "register-form-wrapper" }, React.createElement("form", { className: "ui form", id: "register-form", action: "/api/login", method: "post" }, React.createElement("div", { className: "field" }, React.createElement("label", null, "username"), React.createElement("input", { type: "text", name: "username", placeholder: "username", valueLink: this.linkState('username') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "password"), React.createElement("input", { type: "password", name: "password", placeholder: "password", valueLink: this.linkState('password') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "Confirm password"), React.createElement("input", { type: "password", name: "confirm-password", placeholder: "confirm password", valueLink: this.linkState('confirmPassword') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "email"), React.createElement("input", { type: "email", name: "email", placeholder: "email", valueLink: this.linkState('email') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "signature"), React.createElement("input", { type: "text", name: "signature", placeholder: "signature", valueLink: this.linkState('signature') })), React.createElement("div", { className: "ui blue button", onClick: this.checkForm }, "Register"), React.createElement("div", { className: "ui button", onClick: this.props.onCancel }, "Cancel"), React.createElement("div", { className: "ui error message" })));
-	    },
-
-	    checkState: function checkState() {
-	        $('#register-form').form({
-	            fields: {
-	                username: 'empty',
-	                password: ['minLength[6]', 'empty'],
-	                "confirm-password": 'match[password]',
-	                email: 'email'
-	            },
-	            onSuccess: this.register
-	        });
-	        if (!this.props.show) $('.register-form-wrapper').hide();else $('.register-form-wrapper').show();
-	    },
-
-	    checkForm: function checkForm(event) {
-	        event.preventDefault();
-	        $('#register-form').form('validate form');
-	    },
-
-	    register: function register(event) {
-	        // debugger;
-	        var cancel = this.props.onCancel;
-	        $.post('/api/register', {
-	            username: this.state.username,
-	            password: this.state.password,
-	            confirmPassword: this.state.confirmPassword,
-	            email: this.state.email,
-	            signature: this.state.signature
-	        }, function (result) {
-	            if (result.status == 'OK') {
-	                alert('注册成功！');
-	                cancel();
-	            } else {
-	                alert(result.msg);
-	            }
-	        });
-	    }
-	});
-
-/***/ },
-/* 327 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(328);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./register_form.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./register_form.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 328 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".invisible {\n  display: none; }\n\n.register-form-wrapper {\n  position: fixed;\n  width: 400px;\n  left: 50%;\n  top: 50%;\n  transform: translateY(-50%) translateX(-50%);\n  background-color: aliceblue;\n  padding: 24px 24px;\n  border-radius: 8px;\n  border: 1px solid #eeeeee;\n  z-index: 4; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 329 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	// 引入模块
 
 	var React = __webpack_require__(1);
-	__webpack_require__(330);
+	var ReactDOM = __webpack_require__(33);
 
-	var ClockCanvas = null;
-	var Timer = null;
+	module.exports = React.createClass({ displayName: "module.exports",
+	    getInitialState: function getInitialState() {
+	        return {
+	            currentPage: 1
+	        };
+	    },
 
-	var ____Class2 = React.Component;for (var ____Class2____Key in ____Class2) {
-	    if (____Class2.hasOwnProperty(____Class2____Key)) {
-	        Clock[____Class2____Key] = ____Class2[____Class2____Key];
-	    }
-	}var ____SuperProtoOf____Class2 = ____Class2 === null ? null : ____Class2.prototype;Clock.prototype = Object.create(____SuperProtoOf____Class2);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Class2;
-	function Clock(props) {
-	    ____Class2.call(this, props);
-	    this.displayName = 'Clock';
-	    this.state = {
-	        mode: 'electrict',
-	        hour: 1,
-	        minute: null,
-	        second: null,
-	        size: '150px'
-	    };
-	}
+	    render: function render() {
+	        var items = this.renderItems();
+	        return React.createElement("div", { className: "ui pagination menu" }, items);
+	    },
 
-	Object.defineProperty(Clock.prototype, "componentDidMount", { writable: true, configurable: true, value: function value() {
-	        ClockCanvas = __webpack_require__(332)();
-	        Timer = setInterval(function () {
-	            var date = new Date(),
-	                hour = date.getHours(),
-	                minute = date.getMinutes(),
-	                second = date.getSeconds();
-	            hour = hour < 10 ? '0' + hour : hour;
-	            minute = minute < 10 ? '0' + minute : minute;
-	            second = second < 10 ? '0' + second : second;
+	    renderItems: function renderItems() {
+	        var _this = this;
+
+	        var items = [],
+	            currentPage = this.state.currentPage,
+	            handleBeginClick = function () {
+	            this.props.setPage(1);
 	            this.setState({
-	                hour: hour,
-	                minute: minute,
-	                second: second
+	                currentPage: 1
 	            });
-	        }.bind(this), 1000);
-	        $('#clock-image').css('width', this.state.size);
-	        $('#clock-image').css('height', this.state.size);
-	    } });
+	        }.bind(this),
+	            handleEndClick = function () {
+	            this.props.setPage(this.props.pages);
+	            this.setState({
+	                currentPage: this.props.pages
+	            });
+	        }.bind(this);
 
-	Object.defineProperty(Clock.prototype, "render", { writable: true, configurable: true, value: function value() {
-	        var clock = this.getImage();
-	        return React.createElement("div", { id: "clock-wrapper", onMouseOver: this.showClock, onMouseOut: this.hideClock }, React.createElement("canvas", { ref: "canvas", id: "clock", width: this.state.size, height: this.state.size }), clock, React.createElement("div", { id: "clock-image", className: "invisible" }));
-	    } });
-
-	Object.defineProperty(Clock.prototype, "getImage", { writable: true, configurable: true, value: function value() {
-	        if (this.state.mode == 'electrict') {
-	            return React.createElement("div", { className: "electrict-clock" }, this.state.hour, " : ", this.state.minute, " : ", this.state.second);
+	        items.push(React.createElement("a", { className: "item", key: "begin", onClick: handleBeginClick }, "Begin"));
+	        if (currentPage - 3 > 1) {
+	            items.push(React.createElement("div", { className: "disabled item", key: "begin.." }, "..."));
 	        }
-	    } });
 
-	Object.defineProperty(Clock.prototype, "showClock", { writable: true, configurable: true, value: function value() {
-	        $('#clock-image').removeClass('invisible');
-	    } });
+	        var _loop = function _loop(i) {
+	            var handleClick = function () {
+	                this.props.setPage(i);
+	                this.setState({
+	                    currentPage: i
+	                });
+	            }.bind(_this);
 
-	Object.defineProperty(Clock.prototype, "hideClock", { writable: true, configurable: true, value: function value() {
-	        $('#clock-image').addClass('invisible');
-	    } });
+	            if (i != currentPage) {
+	                items.push(React.createElement("a", { className: "item", key: i, onClick: handleClick }, i));
+	            } else {
+	                items.push(React.createElement("a", { className: "active item", key: i }, i));
+	            }
+	        };
 
-	module.exports = Clock;
-
-/***/ },
-/* 330 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(331);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./clock.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./clock.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 331 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "#clock-wrapper {\n  margin-right: 20px;\n  position: relative;\n  height: 100%;\n  display: flex;\n  align-items: center; }\n  #clock-wrapper #clock {\n    display: none; }\n  #clock-wrapper .electrict-clock {\n    font-size: 24px;\n    color: #eeeeee; }\n  #clock-wrapper #clock-image {\n    z-index: 2;\n    background-color: #eeeeee;\n    position: absolute;\n    float: right;\n    right: -20px;\n    top: 0px; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 332 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function () {
-	    var canvas = document.getElementById("clock"),
-	        context = canvas.getContext('2d'),
-	        FONT_HEIGHT = 15,
-	        MARGIN = 35,
-	        HAND_TRUNCATION = canvas.width / 25,
-	        MINUTE_HAND_TRUNCATION = canvas.width / 15,
-	        HOUR_HAND_TRUNCATION = canvas.width / 10,
-	        NUMERAL_SPACING = 20,
-	        RADIUS = canvas.width / 2 - MARGIN,
-	        HAND_RADIUS = RADIUS + NUMERAL_SPACING;
-
-	    function drawCircle() {
-	        context.beginPath();
-	        context.arc(canvas.width / 2, canvas.height / 2, RADIUS, 0, Math.PI * 2, true);
-	        context.stroke();
+	        for (var i = Math.max(currentPage - 3, 1); i <= Math.min(this.props.pages, currentPage + 3); ++i) {
+	            _loop(i);
+	        }
+	        if (currentPage + 3 < this.props.pages) {
+	            items.push(React.createElement("div", { className: "disabled item", key: "end.." }, "..."));
+	        }
+	        items.push(React.createElement("a", { className: "item", key: "end", onClick: handleEndClick }, "End"));
+	        return items;
 	    }
-
-	    function drawNumberals() {
-	        var numberals = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	            angle = 0,
-	            numberalWidth = 0;
-	        numberals.forEach(function (numberal) {
-	            angle = Math.PI / 6 * (numberal - 3);
-	            numberalWidth = context.measureText(numberal).width;
-	            context.fillText(numberal, canvas.width / 2 + Math.cos(angle) * HAND_RADIUS - numberalWidth / 2, canvas.height / 2 + Math.sin(angle) * HAND_RADIUS + FONT_HEIGHT / 3);
-	        });
-	    }
-
-	    function drawCenter() {
-	        context.beginPath();
-	        context.arc(canvas.width / 2, canvas.height / 2, 5, 0, Math.PI * 2, true);
-	        context.fill();
-	    }
-
-	    function drawHand(loc, unit) {
-	        var angle = Math.PI * 2 * (loc / 60) - Math.PI / 2,
-	            handRadius;
-	        // if (unit == 'hour') handRadius = RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION - MINUTE_HAND_TRUNCATION;
-	        if (unit == 'hour') handRadius = RADIUS - HAND_TRUNCATION - HOUR_HAND_TRUNCATION;
-	        if (unit == 'minute') handRadius = RADIUS - MINUTE_HAND_TRUNCATION;
-	        if (unit == 'second') handRadius = RADIUS - HAND_TRUNCATION;
-	        context.moveTo(canvas.width / 2, canvas.height / 2);
-	        context.lineTo(canvas.width / 2 + Math.cos(angle) * handRadius, canvas.height / 2 + Math.sin(angle) * handRadius);
-	        context.stroke();
-	    }
-
-	    function drawHands() {
-	        var date = new Date(),
-	            hour = date.getHours();
-	        hour = hour > 12 ? hour - 12 : hour;
-
-	        drawHand(hour * 5 + date.getMinutes() / 60 * 5, 'hour');
-	        drawHand(date.getMinutes(), 'minute');
-	        drawHand(date.getSeconds(), 'second');
-	    }
-
-	    function takeSnapShots() {
-	        document.getElementById("clock-image").style.backgroundImage = "url(" + canvas.toDataURL() + ")";
-	        //canvas.style.display = "none";
-	    }
-
-	    function drawClock() {
-	        context.clearRect(0, 0, canvas.width, canvas.height);
-
-	        drawCircle();
-	        drawCenter();
-	        drawNumberals();
-	        drawHands();
-	        takeSnapShots();
-	    }
-
-	    context.font = FONT_HEIGHT + 'px Arial';
-	    var loop = setInterval(drawClock, 1000);
-	};
+	});
 
 /***/ }
 /******/ ]);

@@ -223,7 +223,7 @@ exports.commentOneArticle = (req, res) => {
 
 exports.replyOneComment = (req, res) => {
     let id = req.params.id;
-    console.log('查找被评论的文章');
+    // console.log('查找被评论的文章');
     Article.findById(id, false, (err, article) => {
         if (err || !article) {
             res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
@@ -250,4 +250,19 @@ exports.getTags = (req, res) => {
             res.json({ status: 'OK', data: tags });
         }
     })
+};
+
+exports.editArticle = (req, res) => {
+    let id = req.params.id,
+      content = req.body.content;
+    Article.editArticle(id, content, (err, article) => {
+      if (err || !article) {
+          res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
+      } else {
+          console.log(`编辑文章${id}`);
+          res.json({ status: 'OK', data: {
+              content: article.content
+          } });
+      }
+    });
 };

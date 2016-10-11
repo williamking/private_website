@@ -7,7 +7,7 @@ const saltRounds = 10;
 const md5 = crypto.createHash('md5');
 const { saltNum } = require('../config/config');
 
-UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         validate: {
@@ -36,7 +36,7 @@ UserSchema = new mongoose.Schema({
     type: {type: String, default: 'visitor'}
 });
 
-User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 // Update the information of user
 // Type is the part of info you want to update
@@ -97,7 +97,7 @@ User.changePassword = (userId, password, callback) => {
 
 User.drop = (userId,callback) => {
     User.remove({_id: userId}, callback);
-}
+};
 
 
-module.exports = User
+module.exports = User;

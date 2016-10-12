@@ -52,15 +52,15 @@
 	var pageContain = 5;
 
 	// React组件
-	var Pagination = __webpack_require__(297);
+	var Pagination = __webpack_require__(306);
 
-	var ____Class0 = React.Component;for (var ____Class0____Key in ____Class0) {
-	    if (____Class0.hasOwnProperty(____Class0____Key)) {
-	        LabList[____Class0____Key] = ____Class0[____Class0____Key];
+	var ____Class17 = React.Component;for (var ____Class17____Key in ____Class17) {
+	    if (____Class17.hasOwnProperty(____Class17____Key)) {
+	        LabList[____Class17____Key] = ____Class17[____Class17____Key];
 	    }
-	}var ____SuperProtoOf____Class0 = ____Class0 === null ? null : ____Class0.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class0);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class0;
+	}var ____SuperProtoOf____Class17 = ____Class17 === null ? null : ____Class17.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class17);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class17;
 	function LabList(props) {
-	    ____Class0.call(this, props);
+	    ____Class17.call(this, props);
 	    this.displayName = 'LabList';
 	    this.state = {
 	        labList: [],
@@ -21243,7 +21243,16 @@
 /* 294 */,
 /* 295 */,
 /* 296 */,
-/* 297 */
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */,
+/* 303 */,
+/* 304 */,
+/* 305 */,
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

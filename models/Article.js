@@ -35,7 +35,7 @@ ArticleModel.createArticle = (args, callback) => {
 ArticleModel.editArticle = (id, content, callback) => {
     ArticleModel.findOne({_id: id}, (err, article) => {
         if (article) {
-            console.log(article);
+            article.lastEditAt = new Date();
             article.content = content;
             article.save(callback);
         } else {

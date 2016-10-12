@@ -56,11 +56,11 @@
 	var pageContain = 10;
 
 	// css导入
-	__webpack_require__(292);
+	__webpack_require__(301);
 
 	// React组件
-	var Tags = __webpack_require__(294);
-	var Pagination = __webpack_require__(297);
+	var Tags = __webpack_require__(303);
+	var Pagination = __webpack_require__(306);
 
 	var ArticleList = React.createClass({ displayName: "ArticleList",
 	    getInitialState: function getInitialState() {
@@ -35593,13 +35593,22 @@
 /* 289 */,
 /* 290 */,
 /* 291 */,
-/* 292 */
+/* 292 */,
+/* 293 */,
+/* 294 */,
+/* 295 */,
+/* 296 */,
+/* 297 */,
+/* 298 */,
+/* 299 */,
+/* 300 */,
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(293);
+	var content = __webpack_require__(302);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35619,7 +35628,7 @@
 	}
 
 /***/ },
-/* 293 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -35633,7 +35642,7 @@
 
 
 /***/ },
-/* 294 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35644,15 +35653,15 @@
 
 	var TagColor = ['red', 'teal', 'green', 'purple', 'pink', 'yellow'];
 
-	__webpack_require__(295);
+	__webpack_require__(304);
 
-	var ____Class1 = React.Component;for (var ____Class1____Key in ____Class1) {
-	    if (____Class1.hasOwnProperty(____Class1____Key)) {
-	        Tags[____Class1____Key] = ____Class1[____Class1____Key];
+	var ____Class19 = React.Component;for (var ____Class19____Key in ____Class19) {
+	    if (____Class19.hasOwnProperty(____Class19____Key)) {
+	        Tags[____Class19____Key] = ____Class19[____Class19____Key];
 	    }
-	}var ____SuperProtoOf____Class1 = ____Class1 === null ? null : ____Class1.prototype;Tags.prototype = Object.create(____SuperProtoOf____Class1);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Class1;
+	}var ____SuperProtoOf____Class19 = ____Class19 === null ? null : ____Class19.prototype;Tags.prototype = Object.create(____SuperProtoOf____Class19);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Class19;
 	function Tags(props) {
-	    ____Class1.call(this, props);
+	    ____Class19.call(this, props);
 	    this.displayName = 'Tags';
 	    this.state = {
 	        tags: []
@@ -35700,13 +35709,13 @@
 	module.exports = Tags;
 
 /***/ },
-/* 295 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(296);
+	var content = __webpack_require__(305);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -35726,7 +35735,7 @@
 	}
 
 /***/ },
-/* 296 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -35740,7 +35749,7 @@
 
 
 /***/ },
-/* 297 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

@@ -134,7 +134,7 @@ const ArticleEditor = React.createClass({
 			lineNumbers: true,
 			mode: 'markdown',
 			lineWrapping: true
-		}
+		};
 	},
 
 	createArticle() {

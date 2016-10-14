@@ -8,12 +8,17 @@ const pageContain = 5;
 // React组件
 const Pagination = require('../react_components/pagination.jsx');
 
+require('../sass/lab.sass');
+
 class LabList extends React.Component {
     constructor(props) {
         super(props);
         this.displayName = 'LabList';
         this.state = {
-            labList: [],
+            labList: [{
+                name: 'test',
+                description: 'This is a test'
+            }],
             page: 1
         };
     }
@@ -33,12 +38,12 @@ class LabList extends React.Component {
 
     renderList() {
     	let list = [];
-        let partList = this.state.lanList.slice(
+        let partList = this.state.labList.slice(
             (this.state.page - 1) * pageContain,
             this.state.page * pageContain);
-        this.state.partList.forEach((lab, index) => {
+        partList.forEach((lab, index) => {
             list.push(
-            	<div className="ui card" key={ index }>
+            	<div className="ui card lab-item" key={ index }>
             	    <div className="content">
             	        <div className="header">{ lab.name }</div>
             	    </div>
@@ -59,7 +64,8 @@ class LabList extends React.Component {
         });
         return list;
     }
-
 }
 
-module.exports = LabList;
+$(function() {
+	ReactDOM.render(<LabList />, $("#lab-index")[0], null);
+});

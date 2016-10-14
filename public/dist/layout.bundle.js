@@ -49,9 +49,9 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(317);
 	__webpack_require__(319);
 	__webpack_require__(321);
+	__webpack_require__(323);
 
 	var ModeType = {
 	    normal: Symbol(),
@@ -60,9 +60,9 @@
 	};
 
 	// 加载模块
-	var LoginForm = __webpack_require__(323);
-	var RegisterForm = __webpack_require__(326);
-	var Clock = __webpack_require__(329);
+	var LoginForm = __webpack_require__(325);
+	var RegisterForm = __webpack_require__(328);
+	var Clock = __webpack_require__(331);
 
 	var Header = React.createClass({ displayName: "Header",
 	    getInitialState: function getInitialState() {
@@ -21927,13 +21927,15 @@
 /* 314 */,
 /* 315 */,
 /* 316 */,
-/* 317 */
+/* 317 */,
+/* 318 */,
+/* 319 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(318);
+	var content = __webpack_require__(320);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -21953,46 +21955,6 @@
 	}
 
 /***/ },
-/* 318 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(286)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "@font-face {\n  font-family: \"Dancing Script\";\n  src: url(\"/lib/fonts/Dancing_Script/DancingScript-Regular.ttf\"); }\n\n@font-face {\n  font-family: \"Permanent Marker\";\n  src: url(\"/lib/fonts/Permanent_Marker/PermanentMarker.ttf\"); }\n\n#page-header .brand {\n  display: flex;\n  height: 60px;\n  background-color: #8ccedf;\n  align-items: center;\n  justify-content: space-between; }\n  #page-header .brand .title {\n    font-family: 'Dancing Script', cursive;\n    font-size: 45px;\n    line-height: 40px;\n    vertical-align: 30%;\n    margin-left: 10px;\n    color: #EEEEEE; }\n  #page-header .brand .icon {\n    width: 100px;\n    height: 100%; }\n\n#page-header .nav-wrapper {\n  background-color: #ffffff; }\n  #page-header .nav-wrapper .nav-bar .nav-item {\n    height: 60px;\n    line-height: 60px;\n    font-size: 25px;\n    text-align: right;\n    font-family: 'Permanent Marker', cursive; }\n  #page-header .nav-wrapper .nav-bar .item:hover {\n    color: #7891f5;\n    border-color: #7891f5; }\n  #page-header .nav-wrapper .nav-bar .authorize .user {\n    position: relative;\n    margin: auto auto;\n    font-size: 21px; }\n  #page-header .nav-wrapper .nav-bar .authorize .item {\n    font-size: 20px; }\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 319 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(320);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./footer.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./footer.sass");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
 /* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -22001,7 +21963,7 @@
 
 
 	// module
-	exports.push([module.id, "#page-footer {\n  background-color: #8ccedf;\n  font-size: 15px; }\n  #page-footer #copy-right p {\n    color: #eeeeee; }\n  #page-footer #other-link * {\n    color: #eeeeee; }\n", ""]);
+	exports.push([module.id, "@font-face {\n  font-family: \"Dancing Script\";\n  src: url(\"/lib/fonts/Dancing_Script/DancingScript-Regular.ttf\"); }\n\n@font-face {\n  font-family: \"Permanent Marker\";\n  src: url(\"/lib/fonts/Permanent_Marker/PermanentMarker.ttf\"); }\n\n#page-header .brand {\n  display: flex;\n  height: 60px;\n  background-color: #8ccedf;\n  align-items: center;\n  justify-content: space-between; }\n  #page-header .brand .title {\n    font-family: 'Dancing Script', cursive;\n    font-size: 45px;\n    line-height: 40px;\n    vertical-align: 30%;\n    margin-left: 10px;\n    color: #EEEEEE; }\n  #page-header .brand .icon {\n    width: 100px;\n    height: 100%; }\n\n#page-header .nav-wrapper {\n  background-color: #ffffff; }\n  #page-header .nav-wrapper .nav-bar .nav-item {\n    height: 60px;\n    line-height: 60px;\n    font-size: 25px;\n    text-align: right;\n    font-family: 'Permanent Marker', cursive; }\n  #page-header .nav-wrapper .nav-bar .item:hover {\n    color: #7891f5;\n    border-color: #7891f5; }\n  #page-header .nav-wrapper .nav-bar .authorize .user {\n    position: relative;\n    margin: auto auto;\n    font-size: 21px; }\n  #page-header .nav-wrapper .nav-bar .authorize .item {\n    font-size: 20px; }\n", ""]);
 
 	// exports
 
@@ -22022,8 +21984,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./base.sass", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./base.sass");
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./footer.sass", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./footer.sass");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -22041,7 +22003,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  background-color: whitesmoke; }\n  body #main-wrapper {\n    width: 80%;\n    margin: 0 auto;\n    background-color: #ffffff; }\n\n.mask {\n  background-color: #000000;\n  opacity: 0.5;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  z-index: 3; }\n", ""]);
+	exports.push([module.id, "#page-footer {\n  background-color: #8ccedf;\n  font-size: 15px; }\n  #page-footer #copy-right p {\n    color: #eeeeee; }\n  #page-footer #other-link * {\n    color: #eeeeee; }\n", ""]);
 
 	// exports
 
@@ -22050,12 +22012,52 @@
 /* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(324);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(287)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./base.sass", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/sass-loader/index.js!./base.sass");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 324 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(286)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "body {\n  background-color: whitesmoke; }\n  body #main-wrapper {\n    width: 80%;\n    margin: 0 auto;\n    background-color: #ffffff; }\n\n.mask {\n  background-color: #000000;\n  opacity: 0.5;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  z-index: 3; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 325 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	var React = __webpack_require__(1),
 	    LinkedStateMixin = __webpack_require__(279);
 
-	__webpack_require__(324);
+	__webpack_require__(326);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 	    mixins: [LinkedStateMixin],
@@ -22111,13 +22113,13 @@
 	});
 
 /***/ },
-/* 324 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(325);
+	var content = __webpack_require__(327);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22137,7 +22139,7 @@
 	}
 
 /***/ },
-/* 325 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22151,7 +22153,7 @@
 
 
 /***/ },
-/* 326 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22159,7 +22161,7 @@
 	var React = __webpack_require__(1),
 	    LinkedStateMixin = __webpack_require__(279);
 
-	__webpack_require__(327);
+	__webpack_require__(329);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 	    mixins: [LinkedStateMixin],
@@ -22228,13 +22230,13 @@
 	});
 
 /***/ },
-/* 327 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(328);
+	var content = __webpack_require__(330);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22254,7 +22256,7 @@
 	}
 
 /***/ },
-/* 328 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22268,7 +22270,7 @@
 
 
 /***/ },
-/* 329 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22276,18 +22278,18 @@
 	// 引入模块
 
 	var React = __webpack_require__(1);
-	__webpack_require__(330);
+	__webpack_require__(332);
 
 	var ClockCanvas = null;
 	var Timer = null;
 
-	var ____Class18 = React.Component;for (var ____Class18____Key in ____Class18) {
-	    if (____Class18.hasOwnProperty(____Class18____Key)) {
-	        Clock[____Class18____Key] = ____Class18[____Class18____Key];
+	var ____Class1 = React.Component;for (var ____Class1____Key in ____Class1) {
+	    if (____Class1.hasOwnProperty(____Class1____Key)) {
+	        Clock[____Class1____Key] = ____Class1[____Class1____Key];
 	    }
-	}var ____SuperProtoOf____Class18 = ____Class18 === null ? null : ____Class18.prototype;Clock.prototype = Object.create(____SuperProtoOf____Class18);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Class18;
+	}var ____SuperProtoOf____Class1 = ____Class1 === null ? null : ____Class1.prototype;Clock.prototype = Object.create(____SuperProtoOf____Class1);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Class1;
 	function Clock(props) {
-	    ____Class18.call(this, props);
+	    ____Class1.call(this, props);
 	    this.displayName = 'Clock';
 	    this.state = {
 	        mode: 'electrict',
@@ -22299,7 +22301,7 @@
 	}
 
 	Object.defineProperty(Clock.prototype, "componentDidMount", { writable: true, configurable: true, value: function value() {
-	        ClockCanvas = __webpack_require__(332)();
+	        ClockCanvas = __webpack_require__(334)();
 	        Timer = setInterval(function () {
 	            var date = new Date(),
 	                hour = date.getHours(),
@@ -22340,13 +22342,13 @@
 	module.exports = Clock;
 
 /***/ },
-/* 330 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(331);
+	var content = __webpack_require__(333);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22366,7 +22368,7 @@
 	}
 
 /***/ },
-/* 331 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22380,7 +22382,7 @@
 
 
 /***/ },
-/* 332 */
+/* 334 */
 /***/ function(module, exports) {
 
 	'use strict';

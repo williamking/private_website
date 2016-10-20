@@ -8,6 +8,9 @@ const marked = require('marked');
 //导入模块
 const Comment = require('../react_components/comment.jsx');
 const UrlParser = require('../lib/url.js');
+const CodeMirror = require('react-codemirror');
+require('codemirror/mode/markdown/markdown');
+require('codemirror/lib/codemirror.css');
 const moment = require('moment');
 const scroll = require('../lib/scroll.js');
 
@@ -37,7 +40,9 @@ const ArticleContent = React.createClass({
             pv: 0,
             lastEditTime: 'loading......',
             readTimes: 'loading......',
-            commentContent: ''
+            commentContent: '',
+            edit: false,
+            editContent: ''
         }
 	},
 
@@ -60,7 +65,8 @@ const ArticleContent = React.createClass({
                     tags: result.data.category,
                     lastEditTime,
                     readTimes: result.data.readTimes,
-                    comments: result.data.comments
+                    comments: result.data.comments,
+                    editContent: result.data.content
                 });
             }
         });
@@ -68,6 +74,8 @@ const ArticleContent = React.createClass({
 
 	render: function() {
         let tags = this.renderTags();
+        let content = this.getArticleContent();
+        let editButton = this.getEditButton();
 		return (
 			<div className="article-content-wrapper">
 			    <div className="article-content-container">
@@ -76,6 +84,7 @@ const ArticleContent = React.createClass({
                             <div className="section">
                                 <div className="title">{ this.state.title }</div>
                                 <div className="article-status">
+                                   { editButton }
                                     <div className="ui labeled button">
                                         <div className="ui red button" onClick={ this.admire }>
                                             <i className="thumbs up icon"></i>
@@ -108,8 +117,7 @@ const ArticleContent = React.createClass({
                                 </div>
                             </div>
                         </header>
-                        <div className="content" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
-                        </div>
+                        { content }
                     </article>
 			    </div>
 			    <h4 className="ui horizontal divider header" name="comments" id="comments">
@@ -171,6 +179,75 @@ const ArticleContent = React.createClass({
             );
         });
         return tags;
+    },
+
+    getArticleContent() {
+        if (this.state.edit) {
+            return <div className="codemirror-wrapper">
+                <div className="codemirror-container">
+                    <CodeMirror value={ this.state.editContent } onChange={ this.updateContent }
+                      options={ this.getOptions() } />
+                </div>
+                <div className="editor-buttons">
+                    <div className="ui basic blue button" onClick={ this.editArticle }>Submit</div>
+                </div>
+            </div>;
+        } else {
+            return <div className="content" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
+            </div>; 
+        }
+    },
+
+    updateContent(content) {
+        this.setState({
+            editContent: content
+        });
+    },
+
+    getOptions() {
+		return {
+			lineNumbers: true,
+			mode: 'markdown',
+			lineWrapping: true
+		};
+    },
+
+    getEditButton() {
+        if (sessionStorage.role == 'true')
+            return <div className="ui basic button green" onClick={ this.switchMode }>Edit</div>
+        else return null;
+    },
+
+    switchMode() {
+        this.setState({
+            edit: !this.state.edit
+        });
+    },
+
+    editArticle() {
+        let id = window.location.href.split('/');
+        id = id[id.length - 1];
+        const editUrl = `/api/articles/${id}`;
+        // console.log('edit');
+        $.ajax({
+            method: 'PATCH',
+            url: editUrl,
+            data: {
+                content: this.state.editContent
+            },
+            dataType: 'json',
+            success: (result) => {
+                if (result.status == 'OK') {
+                    alert('修改成功');
+                    this.setState({
+                        articleText: marked(result.data.content),
+                        edit: false
+                    });
+                } else {
+                    alert(result.msg);
+                }
+            }
+        });
     }
 });
 

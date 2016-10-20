@@ -32,8 +32,20 @@ ArticleModel.createArticle = (args, callback) => {
     article.save(callback);
 };
 
+ArticleModel.editArticle = (id, content, callback) => {
+    ArticleModel.findOne({_id: id}, (err, article) => {
+        if (article) {
+            article.lastEditAt = new Date();
+            article.content = content;
+            article.save(callback);
+        } else {
+            callback(1);
+        }
+    });
+};
+
 ArticleModel.addComment = (id, comment, callback) => {
-    ArticleModel.find({_id: id}, (err, article) => {
+    ArticleModel.findOne({_id: id}, (err, article) => {
         if (article) {
             article.comments.push(comment);
             article.save(callback);

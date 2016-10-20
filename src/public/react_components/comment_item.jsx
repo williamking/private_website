@@ -17,8 +17,6 @@ module.exports = React.createClass({
   	},
 
     componentWillReceiveProps(nextProps) {
-        console.log('update list');
-        console.log(nextProps.comment);
         this.setState({
             comment: nextProps.comment,
             reply: false,

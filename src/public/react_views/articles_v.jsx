@@ -8,13 +8,12 @@ const UrlParser = require('../lib/url.js');
 
 const pageContain = 10;
 
-const Pagination = require('../react_components/pagination.jsx');
-
 // css导入
 require('../sass/articles.sass');
 
 // React组件
 const Tags = require('../react_components/tags.jsx');
+const Pagination = require('../react_components/pagination.jsx');
 
 const ArticleList = React.createClass({
     getInitialState: function() {

@@ -10,7 +10,7 @@ const gulp = require('gulp'),
     imageMin = require('gulp-imagemin'),
     uglify = require('gulp-uglify');
 
-gulp.task('brower-sync', ['copy'], () => {
+gulp.task('brower-sync', () => {
     browerSync.init({
         proxy: 'https://localhost:8000',
     });
@@ -49,20 +49,25 @@ gulp.task('clean:back-end', () => {
 gulp.task('clean', ['clean:back-end', 'clean:front-end']);
 
 gulp.task('reload', () => {
-    browerSync.reload();
+    console.log('asdsd');
+    setTimeout(() => {
+      browerSync.reload();
+    }, 2000);
 });
 
 gulp.task('server-start', (cb) => {
     server.listen({ path: './app.js' });
-    setTimeout(() => {
-        cb(null);
-    }, 200);
+    // setTimeout(() => {
+    //     cb(null);
+    // }, 200);
+    cb(null);
 });
 
 gulp.task('server-restart', () => {
-    setTimeout(() => {
-        server.restart();
-    }, 200);
+    // setTimeout(() => {
+    //     server.restart();
+    // }, 200);
+    server.restart();
 })
 
 gulp.task('watch', () => {

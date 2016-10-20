@@ -56,23 +56,18 @@
 
 	__webpack_require__(317);
 
-	var ____Class1T = React.Component;for (var ____Class1T____Key in ____Class1T) {
-	    if (____Class1T.hasOwnProperty(____Class1T____Key)) {
-	        LabList[____Class1T____Key] = ____Class1T[____Class1T____Key];
+	var ____Class1W = React.Component;for (var ____Class1W____Key in ____Class1W) {
+	    if (____Class1W.hasOwnProperty(____Class1W____Key)) {
+	        LabList[____Class1W____Key] = ____Class1W[____Class1W____Key];
 	    }
-	}var ____SuperProtoOf____Class1T = ____Class1T === null ? null : ____Class1T.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class1T);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class1T;
+	}var ____SuperProtoOf____Class1W = ____Class1W === null ? null : ____Class1W.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class1W);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class1W;
 	function LabList(props) {
-	    ____Class1T.call(this, props);
+	    ____Class1W.call(this, props);
 	    this.displayName = 'LabList';
 	    this.state = {
 	        labList: [{
-	            name: 'postMessage跨域',
-	            description: '使用postMessage方法跨域的例子',
-	            url: '/lab/cross'
-	        }, {
-	            name: 'Three.js小试',
-	            description: 'Three.js的一个demo',
-	            url: '/lab/threeJs'
+	            name: 'test',
+	            description: 'This is a test'
 	        }],
 	        page: 1
 	    };
@@ -88,10 +83,7 @@
 	        var list = [];
 	        var partList = this.state.labList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.forEach(function (lab, index) {
-	            var handleClick = function handleClick() {
-	                window.open(lab.url);
-	            };
-	            list.push(React.createElement("div", { className: "ui card lab-item", key: index, onClick: handleClick }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
+	            list.push(React.createElement("div", { className: "ui card lab-item", key: index }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
 	        });
 	        return list;
 	    } });

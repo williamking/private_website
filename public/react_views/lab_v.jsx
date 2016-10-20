@@ -16,8 +16,13 @@ class LabList extends React.Component {
         this.displayName = 'LabList';
         this.state = {
             labList: [{
-                name: 'test',
-                description: 'This is a test'
+                name: 'postMessage跨域',
+                description: '使用postMessage方法跨域的例子',
+                url: '/lab/cross'
+            }, {
+                name: 'Three.js小试',
+                description: 'Three.js的一个demo',
+                url: '/lab/threeJs'
             }],
             page: 1
         };
@@ -42,8 +47,11 @@ class LabList extends React.Component {
             (this.state.page - 1) * pageContain,
             this.state.page * pageContain);
         partList.forEach((lab, index) => {
+            let handleClick = () => {
+                window.open(lab.url);
+            };
             list.push(
-            	<div className="ui card lab-item" key={ index }>
+            	<div className="ui card lab-item" key={ index } onClick={ handleClick }>
             	    <div className="content">
             	        <div className="header">{ lab.name }</div>
             	    </div>

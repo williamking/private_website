@@ -56,18 +56,23 @@
 
 	__webpack_require__(317);
 
-	var ____Class0 = React.Component;for (var ____Class0____Key in ____Class0) {
-	    if (____Class0.hasOwnProperty(____Class0____Key)) {
-	        LabList[____Class0____Key] = ____Class0[____Class0____Key];
+	var ____Class1T = React.Component;for (var ____Class1T____Key in ____Class1T) {
+	    if (____Class1T.hasOwnProperty(____Class1T____Key)) {
+	        LabList[____Class1T____Key] = ____Class1T[____Class1T____Key];
 	    }
-	}var ____SuperProtoOf____Class0 = ____Class0 === null ? null : ____Class0.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class0);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class0;
+	}var ____SuperProtoOf____Class1T = ____Class1T === null ? null : ____Class1T.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class1T);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class1T;
 	function LabList(props) {
-	    ____Class0.call(this, props);
+	    ____Class1T.call(this, props);
 	    this.displayName = 'LabList';
 	    this.state = {
 	        labList: [{
-	            name: 'test',
-	            description: 'This is a test'
+	            name: 'postMessage跨域',
+	            description: '使用postMessage方法跨域的例子',
+	            url: '/lab/cross'
+	        }, {
+	            name: 'Three.js小试',
+	            description: 'Three.js的一个demo',
+	            url: '/lab/threeJs'
 	        }],
 	        page: 1
 	    };
@@ -83,7 +88,10 @@
 	        var list = [];
 	        var partList = this.state.labList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.forEach(function (lab, index) {
-	            list.push(React.createElement("div", { className: "ui card lab-item", key: index }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
+	            var handleClick = function handleClick() {
+	                window.open(lab.url);
+	            };
+	            list.push(React.createElement("div", { className: "ui card lab-item", key: index, onClick: handleClick }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
 	        });
 	        return list;
 	    } });

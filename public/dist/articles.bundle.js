@@ -35655,13 +35655,13 @@
 
 	__webpack_require__(304);
 
-	var ____Class2 = React.Component;for (var ____Class2____Key in ____Class2) {
-	    if (____Class2.hasOwnProperty(____Class2____Key)) {
-	        Tags[____Class2____Key] = ____Class2[____Class2____Key];
+	var ____Class1V = React.Component;for (var ____Class1V____Key in ____Class1V) {
+	    if (____Class1V.hasOwnProperty(____Class1V____Key)) {
+	        Tags[____Class1V____Key] = ____Class1V[____Class1V____Key];
 	    }
-	}var ____SuperProtoOf____Class2 = ____Class2 === null ? null : ____Class2.prototype;Tags.prototype = Object.create(____SuperProtoOf____Class2);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Class2;
+	}var ____SuperProtoOf____Class1V = ____Class1V === null ? null : ____Class1V.prototype;Tags.prototype = Object.create(____SuperProtoOf____Class1V);Tags.prototype.constructor = Tags;Tags.__superConstructor__ = ____Class1V;
 	function Tags(props) {
-	    ____Class2.call(this, props);
+	    ____Class1V.call(this, props);
 	    this.displayName = 'Tags';
 	    this.state = {
 	        tags: []

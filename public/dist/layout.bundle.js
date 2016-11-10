@@ -49,9 +49,9 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(33);
 
-	__webpack_require__(319);
-	__webpack_require__(321);
-	__webpack_require__(323);
+	__webpack_require__(325);
+	__webpack_require__(327);
+	__webpack_require__(329);
 
 	var ModeType = {
 	    normal: Symbol(),
@@ -60,9 +60,9 @@
 	};
 
 	// 加载模块
-	var LoginForm = __webpack_require__(325);
-	var RegisterForm = __webpack_require__(328);
-	var Clock = __webpack_require__(331);
+	var LoginForm = __webpack_require__(331);
+	var RegisterForm = __webpack_require__(334);
+	var Clock = __webpack_require__(337);
 
 	var Header = React.createClass({ displayName: "Header",
 	    getInitialState: function getInitialState() {
@@ -21249,119 +21249,13 @@
 
 /***/ },
 /* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */,
-/* 195 */,
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */,
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */,
-/* 221 */,
-/* 222 */,
-/* 223 */,
-/* 224 */,
-/* 225 */,
-/* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
-/* 257 */,
-/* 258 */,
-/* 259 */,
-/* 260 */,
-/* 261 */,
-/* 262 */,
-/* 263 */,
-/* 264 */,
-/* 265 */,
-/* 266 */,
-/* 267 */,
-/* 268 */,
-/* 269 */,
-/* 270 */,
-/* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(280);
+	module.exports = __webpack_require__(174);
 
 /***/ },
-/* 280 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21377,8 +21271,8 @@
 
 	'use strict';
 
-	var ReactLink = __webpack_require__(281);
-	var ReactStateSetters = __webpack_require__(282);
+	var ReactLink = __webpack_require__(175);
+	var ReactStateSetters = __webpack_require__(176);
 
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -21402,7 +21296,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 281 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21478,7 +21372,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 282 */
+/* 176 */
 /***/ function(module, exports) {
 
 	/**
@@ -21587,6 +21481,112 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
+/* 256 */,
+/* 257 */,
+/* 258 */,
+/* 259 */,
+/* 260 */,
+/* 261 */,
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */,
+/* 267 */,
+/* 268 */,
+/* 269 */,
+/* 270 */,
+/* 271 */,
+/* 272 */,
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */,
+/* 282 */,
 /* 283 */,
 /* 284 */,
 /* 285 */,
@@ -21929,13 +21929,19 @@
 /* 316 */,
 /* 317 */,
 /* 318 */,
-/* 319 */
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(320);
+	var content = __webpack_require__(326);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -21955,7 +21961,7 @@
 	}
 
 /***/ },
-/* 320 */
+/* 326 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -21969,13 +21975,13 @@
 
 
 /***/ },
-/* 321 */
+/* 327 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(322);
+	var content = __webpack_require__(328);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -21995,7 +22001,7 @@
 	}
 
 /***/ },
-/* 322 */
+/* 328 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22009,13 +22015,13 @@
 
 
 /***/ },
-/* 323 */
+/* 329 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(324);
+	var content = __webpack_require__(330);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22035,7 +22041,7 @@
 	}
 
 /***/ },
-/* 324 */
+/* 330 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22049,15 +22055,15 @@
 
 
 /***/ },
-/* 325 */
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1),
-	    LinkedStateMixin = __webpack_require__(279);
+	    LinkedStateMixin = __webpack_require__(173);
 
-	__webpack_require__(326);
+	__webpack_require__(332);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 	    mixins: [LinkedStateMixin],
@@ -22074,26 +22080,30 @@
 	    },
 
 	    componentDidUpdate: function componentDidUpdate() {
-	        this.checkState();
+	        if (!this.props.show) $('.login-form-wrapper').hide();else $('.login-form-wrapper').show();
 	    },
 
 	    render: function render() {
-	        return React.createElement("div", { className: "login-form-wrapper" }, React.createElement("form", { className: "ui form", id: "login-form" }, React.createElement("div", { className: "field" }, React.createElement("label", null, "username"), React.createElement("input", { type: "text", name: "username", placeholder: "username", valueLink: this.linkState('username') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "password"), React.createElement("input", { type: "password", name: "passowrd", placeholder: "password", valueLink: this.linkState('password') })), React.createElement("div", { className: "ui blue button", onClick: this.login }, "Login"), React.createElement("div", { className: "ui button", onClick: this.props.onCancel }, "Cancel"), React.createElement("div", { className: "ui error message" })));
+	        return React.createElement("div", { className: "login-form-wrapper" }, React.createElement("form", { className: "ui form", id: "login-form" }, React.createElement("div", { className: "field" }, React.createElement("label", null, "username"), React.createElement("input", { type: "text", name: "username", placeholder: "username", valueLink: this.linkState('username') })), React.createElement("div", { className: "field" }, React.createElement("label", null, "password"), React.createElement("input", { type: "password", name: "password", placeholder: "password", valueLink: this.linkState('password') })), React.createElement("div", { className: "ui blue button submit" }, "Login"), React.createElement("div", { className: "ui button", onClick: this.props.onCancel }, "Cancel"), React.createElement("div", { className: "ui error message" })));
 	    },
 
 	    checkState: function checkState() {
+	        var cb = this.login;
 	        $('#login-form').form({
 	            fields: {
 	                username: 'empty',
-	                password: ['minlength[6]', 'empty']
+	                password: ['minLength[6]', 'empty']
+	            },
+	            onSuccess: function onSuccess(event) {
+	                event.preventDefault();
+	                cb();
+	                return false;
 	            }
 	        });
 	        if (!this.props.show) $('.login-form-wrapper').hide();else $('.login-form-wrapper').show();
 	    },
 
 	    login: function login(event) {
-	        // debugger;
-	        event.preventDefault();
 	        var cancel = this.props.onCancel;
 	        var callback = this.props.callback;
 	        $.post('/api/login', {
@@ -22113,13 +22123,13 @@
 	});
 
 /***/ },
-/* 326 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(327);
+	var content = __webpack_require__(333);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22139,7 +22149,7 @@
 	}
 
 /***/ },
-/* 327 */
+/* 333 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22153,15 +22163,15 @@
 
 
 /***/ },
-/* 328 */
+/* 334 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var React = __webpack_require__(1),
-	    LinkedStateMixin = __webpack_require__(279);
+	    LinkedStateMixin = __webpack_require__(173);
 
-	__webpack_require__(329);
+	__webpack_require__(335);
 
 	module.exports = React.createClass({ displayName: "module.exports",
 	    mixins: [LinkedStateMixin],
@@ -22230,13 +22240,13 @@
 	});
 
 /***/ },
-/* 329 */
+/* 335 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(330);
+	var content = __webpack_require__(336);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22256,7 +22266,7 @@
 	}
 
 /***/ },
-/* 330 */
+/* 336 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22270,7 +22280,7 @@
 
 
 /***/ },
-/* 331 */
+/* 337 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22278,18 +22288,18 @@
 	// 引入模块
 
 	var React = __webpack_require__(1);
-	__webpack_require__(332);
+	__webpack_require__(338);
 
 	var ClockCanvas = null;
 	var Timer = null;
 
-	var ____Class1X = React.Component;for (var ____Class1X____Key in ____Class1X) {
-	    if (____Class1X.hasOwnProperty(____Class1X____Key)) {
-	        Clock[____Class1X____Key] = ____Class1X[____Class1X____Key];
+	var ____Class1 = React.Component;for (var ____Class1____Key in ____Class1) {
+	    if (____Class1.hasOwnProperty(____Class1____Key)) {
+	        Clock[____Class1____Key] = ____Class1[____Class1____Key];
 	    }
-	}var ____SuperProtoOf____Class1X = ____Class1X === null ? null : ____Class1X.prototype;Clock.prototype = Object.create(____SuperProtoOf____Class1X);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Class1X;
+	}var ____SuperProtoOf____Class1 = ____Class1 === null ? null : ____Class1.prototype;Clock.prototype = Object.create(____SuperProtoOf____Class1);Clock.prototype.constructor = Clock;Clock.__superConstructor__ = ____Class1;
 	function Clock(props) {
-	    ____Class1X.call(this, props);
+	    ____Class1.call(this, props);
 	    this.displayName = 'Clock';
 	    this.state = {
 	        mode: 'electrict',
@@ -22301,7 +22311,7 @@
 	}
 
 	Object.defineProperty(Clock.prototype, "componentDidMount", { writable: true, configurable: true, value: function value() {
-	        ClockCanvas = __webpack_require__(334)();
+	        ClockCanvas = __webpack_require__(340)();
 	        Timer = setInterval(function () {
 	            var date = new Date(),
 	                hour = date.getHours(),
@@ -22342,13 +22352,13 @@
 	module.exports = Clock;
 
 /***/ },
-/* 332 */
+/* 338 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(333);
+	var content = __webpack_require__(339);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -22368,7 +22378,7 @@
 	}
 
 /***/ },
-/* 333 */
+/* 339 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();
@@ -22382,7 +22392,7 @@
 
 
 /***/ },
-/* 334 */
+/* 340 */
 /***/ function(module, exports) {
 
 	'use strict';

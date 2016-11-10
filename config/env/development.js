@@ -18,5 +18,6 @@ module.exports = {
           'auto-spdy31': false
         }
       }
-	}
+	},
+  root: path.join(__dirname, '..', '..')
 }

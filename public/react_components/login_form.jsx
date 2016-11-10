@@ -20,7 +20,8 @@ module.exports = React.createClass({
     },
 
     componentDidUpdate: function() {
-        this.checkState();
+        if (!this.props.show) $('.login-form-wrapper').hide();
+        else $('.login-form-wrapper').show();
     },
 
     render: function() {
@@ -33,9 +34,9 @@ module.exports = React.createClass({
     		        </div>
     		        <div className="field">
     		            <label>password</label>
-    		            <input type="password" name="passowrd" placeholder="password" valueLink={ this.linkState('password') }/>
+    		            <input type="password" name="password" placeholder="password" valueLink={ this.linkState('password') }/>
     		        </div>
-                    <div className="ui blue button" onClick={ this.login }>Login</div>
+                    <div className="ui blue button submit">Login</div>
                     <div className="ui button" onClick={ this.props.onCancel }>Cancel</div>
                     <div className="ui error message"></div>
     		    </form>
@@ -44,10 +45,16 @@ module.exports = React.createClass({
     },
 
     checkState: function() {
+        let cb = this.login;
         $('#login-form').form({
             fields: {
                 username: 'empty',
-                password: ['minlength[6]', 'empty']
+                password: ['minLength[6]', 'empty']
+            },
+            onSuccess: (event) => {
+                event.preventDefault();
+                cb();
+                return false;                
             }
         });
         if (!this.props.show) $('.login-form-wrapper').hide();
@@ -55,8 +62,6 @@ module.exports = React.createClass({
     },
 
     login: function(event) {
-        // debugger;
-        event.preventDefault();
         let cancel = this.props.onCancel;
         let callback = this.props.callback;
         $.post('/api/login', {

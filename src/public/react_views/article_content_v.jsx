@@ -4,6 +4,8 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const marked = require('marked');
+const LinkedStateMixin = require('react-addons-linked-state-mixin');
+
 
 //导入模块
 const Comment = require('../react_components/comment.jsx');
@@ -13,11 +15,14 @@ require('codemirror/mode/markdown/markdown');
 require('codemirror/lib/codemirror.css');
 const moment = require('moment');
 const scroll = require('../lib/scroll.js');
+const SimpleMde = require('../react_components/simple_mde.jsx');
 
 // css导入
 require('../sass/article_content.sass');
 
 const ArticleContent = React.createClass({
+    mixins: [LinkedStateMixin],
+
 	getInitialState: function() {
 		let urlParser = new UrlParser(window.location.href);
 		return {
@@ -42,7 +47,8 @@ const ArticleContent = React.createClass({
             readTimes: 'loading......',
             commentContent: '',
             edit: false,
-            editContent: ''
+            editContent: '',
+            editTitle: ''
         }
 	},
 
@@ -61,6 +67,7 @@ const ArticleContent = React.createClass({
                     id: result.data._id,
                     articleText: marked(result.data.content),
                     title: result.data.title,
+                    editTitle: result.data.title,
                     pv: result.data.pv,
                     tags: result.data.category,
                     lastEditTime,
@@ -76,13 +83,14 @@ const ArticleContent = React.createClass({
         let tags = this.renderTags();
         let content = this.getArticleContent();
         let editButton = this.getEditButton();
+        let title = this.getTitle();
 		return (
 			<div className="article-content-wrapper">
 			    <div className="article-content-container">
                     <article>
                         <header className="ui dividing huge header article-header">
                             <div className="section">
-                                <div className="title">{ this.state.title }</div>
+                               { title }
                                 <div className="article-status">
                                    { editButton }
                                     <div className="ui labeled button">
@@ -185,8 +193,7 @@ const ArticleContent = React.createClass({
         if (this.state.edit) {
             return <div className="codemirror-wrapper">
                 <div className="codemirror-container">
-                    <CodeMirror value={ this.state.editContent } onChange={ this.updateContent }
-                      options={ this.getOptions() } />
+                    <SimpleMde value={ this.state.editContent } onChange={ this.updateContent } />
                 </div>
                 <div className="editor-buttons">
                     <div className="ui basic blue button" onClick={ this.editArticle }>Submit</div>
@@ -195,6 +202,16 @@ const ArticleContent = React.createClass({
         } else {
             return <div className="content" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
             </div>; 
+        }
+    },
+
+    getTitle() {
+        if (this.state.edit) {
+            return <div className="ui input edit-title">
+                       <input type="text" valueLink={ this.linkState('editTitle') }></input>
+                   </div>;
+        } else {
+            return <div className="title">{ this.state.title }</div>;
         }
     },
 
@@ -233,6 +250,7 @@ const ArticleContent = React.createClass({
             method: 'PATCH',
             url: editUrl,
             data: {
+                title: this.state.editTitle,
                 content: this.state.editContent
             },
             dataType: 'json',
@@ -240,7 +258,10 @@ const ArticleContent = React.createClass({
                 if (result.status == 'OK') {
                     alert('修改成功');
                     this.setState({
+                        title: result.data.title,
+                        editTitle: result.data.title,
                         articleText: marked(result.data.content),
+                        editContent: result.data.content,
                         edit: false
                     });
                 } else {

@@ -52,22 +52,27 @@
 	var pageContain = 5;
 
 	// React组件
-	var Pagination = __webpack_require__(306);
+	var Pagination = __webpack_require__(312);
 
-	__webpack_require__(317);
+	__webpack_require__(323);
 
-	var ____Class1W = React.Component;for (var ____Class1W____Key in ____Class1W) {
-	    if (____Class1W.hasOwnProperty(____Class1W____Key)) {
-	        LabList[____Class1W____Key] = ____Class1W[____Class1W____Key];
+	var ____Class0 = React.Component;for (var ____Class0____Key in ____Class0) {
+	    if (____Class0.hasOwnProperty(____Class0____Key)) {
+	        LabList[____Class0____Key] = ____Class0[____Class0____Key];
 	    }
-	}var ____SuperProtoOf____Class1W = ____Class1W === null ? null : ____Class1W.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class1W);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class1W;
+	}var ____SuperProtoOf____Class0 = ____Class0 === null ? null : ____Class0.prototype;LabList.prototype = Object.create(____SuperProtoOf____Class0);LabList.prototype.constructor = LabList;LabList.__superConstructor__ = ____Class0;
 	function LabList(props) {
-	    ____Class1W.call(this, props);
+	    ____Class0.call(this, props);
 	    this.displayName = 'LabList';
 	    this.state = {
 	        labList: [{
-	            name: 'test',
-	            description: 'This is a test'
+	            name: 'postMessage跨域',
+	            description: '使用postMessage方法跨域的例子',
+	            url: '/lab/cross'
+	        }, {
+	            name: 'Three.js小试',
+	            description: 'Three.js的一个demo',
+	            url: '/lab/threeJs'
 	        }],
 	        page: 1
 	    };
@@ -83,7 +88,10 @@
 	        var list = [];
 	        var partList = this.state.labList.slice((this.state.page - 1) * pageContain, this.state.page * pageContain);
 	        partList.forEach(function (lab, index) {
-	            list.push(React.createElement("div", { className: "ui card lab-item", key: index }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
+	            var handleClick = function handleClick() {
+	                window.open(lab.url);
+	            };
+	            list.push(React.createElement("div", { className: "ui card lab-item", key: index, onClick: handleClick }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "header" }, lab.name)), React.createElement("div", { className: "content" }, React.createElement("h4", { className: "ui sub header" }, "Description"), React.createElement("div", { className: "small feed" }, React.createElement("div", { className: "event" }, React.createElement("div", { className: "content" }, React.createElement("div", { className: "summary" }, lab.description)))))));
 	        });
 	        return list;
 	    } });
@@ -21565,7 +21573,13 @@
 /* 303 */,
 /* 304 */,
 /* 305 */,
-/* 306 */
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */,
+/* 310 */,
+/* 311 */,
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21635,23 +21649,23 @@
 	});
 
 /***/ },
-/* 307 */,
-/* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
 /* 313 */,
 /* 314 */,
 /* 315 */,
 /* 316 */,
-/* 317 */
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(318);
+	var content = __webpack_require__(324);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(287)(content, {});
@@ -21671,7 +21685,7 @@
 	}
 
 /***/ },
-/* 318 */
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(286)();

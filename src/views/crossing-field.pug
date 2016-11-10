@@ -1,1 +1,14 @@
-script(src='/lib/cross.js')
+html
+    body
+        header
+            h1 跨域实验
+        div.lab-cross-block
+            h2 1.postMessage跨域
+            div
+                button#open-window 点击打开接受消息窗口
+            input#message(place-holder='输入要发送的消息')
+            button#submit 点击发送
+
+
+script(src='/lib/jquery.js')
+script(src='/lib/lab/post-message.js')

@@ -32,10 +32,11 @@ ArticleModel.createArticle = (args, callback) => {
     article.save(callback);
 };
 
-ArticleModel.editArticle = (id, content, callback) => {
+ArticleModel.editArticle = (id, title, content, callback) => {
     ArticleModel.findOne({_id: id}, (err, article) => {
         if (article) {
             article.lastEditAt = new Date();
+            article.title = title;
             article.content = content;
             article.save(callback);
         } else {

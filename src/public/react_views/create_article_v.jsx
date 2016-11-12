@@ -8,10 +8,11 @@ const ReactDOM = require('react-dom'),
 //导入模块
 const marked = require('marked');
 const CodeMirror = require('react-codemirror');
-require('codemirror/mode/markdown/markdown');
-require('codemirror/lib/codemirror.css');
+const SimpleMde = require('../react_components/simple_mde.jsx');
 
 // css导入
+require('codemirror/mode/markdown/markdown');
+require('codemirror/lib/codemirror.css');
 require('../sass/create_article.sass');
 
 const EditorMode = {
@@ -55,11 +56,11 @@ const ArticleEditor = React.createClass({
             switch (this.state.mode) {
             	case EditorMode.edit:
             	    return (
-    			        <div className="codemirror-wrapper">
-    			            <CodeMirror value={ this.state.content } onChange={ this.updateContent } options={ this.getOptions() } />
-    			        </div>
+    			        // <div className="codemirror-wrapper">
+    			        //     <CodeMirror value={ this.state.content } onChange={ this.updateContent } options={ this.getOptions() } />
+    			        // </div>
+						<SimpleMde onChange={ this.updateContent } value={ this.state.content } />
             	    );
-            	    break;
             	case EditorMode.preview:
             	    let markedContent = marked(this.state.content);
             	    return (

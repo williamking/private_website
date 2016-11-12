@@ -1,8 +1,10 @@
 const express = require('express'),
       bcrypt = require('bcrypt'),
       mongoose = require('mongoose'),
+      co = require('co'),
       Promise = require('bluebird'),
-      fs = Promise.promisifyAll(require('fs'));
+      fs = Promise.promisifyAll(require('fs')),
+      path = require('path');
 
 const router = express.Router();
 // const requireLogin = require('./../authorization/authorize.js').requireLogin
@@ -254,15 +256,30 @@ exports.getTags = (req, res) => {
 
 exports.editArticle = (req, res) => {
     let id = req.params.id,
+      title = req.body.title,
       content = req.body.content;
-    Article.editArticle(id, content, (err, article) => {
+    Article.editArticle(id, title, content, (err, article) => {
       if (err || !article) {
           res.json({ status: 'DATABASE_ERROR', msg: '数据库菌出了问题。。。。。。' });
       } else {
           console.log(`编辑文章${id}`);
           res.json({ status: 'OK', data: {
+              title: article.title,
               content: article.content
           } });
       }
     });
 };
+
+exports.addAttachment = co.wrap(function* (req, res) {
+    if (!req.file) {
+        return res.json({
+            status: 'NO_FILE',
+            msg: '没有文件上传'
+        });
+    } else {
+        return res.json({
+            downloadUrl: `/attachments/article-images/${req.file.filename}`
+        });
+    }
+});

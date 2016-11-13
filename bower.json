@@ -1,0 +1,21 @@
+{
+  "name": "my-website",
+  "description": "",
+  "main": "",
+  "authors": [
+    "williamking <williamjwking@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/williamking/private_website",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "inline-attachment": "^2.0.3",
+    "highlightjs": "^9.8.0"
+  }
+}

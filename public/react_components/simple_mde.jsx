@@ -23,6 +23,7 @@ class ReactSimpleMde extends React.Component {
                 delay: 1000,
             }
         });
+        this.simplemde.value(this.props.value);
         this.simplemde.codemirror.on('change', () => {
           this.props.onChange(this.simplemde.value());
         });

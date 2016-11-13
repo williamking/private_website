@@ -27,6 +27,7 @@ gulp.task('copy', () => {
         'src/routes*/*',
         'src/routes*/**/*',
         'src/routes*/routers*/api*/*',
+        'src/routes*/routers*/*',
         '!src/public/images',
         'src/public*/**/*',
         'src/views*/*',
@@ -38,12 +39,12 @@ gulp.task('copy', () => {
 })
 
 gulp.task('clean:front-end', () => {
-    return gulp.src(['!public/attachments', '!public/images', '!public/lib', '!public/resources', 'public/*', 'views/*'], {read: false})
+    return gulp.src(['!public/attachments', '!public/images', '!public/lib', '!public/resources', 'public/*', 'views'], {read: false})
         .pipe(clean());
 });
 
 gulp.task('clean:back-end', () => {
-    return gulp.src(['route/*', '!models/db.js']).pipe(clean());
+    return gulp.src(['routes', 'models', 'config']).pipe(clean());
 });
 
 gulp.task('clean', ['clean:back-end', 'clean:front-end']);

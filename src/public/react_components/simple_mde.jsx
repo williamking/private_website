@@ -14,6 +14,13 @@ class ReactSimpleMde extends React.Component {
     }
 
     componentDidMount() {
+
+        let previewRender = (plainText, preview) => {
+            $(preview).addClass('markdown-body');
+            $(preview).html(plainText);
+            return preview.innerHTML;
+        };
+
         this.simplemde = new SimpleMde({
             element: this.dom,
             autofocus: true,
@@ -21,7 +28,8 @@ class ReactSimpleMde extends React.Component {
                 enabled: true,
                 uniqueId: "MyUniqueID",
                 delay: 1000,
-            }
+            },
+            previewRender
         });
         this.simplemde.value(this.props.value);
         this.simplemde.codemirror.on('change', () => {

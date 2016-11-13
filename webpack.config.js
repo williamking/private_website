@@ -1,8 +1,18 @@
 "use strict";
 
+const path = require('path');
 const webpack = require('webpack');
+const BowerWebpackPlugin = require('bower-webpack-plugin');
 
-let plugins = [];
+const plugins = [
+    new BowerWebpackPlugin({
+        modulesDirectories: ["bower_components"],
+        manifestFiles:      "bower.json",
+        includes:           /.*/,
+        excludes:           [],
+        searchResolveModulesDirectories: true
+    })
+];
 
 if (process.env.NODE_ENV == 'production') {
     plugins.push(
@@ -31,15 +41,15 @@ module.exports = {
     module: {
         loaders: [
             { test: /\.css$/, loader: 'style!css' },
-            { test: /\.js$/, loader: 'babel-loader?presets[]=es2015!jsx-loader?harmony', exclude: /node_modules/ },
-            { test: /\.jsx$/, loader: 'babel-loader?presets[]=es2015!jsx-loader?harmony', exclude: /node_modules/ },
+            { test: /\.js$/, loader: 'babel-loader?presets[]=es2015!jsx-loader?harmony', exclude: [/node_modules/, /bower_components/] },
+            { test: /\.jsx$/, loader: 'babel-loader?presets[]=es2015!jsx-loader?harmony', exclude: [/node_modules/, /bower_components/] },
             { test: /\.sass$/, loader: 'style!css!sass-loader' },
             { test: /\.ttf$/, loader: 'url-loader', exclude: /node_modules/ },
             { test: /\.jpg$/, loader: 'url-loader?limit=8192' },
         ],
     },
     resolve: {
-        extensions: ['', '.js', 'jsx'],
+        extensions: ['', '.js', 'jsx']
     },
     plugins
 }

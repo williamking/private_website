@@ -43,6 +43,7 @@ app.use(expressSession({
     keys: ['user']
 }));
 app.use(busboy());
+app.use(logger('dev'));
 
 /*set routes*/
 require('./routes/route')(app);

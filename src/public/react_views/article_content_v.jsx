@@ -5,6 +5,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const marked = require('marked');
 const LinkedStateMixin = require('react-addons-linked-state-mixin');
+const highlight = require('highlightjs');
 
 
 //导入模块
@@ -19,6 +20,7 @@ const SimpleMde = require('../react_components/simple_mde.jsx');
 
 // css导入
 require('../sass/article_content.sass');
+require('github-markdown-css');
 
 const ArticleContent = React.createClass({
     mixins: [LinkedStateMixin],
@@ -60,6 +62,14 @@ const ArticleContent = React.createClass({
             let id = window.location.href.split('/');
             url = '/api/articles/' + id[id.length - 1];
         }
+
+        // marked设置
+        marked.setOptions({
+            highlight: (code) => {
+                return highlight.highlightAuto(code).value;
+            }
+        });
+
         $.get(url, (result) => {
             let lastEditTime = moment(result.data.lastEditAt).format('YYYY-MM-DD');
             if (result.status == 'OK') {
@@ -200,7 +210,7 @@ const ArticleContent = React.createClass({
                 </div>
             </div>;
         } else {
-            return <div className="content" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
+            return <div className="content markdown-body" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
             </div>; 
         }
     },

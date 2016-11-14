@@ -35,8 +35,9 @@ module.exports = {
         'lab': __dirname + '/src/public/react_views/lab_v.jsx'
     },
     output: {
-        path: __dirname + 'public/dist',
+        path: __dirname + '/public/dist',
         filename: '[name].bundle.js',
+        publicPath: '../dist/'
     },
     module: {
         loaders: [
@@ -44,8 +45,10 @@ module.exports = {
             { test: /\.js$/, loader: 'babel-loader?presets[]=es2015!jsx-loader?harmony', exclude: [/node_modules/, /bower_components/] },
             { test: /\.jsx$/, loader: 'babel-loader?presets[]=es2015!jsx-loader?harmony', exclude: [/node_modules/, /bower_components/] },
             { test: /\.sass$/, loader: 'style!css!sass-loader' },
-            { test: /\.ttf$/, loader: 'url-loader', exclude: /node_modules/ },
+            // { test: /\.ttf$/, loader: 'url-loader', exclude: /node_modules/ },
             { test: /\.jpg$/, loader: 'url-loader?limit=8192' },
+            { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+            { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader" }
         ],
     },
     resolve: {

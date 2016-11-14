@@ -6,9 +6,9 @@ const SimpleMde = require('simplemde/dist/simplemde.min.js');
 const marked = require('marked');
 const highlight = require('highlightjs');
 
-require('../../../bower_components/font-awesome/css/font-awesome.min.css');
-require('../../../bower_components/inline-attachment/src/inline-attachment.js');
-require('../../../bower_components/inline-attachment/src/codemirror.inline-attachment.js');
+require('font-awesome/css/font-awesome.min.css');
+require('inline-attachment/src/inline-attachment.js');
+require('inline-attachment/src/codemirror.inline-attachment.js');
 require('simplemde/dist/simplemde.min.css');
 
 class ReactSimpleMde extends React.Component {

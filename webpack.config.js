@@ -52,7 +52,8 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['', '.js', 'jsx']
+        modulesDirectories: ['web_modules', 'node_modules', 'bower_components'],
+        extensions: ['', '.js', 'jsx', 'css']
     },
     plugins
 }

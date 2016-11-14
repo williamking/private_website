@@ -50,7 +50,6 @@ gulp.task('clean:back-end', () => {
 gulp.task('clean', ['clean:back-end', 'clean:front-end']);
 
 gulp.task('reload', () => {
-    console.log('asdsd');
     setTimeout(() => {
       browerSync.reload();
     }, 2000);

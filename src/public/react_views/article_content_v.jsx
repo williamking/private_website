@@ -17,6 +17,7 @@ require('codemirror/lib/codemirror.css');
 const moment = require('moment');
 const scroll = require('../lib/scroll.js');
 const SimpleMde = require('../react_components/simple_mde.jsx');
+// require('font-awesome-webpack');
 
 // css导入
 require('../sass/article_content.sass');
@@ -88,6 +89,21 @@ const ArticleContent = React.createClass({
             }
         });
 	},
+
+    componentDidUpdate: function() {
+        if (window.MathJax) {
+            MathJax.Hub.Typeset($('#article-text')[0], () => {
+            });
+        } else {
+            var mathjaxScript = document.createElement('script');
+            mathjaxScript.type = 'text/javascript';
+            mathjaxScript.src = '/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+            $('head')[0].appendChild(mathjaxScript);
+            $(mathjaxScript).load(() => {
+                MathJax.Hub.Typeset($('#article-text')[0]);
+            });
+        }
+    },
 
 	render: function() {
         let tags = this.renderTags();

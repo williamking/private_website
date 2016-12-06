@@ -5,10 +5,10 @@ const ReactDOM = require('react-dom');
 require('../sass/info.sass');
 
 module.exports = React.createClass({
-	render: function() {
-	    let info = this.renderInfo();
-		return (
-			<div className="person-info-wrapper column">
+  render: function() {
+    let info = this.renderInfo();
+    return (
+      <div className="person-info-wrapper column">
 			    <div className="person-info-container">
 			        <header className="ui dividing header">Information</header>
 			        <div className="person-info">
@@ -21,25 +21,25 @@ module.exports = React.createClass({
 			        </div>
 			    </div>
 			</div>
-		);
-	},
+      );
+  },
 
-	renderInfo: function() {
-		let info = [];
-		console.log(this.props.data);
-		for (let key in this.props.data) {
-			let value = this.props.data[key];
-            info.push(
-                <div className="person-info-item item" key={ key }>
+  renderInfo: function() {
+    let info = [];
+    for (let key in this.props.data) {
+      let value = this.props.data[key];
+      info.push(
+        <div className="person-info-item item" key={ key }>
                     <div className="key">
-                        { key + ':' }
+                        {key + ':'}
                     </div>
                     <div className="middle aligned content">
                         { value }
                     </div>
                 </div>
-            );
-		};
-		return info;
-	}
+      );
+    }
+    ;
+    return info;
+  }
 });

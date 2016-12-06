@@ -1,13 +1,16 @@
 $key-color: rgba(97, 214, 68, 0.91)
 $info-border: 2px solid #eeeeee
 $info-border-radius: 5px
+$info-shadow: 0px 0px 20px #222222
 
 .person-info-wrapper
     .person-info-container
         padding: 10px 10px 10px 10px
-        border: $info-border
+        // border: $info-border
+        box-shadow: $info-shadow
         border-radius: $info-border-radius
         overflow: hidden
+        // color: #3d4450!important
         .person-info
             display: flex
             .avatar

@@ -1,17 +1,25 @@
+$paper-nums: 10
+$showing-duration: 6s
+
+
 @keyframes imageAnimation
   0%
     opacity: 0
     animation-timing-function: ease-in
-  25%
+  #{100% / ($paper-nums * 2)}
     opacity: 1
     transform: scale(1.05)
     animation-timing-function: ease-out
-  50%
-    opacity: 1
-    transform: scale(1.1)
-  75%
-    opacity: 0
-    transform: scale(1.1)
+  @if $paper-nums > 1
+    #{100% / $paper-nums}
+      opacity: 1
+      transform: scale(1.1)
+    #{100% * 3 / ($paper-nums * 2)}
+      opacity: 0
+      transform: scale(1.1)
+  @if $paper-nums > 2
+    #{100% * 4 / ($paper-nums * 2)}
+      opacity: 0
   100%
     opacity: 0
 
@@ -24,6 +32,7 @@
   z-index: -2
   .slides-show
     li
+      list-style: none
       span
         position: absolute
         top: 0
@@ -34,4 +43,4 @@
         background-size: cover
         background-position: 50% 50%
         background-repeat: none
-        animation: imageAnimation 12s linear infinite 0s
+        animation: imageAnimation $showing-duration * $paper-nums linear infinite 0s

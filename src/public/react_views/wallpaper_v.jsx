@@ -4,12 +4,32 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 
 const wallpapers = [
-  'http://article.joyme.com/article/uploads/allimg/141208/1U505A26-14.jpg',
-  'http://h.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=21e436def0246b607b5bba70dec8367a/8326cffc1e178a8226ec172df003738da877e86f.jpg'
+  '1.jpg',
+  '2.jpg',
+  '3.jpg',
+  '4.jpg',
+  '5.jpg',
+  '6.jpg',
+  '7.jpg',
+  '8.png',
+  '9.jpg',
+  '10.jpg',
 ];
 
 // css
 require('../sass/wallpapers.sass');
+
+// shuffle function
+function shuffle(arr) {
+  let i = arr.length;
+  while (i) {
+    let j = parseInt(Math.random() * i);
+    let x = arr[--i];
+    arr[i] = arr[j];
+    arr[j] = x;
+  }
+  return arr;
+}
 
 class WallPaper extends React.Component {
   constructor(props) {
@@ -24,9 +44,11 @@ class WallPaper extends React.Component {
   getWallpapers = () => {
     let items = [];
     this.props.srcs.forEach((src, key) => {
+      let realSrc = '/important_images/' + src;
       let style = {
-        backgroundImage: `url(${src})`,
-        animationDelay: key * 6 + 's'
+        backgroundImage: `url(${realSrc})`,
+        animationDelay: key * 6 + 's',
+        opacity: 0
       };
       items.push(<li key={ key }><span style={ style }></span></li>);
     });
@@ -45,5 +67,6 @@ class WallPaper extends React.Component {
 }
 
 $(function() {
-  ReactDOM.render(<WallPaper srcs={ wallpapers }/>, $("#wallpaper-slider")[0], null);
+  let wps = shuffle(wallpapers);
+  ReactDOM.render(<WallPaper srcs={ wps }/>, $("#wallpaper-slider")[0], null);
 });

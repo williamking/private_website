@@ -19,5 +19,6 @@
     "highlightjs": "^9.8.0",
     "MathJax": "^2.7.0",
     "font-awesome": "^4.7.0"
+    "webcomponentsjs": "^0.7.23"
   }
 }

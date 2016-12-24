@@ -11,6 +11,10 @@ const plugins = [
     includes: /.*/,
     excludes: [],
     searchResolveModulesDirectories: true
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'common',
+    chunks: ['layout', 'index', 'articles', 'article_content', 'create_article', 'lab', 'wallpaper']
   })
 ];
 

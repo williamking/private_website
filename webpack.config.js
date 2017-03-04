@@ -11,6 +11,10 @@ const plugins = [
     includes: /.*/,
     excludes: [],
     searchResolveModulesDirectories: true
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'common',
+    chunks: ['layout', 'index', 'articles', 'article_content', 'create_article', 'lab', 'wallpaper']
   })
 ];
 
@@ -53,7 +57,7 @@ module.exports = {
       },
       {
         test: /\.jsx$/,
-        loader: 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0,presets[]=stage-2',
+        loader: 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0,presets[]=stage-2,plugins[]=transform-react-jsx-source',
         exclude: [/node_modules/, /bower_components/]
       },
       {

@@ -57,7 +57,7 @@ module.exports = {
       },
       {
         test: /\.jsx$/,
-        loader: 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0,presets[]=stage-2',
+        loader: 'babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0,presets[]=stage-2,plugins[]=transform-react-jsx-source',
         exclude: [/node_modules/, /bower_components/]
       },
       {

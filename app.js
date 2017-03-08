@@ -3,7 +3,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 const express = require('express'),
-    https = require('https'),
+    http = require('http'),
     path = require('path'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
@@ -49,8 +49,7 @@ app.use(logger('dev'));
 /*set routes*/
 require('./routes/route')(app);
 
-let { spdy_options } = require('./config/config');
-let server = https.createServer(spdy_options, app);
+let server = http.createServer(app);
 server.listen(port, () => {
     console.log('The NODE_ENV is: ' + process.env.NODE_ENV);
     console.log('server listened on ' + port);

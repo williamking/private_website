@@ -50,7 +50,7 @@ app.use(logger('dev'));
 require('./routes/route')(app);
 
 let server = http.createServer(app);
-server.listen(port, () => {
+server.listen(port, '127.0.0.1', () => {
     console.log('The NODE_ENV is: ' + process.env.NODE_ENV);
     console.log('server listened on ' + port);
 });

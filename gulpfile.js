@@ -94,11 +94,11 @@ gulp.task('watch', () => {
 });
 
 gulp.task('minify:image', () => {
-  return gulp.src('public/important_images/*')
+  return gulp.src('public/images/*')
     .pipe(imageMin({
       verbose: true
     }))
-    .pipe(gulp.dest('public/important_images'));
+    .pipe(gulp.dest('public/images'));
 });
 
 gulp.task('minify:js', () => {

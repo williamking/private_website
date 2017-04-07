@@ -38,21 +38,45 @@ class WallPaper extends React.Component {
   }
 
   state = {
-    wallPapers: this.props.srcs
+    wallPapers: [],
+    completed: 0
   }
 
   getWallpapers = () => {
     let items = [];
-    this.props.srcs.forEach((src, key) => {
-      let realSrc = '/images/' + src;
+    if (this.state.wallPapers.length == this.state.completed) {
+      this.state.wallPapers.forEach((paper, key) => {
+        let style = {
+          backgroundImage: `url(${paper.src})`,
+          animationDelay: key * 6 + 's',
+          opacity: 0
+        };
+        items.push(<li key={ key }><span style={ style }></span></li>);
+      });
+    } else {
       let style = {
-        backgroundImage: `url(${realSrc})`,
-        animationDelay: key * 6 + 's',
-        opacity: 0
+        backgroundColor: 'white'
       };
-      items.push(<li key={ key }><span style={ style }></span></li>);
-    });
+      items = [(<li key="0"><span style={ style }></span></li>)]
+    }
     return items;
+  }
+
+  componentDidMount() {
+    let images = [];
+    this.props.srcs.forEach((src) => {
+      let image = new Image();
+      image.src = `/images/${src}`;
+      image.onload = () => {
+        this.setState({
+          completed: this.state.completed + 1
+        });
+      };
+      images.push(image);
+    });
+    this.setState({
+      wallPapers: images
+    });
   }
 
   render() {

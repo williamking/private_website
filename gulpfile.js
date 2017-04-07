@@ -94,11 +94,11 @@ gulp.task('watch', () => {
 });
 
 gulp.task('minify:image', () => {
-  return gulp.src('public/important_images/*')
+  return gulp.src('public/images/*')
     .pipe(imageMin({
       verbose: true
     }))
-    .pipe(gulp.dest('public/important_images'));
+    .pipe(gulp.dest('public/images'));
 });
 
 gulp.task('minify:js', () => {
@@ -114,4 +114,4 @@ gulp.task('apply-prod-environment', () => {
 gulp.task('dev', gulpSync.sync(['clean', 'copy', 'webpack', 'watch', 'server-start', 'brower-sync']));
 
 gulp.task('default', gulpSync.sync(['apply-prod-environment', 'clean', 'copy',
-  'minify:image', 'webpack', 'minify:js']));
+  'webpack', 'minify:js']));

@@ -114,4 +114,4 @@ gulp.task('apply-prod-environment', () => {
 gulp.task('dev', gulpSync.sync(['clean', 'copy', 'webpack', 'watch', 'server-start', 'brower-sync']));
 
 gulp.task('default', gulpSync.sync(['apply-prod-environment', 'clean', 'copy',
-  'minify:image', 'webpack', 'minify:js']));
+  'webpack', 'minify:js']));

@@ -4,7 +4,7 @@ const path = require('path');
 module.exports = {
 	administrator: '$2a$05$4VIAk/kXnT2sTv5.1LWkuOySXY0vXnHIzzNLDG6CVkprmmBJPAjKu',
 	saltNum: 10,
-	port: 443,
+	port: 3002,
 	database: 'mongodb://localhost/website',
 	spdy_options: {
       cert: fs.readFileSync(path.join(__dirname, '../../cert/production/1_zone.williamking.cn_cert.crt')),

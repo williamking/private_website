@@ -39,7 +39,8 @@ gulp.task('copy', () => {
 })
 
 gulp.task('clean:front-end', () => {
-  return gulp.src(['!public/attachments', '!public/images', '!public/lib', '!public/resources', 'public/*', 'views'], {
+  return gulp.src(['!public/attachments', '!public/images', '!public/lib',
+    '!public/resources', 'public/*', 'views', 'webpack'], {
     read: false
   })
     .pipe(clean());
@@ -81,7 +82,8 @@ gulp.task('watch', () => {
     'src/public/**/*.js',
     'src/public/**/*.jsx',
     'src/views/*',
-    'src/views/**/*'], gulpSync.sync(['copy', 'webpack', 'reload']));
+    'src/views/**/*', 'webpack.config.js'],
+    gulpSync.sync(['copy', 'webpack', 'reload']));
 
   // watch back-end file
   gulp.watch(['src/models/*.js',

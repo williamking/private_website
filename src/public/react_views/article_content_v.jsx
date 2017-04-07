@@ -11,7 +11,6 @@ const highlight = require('highlightjs');
 //导入模块
 const Comment = require('../react_components/comment.jsx');
 const UrlParser = require('../lib/url.js');
-const CodeMirror = require('react-codemirror');
 require('codemirror/mode/markdown/markdown');
 require('codemirror/lib/codemirror.css');
 const moment = require('moment');
@@ -144,7 +143,7 @@ const ArticleContent = React.createClass({
                                     <span>tags: </span>
                                     { tags }
                                 </div>
-                                <div className="time">Last edited at  
+                                <div className="time">Last edited at
                                     <span>
                                         { ' ' + this.state.lastEditTime }
                                     </span>
@@ -209,7 +208,7 @@ const ArticleContent = React.createClass({
         let tags = [];
         this.state.tags.forEach((value, index) => {
             tags.push(
-                <a className="ui teal tag label" key={ index }>{ value }</a> 
+                <a className="ui teal tag label" key={ index }>{ value }</a>
             );
         });
         return tags;
@@ -227,7 +226,7 @@ const ArticleContent = React.createClass({
             </div>;
         } else {
             return <div className="content markdown-body" id="article-text" dangerouslySetInnerHTML={{ __html: this.state.articleText }}>
-            </div>; 
+            </div>;
         }
     },
 

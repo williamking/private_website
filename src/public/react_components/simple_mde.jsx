@@ -2,7 +2,7 @@
 
 // 引入模块
 const React = require('react');
-const SimpleMde = require('simplemde/dist/simplemde.min.js');
+const SimpleMde = require('simplemde');
 const marked = require('marked');
 const highlight = require('highlightjs');
 

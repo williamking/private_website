@@ -7,7 +7,6 @@ const ReactDOM = require('react-dom'),
 
 //导入模块
 const marked = require('marked');
-const CodeMirror = require('react-codemirror');
 const SimpleMde = require('../react_components/simple_mde.jsx');
 
 // css导入
@@ -56,10 +55,7 @@ const ArticleEditor = React.createClass({
             switch (this.state.mode) {
             	case EditorMode.edit:
             	    return (
-    			        // <div className="codemirror-wrapper">
-    			        //     <CodeMirror value={ this.state.content } onChange={ this.updateContent } options={ this.getOptions() } />
-    			        // </div>
-						<SimpleMde onChange={ this.updateContent } value={ this.state.content } />
+						        <SimpleMde onChange={ this.updateContent } value={this.state.content } />
             	    );
             	case EditorMode.preview:
             	    let markedContent = marked(this.state.content);

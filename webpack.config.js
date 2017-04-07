@@ -13,8 +13,13 @@ const plugins = [
     searchResolveModulesDirectories: true
   }),
   new webpack.optimize.CommonsChunkPlugin({
-    name: 'common',
-    chunks: ['layout', 'index', 'articles', 'article_content', 'create_article', 'lab', 'wallpaper']
+    names: ['vendor'],
+    minChunks: 'Infinity'
+  }),
+  new webpack.optimize.CommonsChunkPlugin({
+    names: ['simple_mde'],
+    minChunks: 'Infinity',
+    chunks: ['create_article', 'article_content']
   })
 ];
 
@@ -37,7 +42,9 @@ module.exports = {
     'article_content': __dirname + '/src/public/react_views/article_content_v.jsx',
     'create_article': __dirname + '/src/public/react_views/create_article_v.jsx',
     'lab': __dirname + '/src/public/react_views/lab_v.jsx',
-    'wallpaper': __dirname + '/src/public/react_views/wallpaper_v.jsx'
+    'wallpaper': __dirname + '/src/public/react_views/wallpaper_v.jsx',
+    vendor: ['react', 'react-dom', 'marked', 'react-addons-linked-state-mixin'],
+    'simple_mde': [__dirname + '/src/public/react_components/simple_mde.jsx']
   },
   output: {
     path: __dirname + '/public/dist',

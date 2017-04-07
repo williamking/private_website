@@ -44,7 +44,7 @@ class WallPaper extends React.Component {
   getWallpapers = () => {
     let items = [];
     this.props.srcs.forEach((src, key) => {
-      let realSrc = '/important_images/' + src;
+      let realSrc = '/images/' + src;
       let style = {
         backgroundImage: `url(${realSrc})`,
         animationDelay: key * 6 + 's',

@@ -94,9 +94,11 @@ gulp.task('watch', () => {
 });
 
 gulp.task('minify:image', () => {
-  return gulp.src('public/images/*')
-    .pipe(imageMin())
-    .pipe(gulp.dest('public/images'));
+  return gulp.src('public/important_images/*')
+    .pipe(imageMin({
+      verbose: true
+    }))
+    .pipe(gulp.dest('public/important_images'));
 });
 
 gulp.task('minify:js', () => {
@@ -109,8 +111,7 @@ gulp.task('apply-prod-environment', () => {
   process.env.NODE_ENV = 'production';
 });
 
-gulp.task('minify', ['minify:image', 'minify:js']);
-
 gulp.task('dev', gulpSync.sync(['clean', 'copy', 'webpack', 'watch', 'server-start', 'brower-sync']));
 
-gulp.task('default', gulpSync.sync(['apply-prod-environment', 'clean', 'copy', 'webpack', 'minify']));
+gulp.task('default', gulpSync.sync(['apply-prod-environment', 'clean', 'copy',
+  'minify:image', 'webpack', 'minify:js']));

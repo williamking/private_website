@@ -73,7 +73,7 @@ module.exports = {
       },
       // { test: /\.ttf$/, loader: 'url-loader', exclude: /node_modules/ },
       {
-        test: /\.jpg$/,
+        test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'url-loader?limit=8192'
       },
       {
